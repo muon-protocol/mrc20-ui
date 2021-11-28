@@ -8,6 +8,7 @@ import { Box } from '../common/Container'
 import { Image, Button, BorderBottom } from '../common/FormControlls'
 import { Type } from '../common/Text'
 import { ChangeNetwork, Span } from '../home'
+import { addRPC } from '../../helper/addRPC'
 
 const NetWork = styled.div`
   width: 35px;
@@ -41,12 +42,6 @@ const ClaimToken = (props) => {
           claim.token.symbol.charAt(0) === 'μ'
             ? claim.token.symbol.split('-')[1].toLowerCase()
             : claim.token.symbol.toLowerCase()
-
-        // let token = findTokenWithAddress(
-        //   state.tokens,
-        //   claim.tokenAddress,
-        //   Number(claim.toChain)
-        // )
 
         return (
           <Flex width="100%" padding="0 3px" key={index} flexDirection="column">
@@ -110,11 +105,13 @@ const ClaimToken = (props) => {
                 border="0.5px solid rgba(210, 210, 210, 0.5)"
                 height="35px"
                 cursor="default"
+                onClick={() => addRPC(claim.toChain)}
               >
                 <Type.SM
                   fontSize="12.5px"
                   color="#313144"
                   fontFamily="FH Oscar"
+                  cursor="pointer"
                 >
                   Change Network to Claim
                 </Type.SM>

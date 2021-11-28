@@ -1,4 +1,5 @@
 import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import {
   TransactionStatus,
   TransactionType
@@ -6,18 +7,29 @@ import {
 import { useMuonState } from '../../context'
 import { Button } from '../common/FormControlls'
 import { Type } from '../common/Text'
+import { addRPC } from '../../helper/addRPC'
+import { NameChainMap } from '../../constants/chainsMap'
 
 const ActionButton = (props) => {
   const { state } = useMuonState()
-  const {
-    wrongNetwork,
-    handleAddBridgeToken,
-    handleAddMainToken,
-    handleConnectWallet,
-    handleDeposit,
-    handleApprove
-  } = props
+  const { wrongNetwork, handleConnectWallet, handleDeposit, handleApprove } =
+    props
   let content = ''
+  const { chainId } = useWeb3React()
+
+  let validChainId = null
+  if (state.bridge.fromChain && state.bridge.toChain) {
+    if (
+      state.actionBtnType === 'bridgeToChain' &&
+      state.bridge.toChain.id !== chainId
+    )
+      validChainId = state.bridge.toChain.id
+    else if (
+      state.actionBtnType !== 'bridgeToChain' &&
+      state.bridge.fromChain.id !== chainId
+    )
+      validChainId = state.bridge.fromChain.id
+  }
 
   switch (state.actionBtnType) {
     case 'bridgeFromChain':
@@ -113,22 +125,26 @@ const ActionButton = (props) => {
     default:
       break
   }
+
   return (
     <>
       {state.account ? (
-        wrongNetwork ? (
+        wrongNetwork || validChainId ? (
           <Button
             margin="50px 0 0"
             background="rgba(255, 164, 81, 0.2)"
             border="1px solid rgba(255, 164, 81, 1)"
             cursor="default"
+            onClick={() => (wrongNetwork ? undefined : addRPC(validChainId))}
           >
             <Type.LG
               color="rgba(49, 49, 68, 1)"
               fontFamily="FH Oscar"
               fontSizeXS="16px"
             >
-              Wrong Network
+              {wrongNetwork
+                ? 'Wrong Network'
+                : ` Switch to ${NameChainMap[validChainId]}`}
             </Type.LG>
           </Button>
         ) : (
