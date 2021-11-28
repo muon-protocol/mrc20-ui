@@ -48,11 +48,6 @@ const SelectBox = (props) => {
   React.useEffect(() => {
     if (value) {
       const selectedValue = data.find((item) => item.id === value)
-      console.log(
-        '*****************/////////------------',
-        value,
-        selectedValue
-      )
       if (selectedValue) {
         const selectedValueIcon =
           selectedValue.symbol.charAt(0) === 'μ'

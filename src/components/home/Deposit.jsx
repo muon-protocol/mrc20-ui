@@ -38,7 +38,6 @@ const Deposit = (props) => {
   } = props
   const { state } = useMuonState()
 
-  console.log('****', state)
   return (
     <Flex
       flexDirection="column"

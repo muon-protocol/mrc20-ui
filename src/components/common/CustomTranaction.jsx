@@ -12,7 +12,7 @@ import {
 import { useMuonState } from '../../context'
 import { getTransactionLink } from '../../utils/explorers'
 import { Box } from '../common/Container'
-import { Button, Link } from '../common/FormControlls'
+import { Button, Link, ImageSpin } from '../common/FormControlls'
 import { Type } from '../common/Text'
 import { ChangeNetwork, Span } from '../home'
 
@@ -24,21 +24,7 @@ const Close = styled.span`
 const Image = styled.img`
   padding: 0 10px;
 `
-const ImageSpin = styled.img`
-  padding: 0 10px;
-  animation-name: spin;
-  animation-duration: 1000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`
+
 const Arrow = styled.span`
   // transform: rotate(270deg);
   padding: 0 3px 5px;

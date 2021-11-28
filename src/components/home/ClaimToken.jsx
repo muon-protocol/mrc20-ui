@@ -2,10 +2,10 @@ import React from 'react'
 import { Flex } from 'rebass'
 import styled from 'styled-components'
 import { useMuonState } from '../../context'
-import { findChain, fromWei } from '../../utils/utils'
+import { findChain, findToken, fromWei } from '../../utils/utils'
 
 import { Box } from '../common/Container'
-import { Image, Button, BorderBottom } from '../common/FormControlls'
+import { Image, Button, BorderBottom, ImageSpin } from '../common/FormControlls'
 import { Type } from '../common/Text'
 import { ChangeNetwork, Span } from '../home'
 import { addRPC } from '../../helper/addRPC'
@@ -27,7 +27,8 @@ const NetWork = styled.div`
 
 const ClaimToken = (props) => {
   const { state } = useMuonState()
-  const { claims, handleClaim } = props
+  const { claims, handleClaim, lock } = props
+  console.log(lock)
   return (
     <Box borderRadius="10px" padding="14px 20px 19px">
       <Flex width="100%">
@@ -36,12 +37,10 @@ const ClaimToken = (props) => {
         </Type.SM>
       </Flex>
       {claims.map((claim, index) => {
-        let amount = fromWei(claim.amount)
-        const chain = findChain(Number(claim.toChain))
-        const icon =
-          claim.token.symbol.charAt(0) === 'μ'
-            ? claim.token.symbol.split('-')[1].toLowerCase()
-            : claim.token.symbol.toLowerCase()
+        let amount = fromWei(claim.amount.toString())
+        const chain = findChain(Number(claim.toChain.toString()))
+        const token = findToken(Number(claim.tokenId.toString()))
+        const icon = token.symbol.toLowerCase()
 
         return (
           <Flex width="100%" padding="0 3px" key={index} flexDirection="column">
@@ -65,7 +64,7 @@ const ClaimToken = (props) => {
                   color="#313144"
                   fontSizeXS="16px"
                 >
-                  {claim.token.symbol}
+                  {token.symbol}
                 </Type.LG>
                 <NetWork>
                   <Type.XS
@@ -97,6 +96,12 @@ const ClaimToken = (props) => {
                 >
                   Claim Token
                 </Type.SM>
+                {lock &&
+                  lock.fromChain === claim.fromChain &&
+                  lock.toChain === claim.toChain &&
+                  lock.txId === claim.txId && (
+                    <ImageSpin src={`/media/common/loading.svg`} />
+                  )}
               </Button>
             ) : (
               <Button

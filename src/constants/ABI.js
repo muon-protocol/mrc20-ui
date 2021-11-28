@@ -203,11 +203,10 @@ export const MultiCall_ABI = [
   }
 ]
 
-export const FearBridge_ABI = [
+export const MRC20Bridge_ABI = [
   {
     inputs: [
       { internalType: 'address', name: '_muon', type: 'address' },
-      { internalType: 'bool', name: '_mintable', type: 'bool' },
       { internalType: 'uint256', name: '_minReqSigs', type: 'uint256' },
       { internalType: 'uint256', name: '_fee', type: 'uint256' }
     ],
@@ -312,7 +311,7 @@ export const FearBridge_ABI = [
           { internalType: 'address', name: 'owner', type: 'address' },
           { internalType: 'address', name: 'nonce', type: 'address' }
         ],
-        internalType: 'struct SchnorrSign[]',
+        internalType: 'struct IMuonV02.SchnorrSign[]',
         name: 'sigs',
         type: 'tuple[]'
       }
@@ -329,15 +328,6 @@ export const FearBridge_ABI = [
     ],
     name: 'claimedTxs',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: 'collat_usd_price', type: 'uint256' }
-    ],
-    name: 'collatDollarBalance',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function'
   },
@@ -394,6 +384,13 @@ export const FearBridge_ABI = [
   },
   {
     inputs: [],
+    name: 'feeScale',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
     name: 'getExecutingChainID',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -408,7 +405,8 @@ export const FearBridge_ABI = [
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
       { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
-      { internalType: 'address', name: 'user', type: 'address' }
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'timestamp', type: 'uint256' }
     ],
     stateMutability: 'view',
     type: 'function'
@@ -434,13 +432,6 @@ export const FearBridge_ABI = [
     inputs: [],
     name: 'minReqSigs',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
-    inputs: [],
-    name: 'mintable',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function'
   },
@@ -483,13 +474,6 @@ export const FearBridge_ABI = [
     type: 'function'
   },
   {
-    inputs: [],
-    name: 'scale',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function'
-  },
-  {
     inputs: [{ internalType: 'uint256', name: '_fee', type: 'uint256' }],
     name: 'setFee',
     outputs: [],
@@ -499,13 +483,6 @@ export const FearBridge_ABI = [
   {
     inputs: [{ internalType: 'uint256', name: '_minReqSigs', type: 'uint256' }],
     name: 'setMinReqSigs',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
-  {
-    inputs: [{ internalType: 'bool', name: '_mintable', type: 'bool' }],
-    name: 'setMintable',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function'
@@ -557,7 +534,8 @@ export const FearBridge_ABI = [
       { internalType: 'uint256', name: 'amount', type: 'uint256' },
       { internalType: 'uint256', name: 'fromChain', type: 'uint256' },
       { internalType: 'uint256', name: 'toChain', type: 'uint256' },
-      { internalType: 'address', name: 'user', type: 'address' }
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'timestamp', type: 'uint256' }
     ],
     stateMutability: 'view',
     type: 'function'

@@ -5,8 +5,8 @@ import Muon from 'muon'
 
 import { useWeb3React } from '@web3-react/core'
 import { useMuonState } from '../src/context'
-import { findChain, findTokenWithAddress, toWei } from '../src/utils/utils'
-
+import { findChain, toWei, findToken } from '../src/utils/utils'
+import multicall from '../src/helper/multicall'
 const ClaimToken = dynamic(() => import('../src/components/home/ClaimToken'))
 const CustomTranaction = dynamic(() =>
   import('../src/components/common/CustomTranaction')
@@ -33,8 +33,8 @@ import {
 import { findAndAddToken, getToken } from '../src/helper/Tokens'
 import useWeb3 from '../src/helper/useWeb3'
 import getAssetBalances from '../src/helper/getAssetBalances'
-import { ERC20_ABI, FearBridge_ABI } from '../src/constants/ABI'
-import { FearBridge } from '../src/constants/contracts'
+import { ERC20_ABI, MRC20Bridge_ABI } from '../src/constants/ABI'
+import { MRC20Bridge } from '../src/constants/contracts'
 import { makeContract } from '../src/helper'
 import { AddressZero } from '@ethersproject/constants'
 import { Type } from '../src/components/common/Text'
@@ -104,8 +104,6 @@ const HomePage = () => {
         type: 'SET_TOKEN_BALANCE',
         payload: value
       })
-
-      // setTokenBalance(value)
     }
   }, [
     state.bridge.token,
@@ -123,116 +121,93 @@ const HomePage = () => {
   }, [state.bridge.fromChain])
 
   React.useEffect(() => {
-    const findClaim = async () => {
+    const getClaims = async () => {
       let claims = []
 
       for (let index = 0; index < chains.length; index++) {
         const chain = chains[index]
-
-        let originContract = makeContract(
-          chain.web3,
-          FearBridge_ABI,
-          FearBridge[chain.id]
-        )
-
         let dest = chains.filter((item) => item.id !== chain.id)
-        for (let index = 0; index < dest.length; index++) {
-          const item = dest[index]
+        let userTxs = []
+        let userTxsResponse = []
+        let pendingClaimTxs = []
+        for (let i = 0; i < dest.length; i++) {
+          const destChainId = dest[i].id
 
-          let destContract = makeContract(
-            item.web3,
-            FearBridge_ABI,
-            FearBridge[item.id]
+          const userTx = {
+            address: MRC20Bridge[chain.id],
+            name: 'getUserTxs',
+            params: [account, destChainId]
+          }
+          userTxs.push(userTx)
+        }
+
+        try {
+          const mul = await multicall(
+            chain.web3,
+            MRC20Bridge_ABI,
+            userTxs,
+            chain.id
           )
-
+          userTxsResponse = mul
+        } catch (error) {
+          console.log('Error happend in geting getUserTxs', error)
+        }
+        for (let i = 0; i < dest.length; i++) {
           try {
-            let userTxs = await originContract.methods
-              .getUserTxs(account, item.id)
-              .call()
-
+            let destContract = makeContract(
+              dest[i].web3,
+              MRC20Bridge_ABI,
+              MRC20Bridge[dest[i].id]
+            )
             let pendingTxs = await destContract.methods
-              .pendingTxs(chain.id, userTxs)
+              .pendingTxs(
+                chain.id,
+                userTxsResponse[i][0].map((resp) => resp.toString())
+              )
               .call()
             const pendingIndex = pendingTxs.reduce(
-              (out, bool, index) => (bool ? out : out.concat(index)),
+              (out, bool, index) =>
+                bool ? out : out.concat(userTxsResponse[i][0][index]),
               []
             )
-            for (let index = 0; index < pendingIndex.length; index++) {
-              let claim = await originContract.methods
-                .txs(userTxs[pendingIndex[index]])
-                .call()
-              let tokenAddress = await destContract.methods
-                .tokens(claim.tokenId)
-                .call()
-
-              let customTokens = JSON.parse(localStorage.getItem('tokens'))
-
-              let finalTokens = customTokens
-                ? [...state.tokens, ...customTokens]
-                : state.tokens
-              let token = findTokenWithAddress(
-                finalTokens,
-                tokenAddress,
-                item.id
-              )
-              if (!token) {
-                token = await getToken(tokenAddress, account, item)
-              }
-              claims.push({ ...claim, token })
-            }
+            pendingClaimTxs = [...pendingClaimTxs, ...pendingIndex]
           } catch (error) {
-            console.log('error happend in find Claim', error)
+            console.log('Error happend in geting pendingTxs ', error)
           }
         }
-      }
+        const Txs = []
+        for (let j = 0; j < pendingClaimTxs.length; j++) {
+          const tx = {
+            address: MRC20Bridge[chain.id],
+            name: 'txs',
+            params: [pendingClaimTxs[j]]
+          }
+          Txs.push(tx)
+        }
 
+        try {
+          const mul = await multicall(
+            chain.web3,
+            MRC20Bridge_ABI,
+            Txs,
+            chain.id
+          )
+          claims = [...claims, ...mul]
+        } catch (error) {
+          console.log('Error happend in geting Txs ', error)
+        }
+      }
       setClaims(claims)
       if (claims.length === 0) setActive('bridge')
     }
 
     const getBalance = async () => {
       let tokenBalances = []
-      // let customTokens = JSON.parse(localStorage.getItem('tokens'))
-      // if (customTokens) {
-      //   const exist = state.tokens.filter((elem) =>
-      //     customTokens.find(
-      //       ({ name, symbol }) => elem.name === name && elem.symbol === symbol
-      //     )
-      //   )
-      //   if (exist.length === 0) {
-      //     let finalTokens = [...state.tokens, ...customTokens]
-      //     tokenBalances = await getAssetBalances(chains, finalTokens, account)
-      //     dispatch({
-      //       type: 'UPDATE_TOKENS',
-      //       payload: tokenBalances
-      //     })
-      //   } else {
-      //     tokenBalances = await getAssetBalances(chains, state.tokens, account)
-      //     dispatch({
-      //       type: 'UPDATE_TOKENS',
-      //       payload: tokenBalances
-      //     })
-      //   }
-      // } else {
       tokenBalances = await getAssetBalances(chains, state.tokens, account)
       dispatch({
         type: 'UPDATE_TOKENS',
         payload: tokenBalances
       })
-      // }
-      // if (state.bridge.token) {
-      //   const token = tokenBalances.find(
-      //     (item) => item.id === state.bridge.token.id
-      //   )
-      //   const value = token.balances[state.bridge.fromChain.id]
-      //     ? `${token.balances[state.bridge.fromChain.id]} ${token.symbol}`
-      //     : '0'
-      //   dispatch({
-      //     type: 'SET_TOKEN_BALANCE',
-      //     payload: value
-      //   })
-      //   // setTokenBalance(value)
-      // }
     }
 
     if (account) {
@@ -245,17 +220,17 @@ const HomePage = () => {
         }
       })
       getBalance()
-      findClaim()
+      getClaims()
     }
 
-    // const interval = setInterval(() => {
-    //   if (account) {
-    //     getBalance()
-    //     findClaim()
-    //   }
-    // }, 15000)
+    const interval = setInterval(() => {
+      if (account) {
+        getBalance()
+        getClaims()
+      }
+    }, 15000)
 
-    // return () => clearInterval(interval)
+    return () => clearInterval(interval)
   }, [account, chainId, fetch])
 
   React.useEffect(() => {
@@ -263,14 +238,13 @@ const HomePage = () => {
       if (state.bridge.toChain && state.bridge.token.id) {
         const Contract = makeContract(
           state.bridge.toChain.web3,
-          FearBridge_ABI,
-          FearBridge[state.bridge.toChain.id]
+          MRC20Bridge_ABI,
+          MRC20Bridge[state.bridge.toChain.id]
         )
 
         let address = await Contract.methods
           .tokens(state.bridge.token.id)
           .call()
-        console.log('adddddddddddddrs', address)
         if (address !== AddressZero) {
           let selectedToken = {
             ...state.bridge.token,
@@ -336,8 +310,6 @@ const HomePage = () => {
         case 'token':
           // Search in fromChain
 
-          console.log('value', value, field)
-
           if (value.notPermission) {
             dispatch({
               type: 'UPDATE_ACTION_BUTTON_TYPE',
@@ -394,9 +366,8 @@ const HomePage = () => {
         state.bridge.token.address[state.bridge.fromChain.id]
       )
       let approve = await Contract.methods
-        .allowance(account, FearBridge[state.bridge.fromChain.id])
+        .allowance(account, MRC20Bridge[state.bridge.fromChain.id])
         .call()
-      console.log({ approve })
       if (approve !== '0') {
         dispatch({
           type: 'UPDATE_APPROVE',
@@ -488,7 +459,7 @@ const HomePage = () => {
       )
       Contract.methods
         .approve(
-          FearBridge[state.bridge.fromChain.id],
+          MRC20Bridge[state.bridge.fromChain.id],
           toWei('1000000000000000000')
         )
         .send({ from: state.account })
@@ -591,15 +562,11 @@ const HomePage = () => {
         setWrongNetwork(true)
         return
       }
-      console.log({
-        amount: toWei(state.bridge.amount),
-        tochain: state.bridge.toChain.id,
-        tokenId: state.bridge.token.id
-      })
+
       const Contract = makeContract(
         web3,
-        FearBridge_ABI,
-        FearBridge[state.bridge.fromChain.id]
+        MRC20Bridge_ABI,
+        MRC20Bridge[state.bridge.fromChain.id]
       )
       let hash = ''
       Contract.methods
@@ -704,27 +671,24 @@ const HomePage = () => {
       }
       let Contract = makeContract(
         web3,
-        FearBridge_ABI,
-        FearBridge[state.chainId]
+        MRC20Bridge_ABI,
+        MRC20Bridge[state.chainId]
       )
 
-      let amount = web3.utils.fromWei(claim.amount, 'ether')
-      console.log({
-        depositAddress: FearBridge[claim.fromChain],
-        depositTxId: claim.txId,
-        depositNetwork: fromChain.name.toLocaleLowerCase()
-      })
+      let amount = web3.utils.fromWei(claim.amount.toString(), 'ether')
+      setLock(claim)
+
       const muonResponse = await muon
         .app('fear_bridge')
         .method('claim', {
-          depositAddress: FearBridge[claim.fromChain],
+          depositAddress: MRC20Bridge[claim.fromChain],
           depositTxId: claim.txId,
           depositNetwork: fromChain.name.toLocaleLowerCase()
         })
         .call()
-      console.log(muonResponse)
       let { sigs, reqId } = muonResponse
-      setLock(claim)
+      const token = findToken(Number(claim.tokenId.toString()))
+
       Contract.methods
         .claim(
           account,
@@ -749,7 +713,7 @@ const HomePage = () => {
               chainId: toChain.id,
               toChain: toChain.symbol,
               amount: amount,
-              tokenSymbol: claim.token.symbol
+              tokenSymbol: token.symbol
             }
           })
         })
@@ -765,7 +729,7 @@ const HomePage = () => {
               chainId: toChain.id,
               toChain: toChain.symbol,
               amount: amount,
-              tokenSymbol: claim.token.symbol
+              tokenSymbol: token.symbol
             }
           })
           setFetch(claim)
@@ -783,7 +747,7 @@ const HomePage = () => {
                 chainId: toChain.id,
                 toChain: toChain.symbol,
                 amount: amount,
-                tokenSymbol: claim.token.symbol
+                tokenSymbol: token.symbol
               }
             })
             return
@@ -798,11 +762,13 @@ const HomePage = () => {
               chainId: toChain.id,
               toChain: toChain.symbol,
               amount: amount,
-              tokenSymbol: claim.token.symbol
+              tokenSymbol: token.symbol
             }
           })
         })
     } catch (error) {
+      setLock('')
+
       console.log('error happend in Claim', error)
     }
   }
@@ -833,6 +799,7 @@ const HomePage = () => {
             <ClaimToken
               claims={claims}
               handleClaim={(claim) => handleClaim(claim)}
+              lock={lock}
             />
           )}
         </ClaimWrapper>

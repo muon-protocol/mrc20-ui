@@ -161,7 +161,7 @@ export const rpcConfig = {
     rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     blockExplorerUrls: ['https://cchain.explorer.avax.network/']
   },
-  [ChainMap.FTM]: {
+  [ChainMap.FANTOM]: {
     chainId: '0xFA',
     chainName: 'Fantom Opera',
     nativeCurrency: {
@@ -171,5 +171,16 @@ export const rpcConfig = {
     },
     rpcUrls: ['https://rpc.ftm.tools/'],
     blockExplorerUrls: ['https://ftmscan.com/']
+  },
+  [ChainMap.FANTOM_TESTNET]: {
+    chainId: '0xfa2',
+    chainName: 'Fantom testnet Opera',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'FTM',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc.testnet.fantom.network/'],
+    blockExplorerUrls: ['https://testnet.ftmscan.com/']
   }
 }

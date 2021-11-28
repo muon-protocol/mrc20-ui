@@ -2,7 +2,6 @@ import { rpcConfig } from '../constants/chainsMap'
 
 export const addRPC = async (chainId, provider) => {
   const web3 = provider?.currentProvider ?? window.ethereum
-  console.log(rpcConfig, chainId)
   if (!chainId || !web3 || !rpcConfig[chainId]) return
   web3
     .request({

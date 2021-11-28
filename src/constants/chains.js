@@ -31,31 +31,29 @@ const mumbai = new Web3(
 )
 
 export const chains = [
-  { id: 3, name: 'Ropsten', symbol: 'ETH', web3: ropstenWeb3 },
   // { id: 1, name: 'Ethereum', symbol: 'ETH', web3: ethWeb3 },
-  // { id: 4, name: 'Rinkeby', symbol: 'ETH', web3: rinkebyWeb3 },
-  // { id: 56, name: 'Smart Chain', symbol: 'BSC', icon: 'bsc.svg' },
-  // {
-  //   id: 97,
-  //   name: 'BSCTest',
-  //   symbol: 'BSC',
-  //   web3: bscTestWeb3
-  // }
-  // { id: 250, name: 'Fantom', symbol: 'FTM', icon: 'ftm.svg' },
-  // {
-  //   id: 4002,
-  //   name: 'FTMTest',
-  //   symbol: 'FTM',
-  //   web3: ftmTestWeb3
-  // },
+
+  { id: 3, name: 'Ropsten', symbol: 'ETH', web3: ropstenWeb3 },
+  { id: 4, name: 'Rinkeby', symbol: 'ETH', web3: rinkebyWeb3 },
+  {
+    id: 97,
+    name: 'BSCTest',
+    symbol: 'BSC',
+    web3: bscTestWeb3
+  },
+  {
+    id: 4002,
+    name: 'FTMTest',
+    symbol: 'FTM',
+    web3: ftmTestWeb3
+  },
   {
     id: 80001,
     name: 'MATIC MUMBAI',
     symbol: 'MATIC',
-    web3: mumbai,
-    icon: 'matic.svg'
+    web3: mumbai
   }
 ]
 
 // TODO add other chains
-export const validChains = [3, 80001]
+export const validChains = [3, 4, 97, 4002, 80001]
