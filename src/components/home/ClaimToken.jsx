@@ -28,7 +28,6 @@ const NetWork = styled.div`
 const ClaimToken = (props) => {
   const { state } = useMuonState()
   const { claims, handleClaim, lock } = props
-  console.log(lock)
   return (
     <Box borderRadius="10px" padding="14px 20px 19px">
       <Flex width="100%">

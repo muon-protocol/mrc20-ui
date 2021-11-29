@@ -92,6 +92,7 @@ export const reducer = (state, action) => {
     case 'UPDATE_BRIDGE_FROMCHAIN':
       newState = {
         ...state,
+        actionBtnType: 'select',
         bridge: {
           ...state.bridge,
           toChain: '',

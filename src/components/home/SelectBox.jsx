@@ -85,7 +85,6 @@ const SelectBox = (props) => {
           </Item>
         )
       } else {
-        console.log(item)
         if (item && item.address[state.bridge.fromChain.id]) {
           const icon = item.symbol.toLowerCase()
           return (

@@ -119,7 +119,7 @@ const HomePage = () => {
     )
     setDestChains(filter)
   }, [state.bridge.fromChain])
-
+  console.log(state)
   React.useEffect(() => {
     const getClaims = async () => {
       let claims = []
