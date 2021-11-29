@@ -134,7 +134,7 @@ const HomePage = () => {
       //     const destChainId = dest[i].id
 
       //     const userTx = {
-      //       address: MRC20Bridge,
+      //       address: MRC20Bridge[chain.id],
       //       name: 'getUserTxs',
       //       params: [account, destChainId]
       //     }
@@ -157,7 +157,7 @@ const HomePage = () => {
       //       let destContract = makeContract(
       //         dest[i].web3,
       //         MRC20Bridge_ABI,
-      //         MRC20Bridge
+      //         MRC20Bridge[dest[i].id]
       //       )
       //       let pendingTxs = await destContract.methods
       //         .pendingTxs(
@@ -178,7 +178,7 @@ const HomePage = () => {
       //   const Txs = []
       //   for (let j = 0; j < pendingClaimTxs.length; j++) {
       //     const tx = {
-      //       address: MRC20Bridge,
+      //       address: MRC20Bridge[chain.id],
       //       name: 'txs',
       //       params: [pendingClaimTxs[j]]
       //     }
@@ -201,35 +201,30 @@ const HomePage = () => {
       let originContract = makeContract(
         state.bridge.fromChain.web3,
         MRC20Bridge_ABI,
-        MRC20Bridge
+        MRC20Bridge[state.bridge.fromChain.id]
       )
       let destContract = makeContract(
         state.bridge.toChain.web3,
         MRC20Bridge_ABI,
-        MRC20Bridge
+        MRC20Bridge[state.bridge.toChain.id]
       )
       try {
         let userTxs = await originContract.methods
           .getUserTxs(account, state.bridge.toChain.id)
           .call()
-        console.log('userTxs', userTxs)
         let pendingTxs = await destContract.methods
           .pendingTxs(state.bridge.fromChain.id, userTxs)
           .call()
-        console.log('pendingTxs', pendingTxs)
 
         const pendingIndex = pendingTxs.reduce(
           (out, bool, index) => (bool ? out : out.concat(index)),
           []
         )
-        console.log('pendingIndex', pendingIndex)
 
         for (let index = 0; index < pendingIndex.length; index++) {
           let claim = await originContract.methods
             .txs(userTxs[pendingIndex[index]])
             .call()
-          console.log('claim', claim)
-
           claims.push(claim)
         }
       } catch (error) {
@@ -282,7 +277,7 @@ const HomePage = () => {
         const Contract = makeContract(
           state.bridge.toChain.web3,
           MRC20Bridge_ABI,
-          MRC20Bridge
+          MRC20Bridge[state.bridge.toChain.id]
         )
 
         let address = await Contract.methods
@@ -409,7 +404,7 @@ const HomePage = () => {
         state.bridge.token.address[state.bridge.fromChain.id]
       )
       let approve = await Contract.methods
-        .allowance(account, MRC20Bridge)
+        .allowance(account, MRC20Bridge[state.bridge.fromChain.id])
         .call()
       if (approve !== '0') {
         dispatch({
@@ -501,7 +496,10 @@ const HomePage = () => {
         state.bridge.token.address[state.bridge.fromChain.id]
       )
       Contract.methods
-        .approve(MRC20Bridge, toWei('1000000000000000000'))
+        .approve(
+          MRC20Bridge[state.bridge.fromChain.id],
+          toWei('1000000000000000000')
+        )
         .send({ from: state.account })
         .once('transactionHash', (tx) => {
           hash = tx
@@ -603,7 +601,11 @@ const HomePage = () => {
         return
       }
 
-      const Contract = makeContract(web3, MRC20Bridge_ABI, MRC20Bridge)
+      const Contract = makeContract(
+        web3,
+        MRC20Bridge_ABI,
+        MRC20Bridge[state.bridge.fromChain.id]
+      )
       let hash = ''
       Contract.methods
         .deposit(
@@ -705,7 +707,11 @@ const HomePage = () => {
       ) {
         return
       }
-      let Contract = makeContract(web3, MRC20Bridge_ABI, MRC20Bridge)
+      let Contract = makeContract(
+        web3,
+        MRC20Bridge_ABI,
+        MRC20Bridge[state.chainId]
+      )
 
       let amount = web3.utils.fromWei(claim.amount.toString(), 'ether')
       setLock(claim)
@@ -713,7 +719,7 @@ const HomePage = () => {
       const muonResponse = await muon
         .app('fear_bridge')
         .method('claim', {
-          depositAddress: MRC20Bridge,
+          depositAddress: MRC20Bridge[claim.fromChain],
           depositTxId: claim.txId,
           depositNetwork: fromChain.name.toLocaleLowerCase()
         })
