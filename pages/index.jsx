@@ -124,79 +124,118 @@ const HomePage = () => {
     const getClaims = async () => {
       let claims = []
 
-      for (let index = 0; index < chains.length; index++) {
-        const chain = chains[index]
-        let dest = chains.filter((item) => item.id !== chain.id)
-        let userTxs = []
-        let userTxsResponse = []
-        let pendingClaimTxs = []
-        for (let i = 0; i < dest.length; i++) {
-          const destChainId = dest[i].id
+      // for (let index = 0; index < chains.length; index++) {
+      //   const chain = chains[index]
+      //   let dest = chains.filter((item) => item.id !== chain.id)
+      //   let userTxs = []
+      //   let userTxsResponse = []
+      //   let pendingClaimTxs = []
+      //   for (let i = 0; i < dest.length; i++) {
+      //     const destChainId = dest[i].id
 
-          const userTx = {
-            address: MRC20Bridge[chain.id],
-            name: 'getUserTxs',
-            params: [account, destChainId]
-          }
-          userTxs.push(userTx)
-        }
+      //     const userTx = {
+      //       address: MRC20Bridge,
+      //       name: 'getUserTxs',
+      //       params: [account, destChainId]
+      //     }
+      //     userTxs.push(userTx)
+      //   }
 
-        try {
-          const mul = await multicall(
-            chain.web3,
-            MRC20Bridge_ABI,
-            userTxs,
-            chain.id
-          )
-          userTxsResponse = mul
-        } catch (error) {
-          console.log('Error happend in geting getUserTxs', error)
-        }
-        for (let i = 0; i < dest.length; i++) {
-          try {
-            let destContract = makeContract(
-              dest[i].web3,
-              MRC20Bridge_ABI,
-              MRC20Bridge[dest[i].id]
-            )
-            let pendingTxs = await destContract.methods
-              .pendingTxs(
-                chain.id,
-                userTxsResponse[i][0].map((resp) => resp.toString())
-              )
-              .call()
-            const pendingIndex = pendingTxs.reduce(
-              (out, bool, index) =>
-                bool ? out : out.concat(userTxsResponse[i][0][index]),
-              []
-            )
-            pendingClaimTxs = [...pendingClaimTxs, ...pendingIndex]
-          } catch (error) {
-            console.log('Error happend in geting pendingTxs ', error)
-          }
-        }
-        const Txs = []
-        for (let j = 0; j < pendingClaimTxs.length; j++) {
-          const tx = {
-            address: MRC20Bridge[chain.id],
-            name: 'txs',
-            params: [pendingClaimTxs[j]]
-          }
-          Txs.push(tx)
-        }
+      //   try {
+      //     const mul = await multicall(
+      //       chain.web3,
+      //       MRC20Bridge_ABI,
+      //       userTxs,
+      //       chain.id
+      //     )
+      //     userTxsResponse = mul
+      //   } catch (error) {
+      //     console.log('Error happend in geting getUserTxs', error)
+      //   }
+      //   for (let i = 0; i < dest.length; i++) {
+      //     try {
+      //       let destContract = makeContract(
+      //         dest[i].web3,
+      //         MRC20Bridge_ABI,
+      //         MRC20Bridge
+      //       )
+      //       let pendingTxs = await destContract.methods
+      //         .pendingTxs(
+      //           chain.id,
+      //           userTxsResponse[i][0].map((resp) => resp.toString())
+      //         )
+      //         .call()
+      //       const pendingIndex = pendingTxs.reduce(
+      //         (out, bool, index) =>
+      //           bool ? out : out.concat(userTxsResponse[i][0][index]),
+      //         []
+      //       )
+      //       pendingClaimTxs = [...pendingClaimTxs, ...pendingIndex]
+      //     } catch (error) {
+      //       console.log('Error happend in geting pendingTxs ', error)
+      //     }
+      //   }
+      //   const Txs = []
+      //   for (let j = 0; j < pendingClaimTxs.length; j++) {
+      //     const tx = {
+      //       address: MRC20Bridge,
+      //       name: 'txs',
+      //       params: [pendingClaimTxs[j]]
+      //     }
+      //     Txs.push(tx)
+      //   }
 
-        try {
-          const mul = await multicall(
-            chain.web3,
-            MRC20Bridge_ABI,
-            Txs,
-            chain.id
-          )
-          claims = [...claims, ...mul]
-        } catch (error) {
-          console.log('Error happend in geting Txs ', error)
+      //   try {
+      //     const mul = await multicall(
+      //       chain.web3,
+      //       MRC20Bridge_ABI,
+      //       Txs,
+      //       chain.id
+      //     )
+      //     claims = [...claims, ...mul]
+      //   } catch (error) {
+      //     console.log('Error happend in geting Txs ', error)
+      //   }
+      // }
+
+      let originContract = makeContract(
+        state.bridge.fromChain.web3,
+        MRC20Bridge_ABI,
+        MRC20Bridge
+      )
+      let destContract = makeContract(
+        state.bridge.toChain.web3,
+        MRC20Bridge_ABI,
+        MRC20Bridge
+      )
+      try {
+        let userTxs = await originContract.methods
+          .getUserTxs(account, state.bridge.toChain.id)
+          .call()
+        console.log('userTxs', userTxs)
+        let pendingTxs = await destContract.methods
+          .pendingTxs(state.bridge.fromChain.id, userTxs)
+          .call()
+        console.log('pendingTxs', pendingTxs)
+
+        const pendingIndex = pendingTxs.reduce(
+          (out, bool, index) => (bool ? out : out.concat(index)),
+          []
+        )
+        console.log('pendingIndex', pendingIndex)
+
+        for (let index = 0; index < pendingIndex.length; index++) {
+          let claim = await originContract.methods
+            .txs(userTxs[pendingIndex[index]])
+            .call()
+          console.log('claim', claim)
+
+          claims.push(claim)
         }
+      } catch (error) {
+        console.log('error happend in get Claim', error)
       }
+
       setClaims(claims)
       if (claims.length === 0) setActive('bridge')
     }
@@ -220,18 +259,22 @@ const HomePage = () => {
         }
       })
       getBalance()
-      getClaims()
+      if (state.bridge.fromChain && state.bridge.toChain) {
+        getClaims()
+      }
     }
 
     const interval = setInterval(() => {
       if (account) {
         getBalance()
-        getClaims()
+        if (state.bridge.fromChain && state.bridge.toChain) {
+          getClaims()
+        }
       }
     }, 15000)
 
     return () => clearInterval(interval)
-  }, [account, chainId, fetch])
+  }, [account, chainId, fetch, state.bridge.fromChain, state.bridge.toChain])
 
   React.useEffect(() => {
     const checkToken = async () => {
@@ -239,7 +282,7 @@ const HomePage = () => {
         const Contract = makeContract(
           state.bridge.toChain.web3,
           MRC20Bridge_ABI,
-          MRC20Bridge[state.bridge.toChain.id]
+          MRC20Bridge
         )
 
         let address = await Contract.methods
@@ -366,7 +409,7 @@ const HomePage = () => {
         state.bridge.token.address[state.bridge.fromChain.id]
       )
       let approve = await Contract.methods
-        .allowance(account, MRC20Bridge[state.bridge.fromChain.id])
+        .allowance(account, MRC20Bridge)
         .call()
       if (approve !== '0') {
         dispatch({
@@ -458,10 +501,7 @@ const HomePage = () => {
         state.bridge.token.address[state.bridge.fromChain.id]
       )
       Contract.methods
-        .approve(
-          MRC20Bridge[state.bridge.fromChain.id],
-          toWei('1000000000000000000')
-        )
+        .approve(MRC20Bridge, toWei('1000000000000000000'))
         .send({ from: state.account })
         .once('transactionHash', (tx) => {
           hash = tx
@@ -563,11 +603,7 @@ const HomePage = () => {
         return
       }
 
-      const Contract = makeContract(
-        web3,
-        MRC20Bridge_ABI,
-        MRC20Bridge[state.bridge.fromChain.id]
-      )
+      const Contract = makeContract(web3, MRC20Bridge_ABI, MRC20Bridge)
       let hash = ''
       Contract.methods
         .deposit(
@@ -669,11 +705,7 @@ const HomePage = () => {
       ) {
         return
       }
-      let Contract = makeContract(
-        web3,
-        MRC20Bridge_ABI,
-        MRC20Bridge[state.chainId]
-      )
+      let Contract = makeContract(web3, MRC20Bridge_ABI, MRC20Bridge)
 
       let amount = web3.utils.fromWei(claim.amount.toString(), 'ether')
       setLock(claim)
@@ -681,7 +713,7 @@ const HomePage = () => {
       const muonResponse = await muon
         .app('fear_bridge')
         .method('claim', {
-          depositAddress: MRC20Bridge[claim.fromChain],
+          depositAddress: MRC20Bridge,
           depositTxId: claim.txId,
           depositNetwork: fromChain.name.toLocaleLowerCase()
         })

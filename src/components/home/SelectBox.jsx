@@ -49,10 +49,7 @@ const SelectBox = (props) => {
     if (value) {
       const selectedValue = data.find((item) => item.id === value)
       if (selectedValue) {
-        const selectedValueIcon =
-          selectedValue.symbol.charAt(0) === 'μ'
-            ? selectedValue.symbol.split('-')[1].toLowerCase()
-            : selectedValue.symbol.toLowerCase()
+        const selectedValueIcon = selectedValue.symbol.toLowerCase()
         setSelectedValue({ ...selectedValue, selectedValueIcon })
       }
     } else {
@@ -88,11 +85,9 @@ const SelectBox = (props) => {
           </Item>
         )
       } else {
-        if (item.address[state.bridge.fromChain.id]) {
-          const icon =
-            item.symbol.charAt(0) === 'μ'
-              ? item.symbol.split('-')[1].toLowerCase()
-              : item.symbol.toLowerCase()
+        console.log(item)
+        if (item && item.address[state.bridge.fromChain.id]) {
+          const icon = item.symbol.toLowerCase()
           return (
             <Item key={index}>
               <ContentItem
