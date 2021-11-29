@@ -45,8 +45,8 @@ const Deposit = (props) => {
       alignItems="center"
       width="100%"
     >
-      <Title>Permissionless</Title>
-      <Title margin="0 0 33px">Omniscient Cross-Chain Bridge</Title>
+      <Title>Muon MRC20 </Title>
+      <Title margin="0 0 33px">Cross-Chain Transfer</Title>
       <Box>
         <Type.SM
           color="rgba(49, 49, 68, 0.5)"
