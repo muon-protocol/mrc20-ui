@@ -49,7 +49,7 @@ export const chains = [
   },
   {
     id: 80001,
-    name: 'MATIC MUMBAI',
+    name: 'MUMBAI',
     symbol: 'MATIC',
     web3: mumbai
   }
