@@ -13,17 +13,26 @@ const supportedChainIds = [
   0x38, // BSC
   0x61, // BSC TEST
   250, // Fantom
-  4002 // Fantom TEST
+  4002, // Fantom TEST,
+  137, // Matic
+  80001 // Maticc Mumbai
 ]
+const INFURA_KEY = process.env.NEXT_PUBLIC_INFURA_KEY
+// const FORTMATIC_KEY = process.env.NEXT_PUBLIC_FORTMATIC_KEY
 
 const RPC_URLS = {
-  1: 'https://mainnet.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093',
-  4: 'https://rinkeby.infura.io/v3/cf6ea736e00b4ee4bc43dfdb68f51093',
+  1: 'https://mainnet.infura.io/v3/' + INFURA_KEY,
+  3: 'https://mainnet.infura.io/v3/' + INFURA_KEY,
+  4: 'https://rinkeby.infura.io/v3/' + INFURA_KEY,
   56: 'https://bsc-dataseed1.binance.org',
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
   100: 'https://rpc.xdaichain.com',
   4002: 'https://rpc.testnet.fantom.network/',
-  250: 'https://rpcapi.fantom.network'
+  128: 'https://http-mainnet-node.huobichain.com',
+  256: 'https://http-testnet.hecochain.com',
+  250: 'https://rpcapi.fantom.network',
+  137: 'https://rpc-mainnet.maticvigil.com/',
+  80001: 'https://rpc-mumbai.maticvigil.com/'
 }
 
 export const injected = new InjectedConnector({
