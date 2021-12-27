@@ -842,7 +842,7 @@ const HomePage = () => {
           )}
         </ClaimWrapper>
 
-        <DepositWrapper maxWidth="600px" width="100%" active={active}>
+        <DepositWrapper maxWidth="425px" width="100%" active={active}>
           <Deposit
             handleDeposit={handleDeposit}
             wrongNetwork={wrongNetwork}

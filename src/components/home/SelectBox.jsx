@@ -10,6 +10,7 @@ const Modal = dynamic(() => import('../common/Modal'))
 import { useMuonState } from '../../context'
 
 const Wrapper = styled.div`
+  width: 100%;
   margin-bottom: ${({ marginBottom }) =>
     marginBottom ? marginBottom : '20px'};
 `
@@ -174,7 +175,7 @@ const SelectBox = (props) => {
             fontSizeXS="16px"
             fontSizeXXS="14px"
           >
-            {placeholder ? placeholder : label}
+            {/* {placeholder ? placeholder : label} */}
           </Type.LG>
         )}
 

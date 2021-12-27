@@ -12,7 +12,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: FH Oscar Reckless;
+  font-family: Montserrat-bold;
   background: #f8f8ff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -44,7 +44,17 @@ a {
     url(/fonts/Reckless-Regular.ttf) format('turetype'),
     url(/fonts/Reckless-Regular.woff) format('woff');
 }
-
+@font-face {
+  font-family: 'Montserrat';
+  src: url(/fonts/montserrat-v18-latin-regular.eot) format('eot'),
+    url(/fonts/montserrat-v18-latin-regular.ttf) format('turetype'),
+    url(/fonts/montserrat-v18-latin-regular.woff) format('woff');
+}
+@font-face {
+  font-family: 'Montserrat-bold';
+  src:  url(/fonts/Montserrat-Bold.ttf) format('turetype'),
+    url(/fonts/Montserrat-Bold.woff) format('woff');
+}
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

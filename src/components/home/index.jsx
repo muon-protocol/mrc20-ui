@@ -4,7 +4,6 @@ import styled from 'styled-components'
 export const ChangeNetwork = styled.div`
   padding: ${({ padding }) => padding};
   width: 100%;
-  font-family: 'FH Oscar';
   font-size: 12.5px;
   color: #919191;
 `
@@ -20,7 +19,6 @@ export const CopyBtn = styled.div`
   background: #ffffff;
   border: 0.25px solid #efefef;
   border-radius: 25px;
-  font-family: FH Oscar;
   font-style: normal;
   font-weight: 500;
   font-size: 7.5px;
@@ -97,7 +95,6 @@ export const Tab = styled(Flex)`
   height: 55px;
   justify-content: center;
   align-items: center;
-  font-family: FH Oscar;
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
@@ -110,13 +107,11 @@ export const Tab = styled(Flex)`
 `
 
 export const Title = styled.div`
-  font-family: Reckless;
-  font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   font-size: 25px;
-  line-height: 25px;
+  line-height: 30px;
   text-align: center;
-  color: #5f5cfe;
+  color: #313144;
   margin: ${({ margin }) => margin};
   @media screen and (max-width: 1200px) {
     display: none !important;
@@ -124,6 +119,16 @@ export const Title = styled.div`
   @media screen and (max-width: 576px) {
     font-size: 17px;
   }
+`
+
+export const GradientTitle = styled.div`
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 30px;
+  margin: ${({ margin }) => margin};
+  background: -webkit-linear-gradient(10deg, #5551ff 0%, #d08f85 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `
 export const Badge = styled.div`
   position: absolute;
@@ -138,4 +143,11 @@ export const Badge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+export const TriangleDown = styled.div`
+  width: 0;
+  height: 0;
+  border-left: 116px solid transparent;
+  border-right: 116px solid transparent;
+  border-top: 24px solid #d3dbe3;
 `

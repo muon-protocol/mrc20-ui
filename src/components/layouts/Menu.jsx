@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useMuonState } from '../../context'
 import { Type } from '../common/Text'
 import { formatAddress } from '../../utils/utils'
+import MuonNetwork from '../common/MuonNetwork'
 // import WalletModal from '../common/WalletModal'
 const WalletModal = dynamic(() => import('../common/WalletModal'))
 
@@ -22,7 +23,6 @@ const Button = styled.button`
   border: 0.5px solid #d2d2d2;
   box-sizing: border-box;
   border-radius: 10px;
-  font-family: 'FH Oscar';
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
@@ -39,8 +39,9 @@ const Button = styled.button`
     display: ${({ hide }) => (hide ? 'none' : 'flex')};
   }
 `
+
 const Status = styled.div`
-  background-color: ${({ active }) => (active ? '#00e376' : '#FFA451')};
+  background-color: ${({ active }) => (active ? '#00e376' : '#FFB800')};
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -70,13 +71,7 @@ const Menu = () => {
   return (
     <>
       <AppInfo>
-        <img src="/media/common/logo.svg" alt="logo" />
-        <Media>
-          <img src="/media/common/muon.svg" alt="Muon Network" />
-        </Media>
-        <Media>
-          <Type.LG color="#5F5CFE">Tools</Type.LG>
-        </Media>
+        <MuonNetwork logo="muonNetwork" />
       </AppInfo>
       <AppInfo>
         <Button padding="0 17px !important">
@@ -99,12 +94,7 @@ const Menu = () => {
         </Button>
         <Button hide={state.network === 'NaN'}>
           <Label>Network:</Label>
-          <Type.SM
-            fontSize="15px"
-            fontFamily="FH Oscar"
-            color="#313144"
-            padding="0 0 0 3px"
-          >
+          <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
             {state.network}
           </Type.SM>
         </Button>

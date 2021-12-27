@@ -7,14 +7,14 @@ const Amount = styled.div`
   // max-width: 450px;
   width: 100%;
   height: 55px;
-  background: #e7e8ea;
-  border-radius: 10px;
+  background: #e6ecf2;
+  border-radius: 5px;
   border: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  border: ${({ error }) => (error ? '1px solid #DC5151' : 'transparent')};
+  border: ${({ error }) => (error ? '1px solid #DC5151' : '1px solid #FFFFFF')};
 `
 
 const Wrapper = styled.div`
@@ -29,7 +29,6 @@ const Input = styled.input.attrs({
   max-width: 450px;
   width: 100%;
   outline-style: none;
-  font-family: FH Oscar;
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -95,7 +94,7 @@ const AmountBox = (props) => {
       <Amount error={errorAmount}>
         <Input
           value={value}
-          placeholder="Enter Amount"
+          // placeholder="Enter Amount"
           onChange={(e) => onChange(e.target.value)}
         />
         <Max onClick={() => onChange(tokenBalance.split(' ')[0])}>
