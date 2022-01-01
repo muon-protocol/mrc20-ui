@@ -1,4 +1,4 @@
-import web3 from '../helper/web3'
+import Web3 from 'web3'
 
 import { chains } from '../constants/chains'
 // TODO if tokens wasn't constant remember to change these funs
@@ -28,9 +28,9 @@ export const escapeRegExp = (string) => {
 }
 
 export const toWei = (n) => {
-  return web3.utils.toWei(n)
+  return Web3.utils.toWei(n)
 }
 
 export const fromWei = (n) => {
-  return web3.utils.fromWei(n, 'ether')
+  return Web3.utils.fromWei(n, 'ether')
 }

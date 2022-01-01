@@ -7,7 +7,7 @@ import { AddressZero } from '@ethersproject/constants'
 import { getBalanceNumber } from './formatBalance'
 import { escapeRegExp } from '../utils/utils'
 
-export const getToken = async (address, account, fromChain) => {
+export const getToken = async (address, account, fromChain, web3) => {
   try {
     let token = ''
     if (!isAddress(address) || address === AddressZero) {
@@ -28,12 +28,7 @@ export const getToken = async (address, account, fromChain) => {
         }
       }
     })
-    const result = await multicall(
-      fromChain.web3,
-      ERC20_ABI,
-      calls,
-      fromChain.id
-    )
+    const result = await multicall(web3, ERC20_ABI, calls, fromChain.id)
     if (result && result.length > 0) {
       token = {
         symbol: result[ERC20_FUN_MAP.symbol][0],
@@ -59,7 +54,8 @@ export const findAndAddToken = async (
   searchQuery,
   tokens,
   account,
-  fromChain
+  fromChain,
+  web3
 ) => {
   // Step 1: search in token list
   let finalTokens = [...tokens]
@@ -78,7 +74,7 @@ export const findAndAddToken = async (
   if (resultFilter.length === 0 && isAddress(searchQuery)) {
     // step 2: check ERC20 and Add to  list
 
-    token = await getToken(searchQuery, account, fromChain)
+    token = await getToken(searchQuery, account, fromChain, web3)
 
     if (token) {
       token = { id: searchQuery, ...token, notPermission: true }

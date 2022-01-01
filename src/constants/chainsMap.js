@@ -1,31 +1,33 @@
 export const ChainMap = {
-  MAINNET: 1,
+  ETH: 1,
   ROPSTEN: 3,
   RINKEBY: 4,
+  BSC: 56,
+  BSC_TESTNET: 97,
+  MATIC: 137,
+  MATIC_TESTNET: 80001,
   XDAI: 100,
   FANTOM: 250,
   FANTOM_TESTNET: 4002,
-  BSC: 56,
-  BSC_TESTNET: 97,
   HECO: 128,
   HECO_TESTNET: 256,
-  MATIC: 137,
-  MATIC_TESTNET: 80001
+  AVAX: 43114
 }
 
 export const NameChainMap = {
   1: 'ETH',
   3: 'Ropsten',
   4: 'Rinkeby',
+  56: 'BSC',
+  97: 'BSC TEST',
+  137: 'MATIC',
+  80001: 'Mumbai',
   100: 'xDAI',
   250: 'FTM',
   4002: 'FTM TEST',
-  56: 'BSC',
   128: 'HECO',
   256: 'HECOT',
-  97: 'BSC TEST',
-  137: 'MATIC',
-  80001: 'Mumbai'
+  43114: 'AVAX'
 }
 
 export const rpcConfig = {
@@ -38,7 +40,7 @@ export const rpcConfig = {
       decimals: 18
     },
     rpcUrls: [
-      'https://mainnet.infura.io/v3/' + process.env.NEXT_PUBLIC_INFURA_KEY
+      `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_KEY}`
     ],
     blockExplorerUrls: ['https://etherscan.io/']
   },
@@ -51,7 +53,7 @@ export const rpcConfig = {
       decimals: 18
     },
     rpcUrls: [
-      'https://rinkeby.infura.io/v3/' + process.env.NEXT_PUBLIC_INFURA_KEY
+      `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_KEY}`
     ],
     blockExplorerUrls: ['https://rinkeby.etherscan.io/']
   },
@@ -64,44 +66,9 @@ export const rpcConfig = {
       decimals: 18
     },
     rpcUrls: [
-      'https://ropsten.infura.io/v3/' + process.env.NEXT_PUBLIC_INFURA_KEY
+      `https://ropsten.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_KEY}`
     ],
     blockExplorerUrls: ['https://ropsten.etherscan.io/']
-  },
-  [ChainMap.XDAI]: {
-    chainId: '0x64',
-    chainName: 'xDAI Chain',
-    nativeCurrency: {
-      name: 'xDAI',
-      symbol: 'xDAI',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc.xdaichain.com/'],
-    blockExplorerUrls: ['https://blockscout.com/poa/xdai/']
-  },
-  [ChainMap.MATIC]: {
-    chainId: '0x89',
-    chainName: 'Matic Mainnet',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18
-    },
-    rpcUrls: ['https://polygon-rpc.com/'],
-    blockExplorerUrls: ['https://polygonscan.com/'],
-    iconUrls: []
-  },
-  [ChainMap.MATIC_TESTNET]: {
-    chainId: '0x13881',
-    chainName: 'Mumbai',
-    nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc-endpoints.superfluid.dev/mumbai'],
-    blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
-    iconUrls: []
   },
   [ChainMap.BSC]: {
     chainId: '0x38',
@@ -128,6 +95,64 @@ export const rpcConfig = {
     rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
     blockExplorerUrls: ['https://testnet.bscscan.com']
   },
+  [ChainMap.MATIC]: {
+    chainId: '0x89',
+    chainName: 'Matic Mainnet',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    rpcUrls: ['https://polygon-rpc.com/'],
+    blockExplorerUrls: ['https://polygonscan.com/'],
+    iconUrls: []
+  },
+  [ChainMap.MATIC_TESTNET]: {
+    chainId: '0x13881',
+    chainName: 'Mumbai',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+    blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+    iconUrls: []
+  },
+  [ChainMap.XDAI]: {
+    chainId: '0x64',
+    chainName: 'xDAI Chain',
+    nativeCurrency: {
+      name: 'xDAI',
+      symbol: 'xDAI',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc.xdaichain.com/'],
+    blockExplorerUrls: ['https://blockscout.com/poa/xdai/']
+  },
+  [ChainMap.FANTOM]: {
+    chainId: '0xFA',
+    chainName: 'Fantom Opera',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'FTM',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc.ftm.tools/'],
+    blockExplorerUrls: ['https://ftmscan.com/']
+  },
+  [ChainMap.FANTOM_TESTNET]: {
+    chainId: '0xfa2',
+    chainName: 'Fantom testnet Opera',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'FTM',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc.testnet.fantom.network/'],
+    blockExplorerUrls: ['https://testnet.ftmscan.com/']
+  },
+
   [ChainMap.HECO]: {
     chainId: '0x80',
     chainName: 'Huobi ECO Chain Mainnet',
@@ -160,27 +185,5 @@ export const rpcConfig = {
     },
     rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     blockExplorerUrls: ['https://cchain.explorer.avax.network/']
-  },
-  [ChainMap.FANTOM]: {
-    chainId: '0xFA',
-    chainName: 'Fantom Opera',
-    nativeCurrency: {
-      name: 'Fantom',
-      symbol: 'FTM',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc.ftm.tools/'],
-    blockExplorerUrls: ['https://ftmscan.com/']
-  },
-  [ChainMap.FANTOM_TESTNET]: {
-    chainId: '0xfa2',
-    chainName: 'Fantom testnet Opera',
-    nativeCurrency: {
-      name: 'Fantom',
-      symbol: 'FTM',
-      decimals: 18
-    },
-    rpcUrls: ['https://rpc.testnet.fantom.network/'],
-    blockExplorerUrls: ['https://testnet.ftmscan.com/']
   }
 }

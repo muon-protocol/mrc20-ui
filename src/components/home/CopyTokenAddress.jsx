@@ -5,6 +5,7 @@ const CopyToClipboard = dynamic(() => import('react-copy-to-clipboard'))
 import { CopyBtn, WrapTokenAddress, WrapperInfo } from '.'
 import { useMuonState } from '../../context'
 import { getToken } from '../../helper/Tokens'
+import { useCrossWeb3 } from '../../hooks/useWeb3'
 import { Type } from '../common/Text'
 
 const CopyTokenAddress = (props) => {
@@ -12,6 +13,9 @@ const CopyTokenAddress = (props) => {
   const [copy, setCopy] = React.useState(false)
   const { toChain } = props
   const [token, setToken] = React.useState('')
+  const web3 = useCrossWeb3(
+    toChain ? state.bridge.toChain.id : state.bridge.fromChain.id
+  )
 
   React.useEffect(() => {
     const findToken = async () => {
@@ -30,7 +34,8 @@ const CopyTokenAddress = (props) => {
       let token = await getToken(
         address,
         state.account,
-        toChain ? state.bridge.toChain : state.bridge.fromChain
+        toChain ? state.bridge.toChain : state.bridge.fromChain,
+        web3
       )
       // }
       setToken(token)
@@ -58,7 +63,7 @@ const CopyTokenAddress = (props) => {
         <>
           <WrapTokenAddress>
             <Type.SM
-              fontSize="12px"
+              fontSize="9px"
               fontFamily="FH Oscar"
               color="#6F7077"
               fontSizeXXS="8px"
@@ -71,7 +76,7 @@ const CopyTokenAddress = (props) => {
               }:`}
             </Type.SM>
             <Type.SM
-              fontSize="12px"
+              fontSize="9px"
               fontFamily="FH Oscar"
               color="#6F7077"
               fontSizeXXS="8px"

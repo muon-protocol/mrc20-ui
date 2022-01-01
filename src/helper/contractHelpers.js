@@ -8,6 +8,6 @@ const getContract = (abi, address, web3) => {
   return new _web3.eth.Contract(abi, address)
 }
 
-export const getMultiCallContract = (web3, chainId = ChainMap.MAINNET) => {
+export const getMultiCallContract = (web3, chainId = ChainMap.ETH) => {
   return getContract(MultiCall_ABI, MULTICALL_NETWORKS[chainId], web3)
 }

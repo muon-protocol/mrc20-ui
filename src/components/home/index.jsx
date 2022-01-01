@@ -151,3 +151,24 @@ export const TriangleDown = styled.div`
   border-right: 116px solid transparent;
   border-top: 24px solid #d3dbe3;
 `
+export const BoxDestination = styled.div`
+  max-width: ${({ maxWidth }) => maxWidth};
+  width: 100%;
+  height: 190px;
+  background: linear-gradient(0deg, #d3dbe3 0%, rgba(231, 235, 243, 0) 105.18%);
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px
+    ${({ shadowColor }) =>
+      shadowColor ? shadowColor : 'rgba(239, 239, 239, 0.25)'};
+  border-radius: ${({ borderRadius }) =>
+    borderRadius ? borderRadius : '10px'};
+  margin-top: ${({ marginTop }) => `${marginTop}px`};
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: ${({ padding }) => (padding ? padding : '20px')};
+  border-top: none;
+  position: absolute;
+  bottom: 10px;
+`

@@ -4,7 +4,6 @@ import { getMultiCallContract } from './contractHelpers'
 const multicall = async (web3, abi, calls, chainId) => {
   try {
     const multi = getMultiCallContract(web3, chainId)
-
     const itf = new Interface(abi)
     const calldata = calls.map((call) => [
       call.address.toLowerCase(),

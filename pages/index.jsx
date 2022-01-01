@@ -6,7 +6,7 @@ import Muon from 'muon'
 import { useWeb3React } from '@web3-react/core'
 import { useMuonState } from '../src/context'
 import { findChain, toWei, findToken } from '../src/utils/utils'
-import multicall from '../src/helper/multicall'
+// import multicall from '../src/helper/multicall'
 const ClaimToken = dynamic(() => import('../src/components/home/ClaimToken'))
 const CustomTranaction = dynamic(() =>
   import('../src/components/common/CustomTranaction')
@@ -31,19 +31,23 @@ import {
   TransactionType
 } from '../src/constants/transactionStatus'
 import { findAndAddToken, getToken } from '../src/helper/Tokens'
-import useWeb3 from '../src/helper/useWeb3'
-import getAssetBalances from '../src/helper/getAssetBalances'
+import useWeb3, { useCrossWeb3 } from '../src/hooks/useWeb3'
+// import getAssetBalances from '../src/helper/getAssetBalances'
 import { ERC20_ABI, MRC20Bridge_ABI } from '../src/constants/ABI'
 import { MRC20Bridge } from '../src/constants/contracts'
 import { makeContract } from '../src/helper'
 import { AddressZero } from '@ethersproject/constants'
 import { Type } from '../src/components/common/Text'
+import useAssetBalances from '../src/hooks/useAssetBalances'
+import { tokens } from '../src/constants/tokens'
 
 const HomePage = () => {
   const { account, chainId } = useWeb3React()
   const { state, dispatch } = useMuonState()
   const [lock, setLock] = React.useState('')
   const web3 = useWeb3()
+  const originWeb3 = useCrossWeb3(state.bridge.fromChain.id)
+  const destWeb3 = useCrossWeb3(state.bridge.toChain.id)
   const [checkDestToken, setCheckDestToken] = React.useState('')
   const [claims, setClaims] = React.useState([])
   const [wrongNetwork, setWrongNetwork] = React.useState(false)
@@ -54,6 +58,7 @@ const HomePage = () => {
   const [errorAmount, setErrorAmount] = React.useState(false)
   const [active, setActive] = React.useState('bridge')
   const muon = new Muon(process.env.NEXT_PUBLIC_MUON_NODE_GATEWAY)
+  const tokenBalances = useAssetBalances(validChains, tokens)
 
   React.useEffect(() => {
     dispatch({
@@ -71,13 +76,21 @@ const HomePage = () => {
   }, [chainId, state.bridge, account])
 
   React.useEffect(() => {
+    dispatch({
+      type: 'UPDATE_TOKENS',
+      payload: tokenBalances
+    })
+  }, [tokenBalances])
+
+  React.useEffect(() => {
     const searchToken = async () => {
-      if (state.tokenSearchQuery && account) {
+      if (state.tokenSearchQuery && account && originWeb3) {
         let result = await findAndAddToken(
           state.tokenSearchQuery,
           state.tokens,
           state.account,
-          state.bridge.fromChain
+          state.bridge.fromChain,
+          originWeb3
         )
         dispatch({
           type: 'UPDATE_SHOW_TOKENS',
@@ -91,14 +104,15 @@ const HomePage = () => {
       }
     }
     searchToken()
-  }, [state.tokenSearchQuery, account])
+  }, [state.tokenSearchQuery, account, originWeb3])
 
   React.useEffect(() => {
     if (state.bridge.token) {
-      const value = state.bridge.token.balances[state.bridge.fromChain.id]
-        ? `${state.bridge.token.balances[state.bridge.fromChain.id]} ${
-            state.bridge.token.symbol
-          }`
+      const token = state.tokens.find(
+        (item) => item.id === state.bridge.token.id
+      )
+      const value = token.balances[state.bridge.fromChain.id]
+        ? `${token.balances[state.bridge.fromChain.id]} ${token.symbol}`
         : '0'
       dispatch({
         type: 'SET_TOKEN_BALANCE',
@@ -110,7 +124,8 @@ const HomePage = () => {
     state.bridge.fromChain,
     // account,
     chainId,
-    state.tokens
+    state.tokens,
+    tokenBalances
   ])
 
   React.useEffect(() => {
@@ -199,12 +214,12 @@ const HomePage = () => {
       // }
 
       let originContract = makeContract(
-        state.bridge.fromChain.web3,
+        originWeb3,
         MRC20Bridge_ABI,
         MRC20Bridge[state.bridge.fromChain.id]
       )
       let destContract = makeContract(
-        state.bridge.toChain.web3,
+        destWeb3,
         MRC20Bridge_ABI,
         MRC20Bridge[state.bridge.toChain.id]
       )
@@ -235,14 +250,14 @@ const HomePage = () => {
       if (claims.length === 0) setActive('bridge')
     }
 
-    const getBalance = async () => {
-      let tokenBalances = []
-      tokenBalances = await getAssetBalances(chains, state.tokens, account)
-      dispatch({
-        type: 'UPDATE_TOKENS',
-        payload: tokenBalances
-      })
-    }
+    // const getBalance = async () => {
+    //   let tokenBalances = []
+    //   tokenBalances = await getAssetBalances(chains, state.tokens, account)
+    //   dispatch({
+    //     type: 'UPDATE_TOKENS',
+    //     payload: tokenBalances
+    //   })
+    // }
 
     if (account) {
       dispatch({
@@ -253,29 +268,29 @@ const HomePage = () => {
           network: NameChainMap[chainId]
         }
       })
-      getBalance()
-      if (state.bridge.fromChain && state.bridge.toChain) {
+      // getBalance()
+      if (originWeb3 && destWeb3) {
         getClaims()
       }
     }
 
     const interval = setInterval(() => {
       if (account) {
-        getBalance()
-        if (state.bridge.fromChain && state.bridge.toChain) {
+        // getBalance()
+        if (originWeb3 && destWeb3) {
           getClaims()
         }
       }
     }, 15000)
 
     return () => clearInterval(interval)
-  }, [account, chainId, fetch, state.bridge.fromChain, state.bridge.toChain])
+  }, [account, chainId, fetch, originWeb3, destWeb3])
 
   React.useEffect(() => {
     const checkToken = async () => {
-      if (state.bridge.toChain && state.bridge.token.id) {
+      if (state.bridge.toChain && state.bridge.token.id && destWeb3) {
         const Contract = makeContract(
-          state.bridge.toChain.web3,
+          destWeb3,
           MRC20Bridge_ABI,
           MRC20Bridge[state.bridge.toChain.id]
         )
@@ -307,7 +322,7 @@ const HomePage = () => {
       }
     }
     checkToken()
-  }, [state.bridge.token.id, state.bridge.toChain, checkDestToken])
+  }, [state.bridge.token.id, state.bridge.toChain, checkDestToken, destWeb3])
 
   const updateBridge = async (field, value) => {
     try {
@@ -396,10 +411,10 @@ const HomePage = () => {
 
   React.useEffect(() => {
     const checkApprove = async () => {
-      let fromChain = findChain(state.bridge.fromChain.id)
+      // let fromChain = findChain(state.bridge.fromChain.id)
 
       const Contract = makeContract(
-        fromChain.web3,
+        originWeb3,
         ERC20_ABI,
         state.bridge.token.address[state.bridge.fromChain.id]
       )
@@ -717,13 +732,14 @@ const HomePage = () => {
       setLock(claim)
 
       const muonResponse = await muon
-        .app('fear_bridge')
+        .app('mrc20_bridge')
         .method('claim', {
           depositAddress: MRC20Bridge[claim.fromChain],
           depositTxId: claim.txId,
-          depositNetwork: fromChain.name.toLocaleLowerCase()
+          depositNetwork: fromChain.id
         })
         .call()
+      console.log(muonResponse)
       let { sigs, reqId } = muonResponse
       const token = findToken(Number(claim.tokenId.toString()))
 
