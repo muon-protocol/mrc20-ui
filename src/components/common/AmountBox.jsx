@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { FlexBetween } from './Container'
 import { Type } from '../common/Text'
+import { Flex } from 'rebass'
 // import { ImageWithCursor } from './FormControlls'
 
 const Amount = styled.div`
@@ -57,39 +58,39 @@ const Input = styled.input.attrs({
   }
 `
 const Max = styled.div`
-  width: 45px;
-  height: 20px;
-  background: #ffffff;
-  border: 0.25px solid #efefef;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
+  background-color: #9c9bf3;
   align-items: center;
-  font-weight: 500;
+  border-radius: 5px;
+  text-align: center;
+  padding: 2px 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: #6f6dc5;
+    div {
+      color: #fff;
+    }
+  }
 `
 const AmountBox = (props) => {
   const { margin, onChange, value, tokenBalance, errorAmount } = props
   return (
     <Wrapper margin={margin}>
-      <FlexBetween>
-        <Type.SM
-          fontFamily="FH Oscar"
-          color="#313144"
-          fontSize="12.5px"
-          padding="5px 10px"
-        >
+      <Flex width="100%" justifyContent="space-between" alignItems="center">
+        <Type.SM color="#313144" fontSize="12.5px" padding="5px 10px">
           Amount
         </Type.SM>
-        <Type.SM
-          fontFamily="FH Oscar"
-          color="#919191"
-          fontSize="12.5px"
-          padding="5px 10px"
-        >
-          {tokenBalance}
-        </Type.SM>
-      </FlexBetween>
+
+        <Flex justifyContent="flex-end" alignItems="center">
+          <Type.SM color="#919191" fontSize="12.5px" padding="5px 10px">
+            {tokenBalance}
+          </Type.SM>
+          <Max onClick={() => onChange(tokenBalance.split(' ')[0])}>
+            <Type.SM color="#FFFFFF" fontSize="10px">
+              Max
+            </Type.SM>
+          </Max>
+        </Flex>
+      </Flex>
 
       <Amount error={errorAmount}>
         <Input
@@ -97,15 +98,6 @@ const AmountBox = (props) => {
           // placeholder="Enter Amount"
           onChange={(e) => onChange(e.target.value)}
         />
-        <Max onClick={() => onChange(tokenBalance.split(' ')[0])}>
-          <Type.XS
-            fontSize="7.5px"
-            fontFamily="FH Oscar"
-            color="rgba(85, 81, 255, 1)"
-          >
-            MAX
-          </Type.XS>
-        </Max>
       </Amount>
     </Wrapper>
   )

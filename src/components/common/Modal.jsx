@@ -91,22 +91,20 @@ const Modal = (props) => {
           onClick={hide}
         />
       </Flex>
-      {search && (
-        <>
-          <Flex
-            justifyContent="center"
-            alignItems="center"
-            padding="0 25px 30px"
-          >
-            <Input
-              placeholder={placeholderSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
-          </Flex>
-          <BorderBottom />
-        </>
-      )}
+
       <MainWrap>
+        {search && (
+          <>
+            <Flex justifyContent="center" alignItems="center" padding="32px">
+              <Input
+                placeholder={placeholderSearch}
+                onChange={(e) => handleSearch(e.target.value)}
+                border="1px solid rgba(172, 175, 243, 0.29)"
+              />
+            </Flex>
+            <BorderBottom />
+          </>
+        )}
         <Wrapper>{children}</Wrapper>
       </MainWrap>
     </ReactModal>

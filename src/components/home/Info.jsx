@@ -15,23 +15,21 @@ const Circle = styled.div`
 `
 
 const Info = (props) => {
-  const { generateBridge, chain } = props
+  const { generateBridge, chain, marginBottom } = props
   const { state } = useMuonState()
   return (
     <WrapperInfo
       maxWidth="450px"
       width="100%"
       justifyContent="space-between"
-      padding="0 15px"
       alignItems="center"
-      marginBottom="3px"
+      marginBottom={marginBottom}
     >
       <WrapTokenAddress width="100%">
         <Flex alignItems="center">
           <Circle background={generateBridge ? '#00e376' : '#DC5151'} />
           <Type.SM
             fontSize="12px"
-            fontFamily="FH Oscar"
             fontSizeXXS="9px"
             color={generateBridge ? 'rgba(0, 227, 118, 1)' : '#DC5151'}
           >

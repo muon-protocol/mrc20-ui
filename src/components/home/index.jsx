@@ -4,10 +4,10 @@ import styled from 'styled-components'
 export const ChangeNetwork = styled.div`
   padding: ${({ padding }) => padding};
   width: 100%;
-  font-size: 12.5px;
+  font-size: 9px;
   color: #919191;
 `
-export const Span = styled.span`
+export const Span = styled.div`
   color: #5551ff;
 `
 export const CopyBtn = styled.div`
@@ -16,15 +16,14 @@ export const CopyBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
-  border: 0.25px solid #efefef;
+  1px solid #D3DBE3;
   border-radius: 25px;
   font-style: normal;
   font-weight: 500;
   font-size: 7.5px;
   cursor: pointer;
   text-transform: uppercase;
-  color: #5551ff;
+  color: #acaff3;
 `
 export const WrapTokenAddress = styled.div`
   width: ${({ width }) => width};
@@ -72,6 +71,8 @@ export const ClaimWrapper = styled(Box)`
   }
 `
 export const WrapperInfo = styled(Flex)`
+  margin-bottom: ${({ marginBottom }) =>
+    marginBottom ? marginBottom : '22px !important'};
   @media screen and (max-width: 576px) {
     flex-direction: column;
     & > * {
@@ -170,5 +171,5 @@ export const BoxDestination = styled.div`
   padding: ${({ padding }) => (padding ? padding : '20px')};
   border-top: none;
   position: absolute;
-  bottom: 10px;
+  bottom: -10px;
 `

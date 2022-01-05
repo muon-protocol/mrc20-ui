@@ -834,13 +834,11 @@ const HomePage = () => {
       </Head>
       <TabContainer>
         <Tab active={active === 'bridge'} onClick={() => setActive('bridge')}>
-          <Type.SM fontSize="15px" fontFamily="FH Oscar">
-            Bridge
-          </Type.SM>
+          <Type.SM fontSize="15px">Bridge</Type.SM>
         </Tab>
         {claims.length > 0 && (
           <Tab active={active === 'claim'} onClick={() => setActive('claim')}>
-            <Type.SM fontSize="15px" fontFamily="FH Oscar" position="relative">
+            <Type.SM fontSize="15px" position="relative">
               Claim Token
               <Badge>{claims.length}</Badge>
             </Type.SM>
@@ -848,17 +846,8 @@ const HomePage = () => {
         )}
       </TabContainer>
       <Wrapper>
-        <ClaimWrapper maxWidth="340px" width="100%" active={active}>
-          {claims.length > 0 && (
-            <ClaimToken
-              claims={claims}
-              handleClaim={(claim) => handleClaim(claim)}
-              lock={lock}
-            />
-          )}
-        </ClaimWrapper>
-
-        <DepositWrapper maxWidth="425px" width="100%" active={active}>
+        <BoxWrapper maxWidth="340px" width="100%"></BoxWrapper>
+        <DepositWrapper maxWidth="470px" width="100%" active={active}>
           <Deposit
             handleDeposit={handleDeposit}
             wrongNetwork={wrongNetwork}
@@ -872,6 +861,15 @@ const HomePage = () => {
         </DepositWrapper>
         <BoxWrapper maxWidth="340px" width="100%">
           {state.transaction.status && <CustomTranaction />}
+          <ClaimWrapper maxWidth="340px" width="100%" active={active}>
+            {claims.length > 0 && (
+              <ClaimToken
+                claims={claims}
+                handleClaim={(claim) => handleClaim(claim)}
+                lock={lock}
+              />
+            )}
+          </ClaimWrapper>
         </BoxWrapper>
       </Wrapper>
       <WalletModal

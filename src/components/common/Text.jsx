@@ -6,6 +6,7 @@ const TextWrapper = styled(Text)`
   color: ${({ color, theme }) => theme[color]};
   cursor: ${({ cursor }) => (cursor ? cursor : 'default')};
   position: ${({ position }) => position};
+  font-weight: ${({ fontWeight }) => fontWeight};
   @media screen and (max-width: 576px) {
     font-size: ${({ fontSizeXS }) => fontSizeXS};
   }

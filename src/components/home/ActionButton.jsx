@@ -34,13 +34,12 @@ const ActionButton = (props) => {
   switch (state.actionBtnType) {
     case 'bridgeFromChain':
       content = (
-        <Button margin="50px 0 0" cursor="default">
-          <Type.LG
-            color="#909090"
-            fontFamily="FH Oscar"
-            fontSizeXS="16px"
-            fontSizeXXS="14px"
-          >
+        <Button
+          margin="50px 0 0"
+          cursor="default"
+          background="rgba(85, 81, 255, 0.15)"
+        >
+          <Type.LG color="#ffffff" fontSizeXS="16px" fontSizeXXS="14px">
             Select Asset and Chains
           </Type.LG>
         </Button>
@@ -48,13 +47,12 @@ const ActionButton = (props) => {
       break
     case 'bridgeToChain':
       content = (
-        <Button margin="50px 0 0" cursor="default">
-          <Type.LG
-            color="#909090"
-            fontFamily="FH Oscar"
-            fontSizeXS="16px"
-            fontSizeXXS="14px"
-          >
+        <Button
+          margin="50px 0 0"
+          cursor="default"
+          background="rgba(85, 81, 255, 0.15)"
+        >
+          <Type.LG color="#ffffff" fontSizeXS="16px" fontSizeXXS="14px">
             Select Asset and Chains
           </Type.LG>
         </Button>
@@ -75,7 +73,6 @@ const ActionButton = (props) => {
         >
           <Type.LG
             color={approveStatus ? '#313144' : '#ffffff'}
-            fontFamily="FH Oscar"
             fontSizeXS="16px"
             cursor={approveStatus ? 'default' : 'pointer'}
           >
@@ -98,7 +95,6 @@ const ActionButton = (props) => {
         >
           <Type.LG
             color={depositStatus ? '#313144' : '#ffffff'}
-            fontFamily="FH Oscar"
             fontSizeXS="16px"
             cursor="pointer"
           >
@@ -109,13 +105,12 @@ const ActionButton = (props) => {
       break
     case 'select':
       content = (
-        <Button margin="50px 0 0" cursor="default">
-          <Type.LG
-            color="#909090"
-            fontFamily="FH Oscar"
-            fontSizeXS="16px"
-            fontSizeXXS="14px"
-          >
+        <Button
+          margin="50px 0 0"
+          cursor="default"
+          background="rgba(85, 81, 255, 0.15)"
+        >
+          <Type.LG color="#ffffff" fontSizeXS="16px" fontSizeXXS="14px">
             Select Asset and Chains
           </Type.LG>
         </Button>
@@ -132,20 +127,20 @@ const ActionButton = (props) => {
         wrongNetwork || validChainId ? (
           <Button
             margin="50px 0 0"
-            background="rgba(255, 164, 81, 0.2)"
+            background={wrongNetwork ? '#DC0000' : 'rgba(255, 164, 81, 0.2)'}
             border="1px solid rgba(255, 164, 81, 1)"
             cursor="default"
             onClick={() => (wrongNetwork ? undefined : addRPC(validChainId))}
           >
-            <Type.LG
-              color="rgba(49, 49, 68, 1)"
-              fontFamily="FH Oscar"
+            <Type.MD
+              color={wrongNetwork ? '#ffffff' : 'rgba(49, 49, 68, 1)'}
               fontSizeXS="16px"
+              fontWeight="bold"
             >
               {wrongNetwork
                 ? 'Wrong Network'
                 : ` Switch to ${NameChainMap[validChainId]}`}
-            </Type.LG>
+            </Type.MD>
           </Button>
         ) : (
           content
@@ -156,7 +151,7 @@ const ActionButton = (props) => {
           background="#5F5CFE"
           onClick={handleConnectWallet}
         >
-          <Type.LG color="#ffffff" fontFamily="FH Oscar" fontSizeXS="16px">
+          <Type.LG color="#ffffff" fontSizeXS="16px">
             Connect Wallet
           </Type.LG>
         </Button>

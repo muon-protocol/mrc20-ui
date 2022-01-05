@@ -22,7 +22,7 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: ${({ maxWidth }) => maxWidth};
+  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '390px')};
   width: 100%;
   height: ${({ height }) => (height ? height : '55px')};
   background: ${({ background }) => (background ? background : '#D7D7D7')};
@@ -37,44 +37,49 @@ export const Button = styled.button`
 `
 export const BorderBottom = styled.div`
   border-bottom: ${({ border }) =>
-    border ? border : '0.5px solid rgba(210, 210, 210, 0.5)'};
+    border ? border : ' 1px solid rgba(172, 175, 243, 0.3)'};
 `
 export const Input = styled.input`
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '400px')};
   width: 100%;
-  height: ${({ height }) => (height ? height : '55px')};
+  background: ${({ background }) => (background ? background : 'transparent')};
+  height: ${({ height }) => (height ? height : '45px')};
   border: ${({ border }) => (border ? border : '1px solid #5F5CFE')};
-  border-radius: ${({ borderRadius }) =>
-    borderRadius ? borderRadius : '10px'};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5px')};
   box-sizing: border-box;
   font-family: ${({ fontFamily }) => (fontFamily ? fontFamily : 'Montserrat')};
   font-style: normal;
   font-weight: normal;
-  font-size: ${({ fontSize }) => (fontSize ? fontSize : '20px')};
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : '15px')};
   color: ${({ color }) => (color ? color : '#313144')};
   &:focus {
     outline: none;
   }
   padding: 0 17px;
   @media screen and (max-width: 576px) {
-    font-size: ${({ fontSizeXS }) => (fontSizeXS ? fontSize : '16px')};
+    font-size: ${({ fontSizeXS }) => (fontSizeXS ? fontSizeXS : '13px')};
+    max-width: 150px;
   }
-  @media screen and (max-width: 450px) {
-    font-size: ${({ fontSizeXS }) => (fontSizeXS ? fontSize : '14px')};
+  @media screen and (max-width: 460px) {
+    max-width: 120px;
+    /* font-size: 10px; */
   }
   ::placeholder {
     color: #909090;
     opacity: 1; /* Firefox */
+    font-size: 13px;
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #909090;
+    font-size: 13px;
   }
 
   ::-ms-input-placeholder {
     /* Microsoft Edge */
     color: #909090;
+    font-size: 13px;
   }
 `
 export const Image = styled.img`

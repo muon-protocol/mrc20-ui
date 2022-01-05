@@ -11,29 +11,32 @@ import { ChangeNetwork, Span } from '../home'
 import { addRPC } from '../../helper/addRPC'
 
 const NetWork = styled.div`
-  width: 35px;
-  height: 15px;
+  width: 26px;
+  height: 10px;
   background: rgba(255, 255, 255, 0.5);
-  border: 0.5px solid #d2d2d2;
+  border: 1px solid #d3dbe3;
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   letter-spacing: 0.005em;
   margin-left: 7px;
-  padding: 1px 0 2px;
+  padding: 2px 6px;
 `
 
 const ClaimToken = (props) => {
   const { state } = useMuonState()
   const { claims, handleClaim, lock } = props
   return (
-    <Box borderRadius="10px" padding="14px 20px 19px">
+    <Box
+      borderRadius="10px"
+      padding="14px 20px 19px"
+      background="linear-gradient(0deg, #E7EBF3 0%, rgba(231, 235, 243, 0.25) 105.18%)"
+      border="1px solid #ffffff"
+    >
       <Flex width="100%">
-        <Type.SM fontSize="12.5px" color="#919191" fontFamily="FH Oscar">
-          Claim Token
-        </Type.SM>
+        <Type.SM color="#313144">Claim Token</Type.SM>
       </Flex>
       {claims.map((claim, index) => {
         let amount = fromWei(claim.amount.toString())
@@ -58,26 +61,18 @@ const ClaimToken = (props) => {
                   width="20px"
                   height="20px"
                 />
-                <Type.LG
-                  fontFamily="FH Oscar"
-                  color="#313144"
-                  fontSizeXS="16px"
-                >
+                <Type.MD color="#313144" fontWeight="bold">
                   {token.symbol}
-                </Type.LG>
+                </Type.MD>
                 <NetWork>
-                  <Type.XS
-                    color="#313144"
-                    fontSize="10.5px"
-                    fontFamily="FH Oscar"
-                  >
+                  <Type.XS color="#ACAFF3" fontSize="6px">
                     {chain.symbol}
                   </Type.XS>
                 </NetWork>
               </Flex>
-              <Type.LG color="#313144" fontFamily="FH Oscar" fontSizeXS="16px">
+              <Type.MD color="#313144" fontWeight="bold">
                 {amount}
-              </Type.LG>
+              </Type.MD>
             </Flex>
             {Number(claim.toChain) === state.chainId ? (
               <Button
@@ -87,12 +82,7 @@ const ClaimToken = (props) => {
                 height="35px"
                 onClick={() => handleClaim(claim)}
               >
-                <Type.SM
-                  fontSize="12.5px"
-                  color="#ffffff"
-                  fontFamily="FH Oscar"
-                  cursor="pointer"
-                >
+                <Type.SM fontSize="12.5px" color="#ffffff" cursor="pointer">
                   Claim Token
                 </Type.SM>
                 {lock &&
@@ -111,12 +101,7 @@ const ClaimToken = (props) => {
                 cursor="default"
                 onClick={() => addRPC(claim.toChain)}
               >
-                <Type.SM
-                  fontSize="12.5px"
-                  color="#313144"
-                  fontFamily="FH Oscar"
-                  cursor="pointer"
-                >
+                <Type.SM fontSize="12.5px" color="#313144" cursor="pointer">
                   Change Network to Claim
                 </Type.SM>
               </Button>
@@ -126,7 +111,7 @@ const ClaimToken = (props) => {
         )
       })}
 
-      <ChangeNetwork padding="40px 10px 0">
+      <ChangeNetwork padding="0 10px ">
         <Span> Change to the destination Network </Span>
         to claim your token on respective networks.{' '}
       </ChangeNetwork>

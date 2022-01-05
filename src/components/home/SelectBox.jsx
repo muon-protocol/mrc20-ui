@@ -15,10 +15,18 @@ const Wrapper = styled.div`
     marginBottom ? marginBottom : '20px'};
 `
 const Item = styled.div`
-  padding-bottom: 20px;
+  background: #2b2b3c;
+  border: 1px solid rgba(172, 175, 243, 0.29);
+  margin: 7.5px auto;
+  padding: 10px;
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  &:hover {
+    background: #42425f;
+  }
 `
 const ContentItem = styled(Flex)`
   box-sizing: unset !important;
@@ -62,26 +70,21 @@ const SelectBox = (props) => {
     data.map((item, index) => {
       if (type === 'chain') {
         return (
-          <Item key={index}>
-            <ContentItem
-              alignItems="center"
-              onClick={() => {
-                onChange(item)
-                setOpen(!open)
-              }}
-            >
+          <Item
+            key={index}
+            onClick={() => {
+              onChange(item)
+              setOpen(!open)
+            }}
+          >
+            <ContentItem alignItems="center">
               <Image
                 src={`/media/chains/${item.symbol.toLowerCase()}.svg`}
                 boxSizing="unset"
               />
-              <Type.LG
-                fontFamily="FH Oscar"
-                color="#313144"
-                cursor="pointer"
-                fontSizeXS="16px"
-              >
+              <Type.MD color="#D3DBE3" fontWeight="bold">
                 {item.name}
-              </Type.LG>
+              </Type.MD>
             </ContentItem>
           </Item>
         )
@@ -89,45 +92,32 @@ const SelectBox = (props) => {
         if (item && item.address[state.bridge.fromChain.id]) {
           const icon = item.symbol.toLowerCase()
           return (
-            <Item key={index}>
-              <ContentItem
-                alignItems="center"
-                onClick={() => {
-                  onChange(item)
-                  setOpen(!open)
-                  dispatch({
-                    type: 'UPDATE_TOKEN_SEARCH_QUERY',
-                    payload: ''
-                  })
-                }}
-              >
+            <Item
+              key={index}
+              onClick={() => {
+                onChange(item)
+                setOpen(!open)
+                dispatch({
+                  type: 'UPDATE_TOKEN_SEARCH_QUERY',
+                  payload: ''
+                })
+              }}
+            >
+              <ContentItem alignItems="center">
                 <Image
                   src={`/media/tokens/${icon}.svg`}
                   onError={(e) => (e.target.src = '/media/tokens/default.svg')}
                   boxSizing="unset"
                 />
                 <WrapToken>
-                  <Type.LG
-                    fontFamily="FH Oscar"
-                    color="#313144"
-                    fontSizeXS="16px"
-                    cursor="pointer"
-                  >
-                    {item.symbol}
-                  </Type.LG>
-                  <Type.SM
-                    fontSize="12.5px"
-                    fontFamily="FH Oscar"
-                    color="#909090"
-                    cursor="pointer"
-                  >
+                  <Type.MD color="#D3DBE3" cursor="pointer">
                     {item.name}
-                  </Type.SM>
+                  </Type.MD>
                 </WrapToken>
               </ContentItem>
-              <Type.LG fontFamily="FH Oscar" color="#313144" fontSizeXS="16px">
+              <Type.MD color="#D3DBE3">
                 {item.balances[state.bridge.fromChain.id]}
-              </Type.LG>
+              </Type.MD>
             </Item>
           )
         }
@@ -139,12 +129,7 @@ const SelectBox = (props) => {
   }
   return (
     <Wrapper marginBottom={marginBottom}>
-      <Type.SM
-        fontFamily="FH Oscar"
-        color="#313144"
-        fontSize="12.5px"
-        padding="5px 10px"
-      >
+      <Type.SM color="#313144" fontSize="12.5px" padding="5px 10px">
         {label}
       </Type.SM>
       <Selector
@@ -159,24 +144,14 @@ const SelectBox = (props) => {
               onError={(e) => (e.target.src = '/media/tokens/default.svg')}
               boxSizing="unset"
             />
-            <Type.LG
-              fontFamily="FH Oscar"
-              color="#313144"
-              cursor="pointer"
-              fontSizeXS="16px"
-            >
+            <Type.MD color="#313144" cursor="pointer">
               {selectedValue.name}
-            </Type.LG>
+            </Type.MD>
           </Flex>
         ) : (
-          <Type.LG
-            fontFamily="FH Oscar"
-            color="#919191"
-            fontSizeXS="16px"
-            fontSizeXXS="14px"
-          >
+          <Type.MD color="#919191" fontSizeXXS="14px">
             {/* {placeholder ? placeholder : label} */}
-          </Type.LG>
+          </Type.MD>
         )}
 
         <Arrow

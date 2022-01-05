@@ -11,6 +11,7 @@ import { chains } from '../../constants/chains'
 import { useMuonState } from '../../context'
 import { GradientTitle, Title, TriangleDown, BoxDestination } from '.'
 import MuonNetwork from '../common/MuonNetwork'
+import NetworkHint from '../common/NetworkHint'
 
 const CopyTokenAddress = dynamic(() => import('./CopyTokenAddress'))
 const Info = dynamic(() => import('./Info'))
@@ -42,7 +43,7 @@ const Deposit = (props) => {
       <Container>
         <Box
           background="linear-gradient(0deg, #D3DBE3 0%, rgba(231, 235, 243, 0) 126.95%)"
-          minHeight="395px"
+          // minHeight="395px"
         >
           <Flex flexDirection="column" width="100%">
             <SelectBox
@@ -51,12 +52,14 @@ const Deposit = (props) => {
               type="chain"
               value={state.bridge.fromChain.id}
               onChange={(data) => updateBridge('fromChain', data)}
+              marginBottom={state.bridge.fromChain.id ? '5px' : '35px'}
             />
+            {state.bridge.fromChain.id && <NetworkHint error={wrongNetwork} />}
             <SelectBox
               label="Select an Asset"
               data={state.showTokens}
               type="token"
-              marginBottom="10px"
+              marginBottom={state.bridge.token.id ? '5px' : '35px'}
               value={state.bridge.token.id}
               border={
                 state.bridge.fromChain && state.bridge.token
@@ -81,6 +84,7 @@ const Deposit = (props) => {
               tokenBalance={state.tokenBalance}
               errorAmount={errorAmount}
               onChange={(data) => updateBridge('amount', data)}
+              margin={state.bridge.token.id ? '0 0 5px' : '0 0 45px'}
             />
             {state.bridge.token && state.bridge.fromChain && (
               <CopyTokenAddress />
@@ -90,7 +94,7 @@ const Deposit = (props) => {
         <TriangleDown />
         <BoxDestination>
           <SelectBox
-            margin="10px"
+            marginBottom={state.bridge.toChain.id ? '5px' : '35px'}
             label="Select Destination Chain"
             placeholder="Destination Chain"
             data={destChains}
@@ -110,8 +114,11 @@ const Deposit = (props) => {
               <Info
                 generateBridge={state.toChainTokenExit}
                 chain={state.bridge.toChain}
+                marginBottom="5px"
               />
-              {state.toChainTokenExit && <CopyTokenAddress toChain={true} />}
+              {state.toChainTokenExit && (
+                <CopyTokenAddress toChain={true} marginBottom="5px" />
+              )}
             </>
           )}
         </BoxDestination>

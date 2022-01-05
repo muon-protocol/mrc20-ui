@@ -77,13 +77,12 @@ const Menu = () => {
         <Button padding="0 17px !important">
           <Status active={state.account} />
           {state.account ? (
-            <Type.SM fontSize="15px" fontFamily="FH Oscar" color="#313144">
+            <Type.SM fontSize="15px" color="#313144">
               {formatAddress(state.account)}
             </Type.SM>
           ) : (
             <Type.SM
               fontSize="15px"
-              fontFamily="FH Oscar"
               color="#313144"
               cursor="pointer"
               onClick={handleConnect}

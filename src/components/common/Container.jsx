@@ -31,7 +31,6 @@ export const Container = styled.div`
 `
 export const Box = styled.div`
   max-width: ${({ maxWidth }) => maxWidth};
-  min-height: ${({ minHeight }) => minHeight};
   width: 100%;
   background: ${({ background }) =>
     background ? background : 'rgba(255, 255, 255, 0.35)'};
@@ -39,6 +38,8 @@ export const Box = styled.div`
   box-shadow: 0px 4px 4px
     ${({ shadowColor }) =>
       shadowColor ? shadowColor : 'rgba(239, 239, 239, 0.25)'};
+  border: ${({ border }) => (border ? border : 'transparent')};
+
   border-radius: ${({ borderRadius }) =>
     borderRadius ? borderRadius : '10px'};
   margin-top: ${({ marginTop }) => `${marginTop}px`};

@@ -11,7 +11,7 @@ import { Type } from '../common/Text'
 const CopyTokenAddress = (props) => {
   const { state } = useMuonState()
   const [copy, setCopy] = React.useState(false)
-  const { toChain } = props
+  const { toChain, marginBottom } = props
   const [token, setToken] = React.useState('')
   const web3 = useCrossWeb3(
     toChain ? state.bridge.toChain.id : state.bridge.fromChain.id
@@ -56,16 +56,15 @@ const CopyTokenAddress = (props) => {
       maxWidth="450px"
       width="100%"
       justifyContent="space-between"
-      padding="0 15px"
       alignItems="center"
+      marginBottom={marginBottom}
     >
       {token && (
         <>
           <WrapTokenAddress>
             <Type.SM
               fontSize="9px"
-              fontFamily="FH Oscar"
-              color="#6F7077"
+              color="#313144"
               fontSizeXXS="8px"
               padding="0 5px"
             >
@@ -75,12 +74,7 @@ const CopyTokenAddress = (props) => {
                   : state.bridge.fromChain.symbol
               }:`}
             </Type.SM>
-            <Type.SM
-              fontSize="9px"
-              fontFamily="FH Oscar"
-              color="#6F7077"
-              fontSizeXXS="8px"
-            >
+            <Type.SM fontSize="9px" color="#313144" fontSizeXXS="8px">
               {
                 state.bridge.token.address[
                   toChain ? state.bridge.toChain.id : state.bridge.fromChain.id
