@@ -14,11 +14,12 @@ if (typeof window !== 'undefined') {
 const Wrapper = styled.div`
   padding: ${({ padding }) => (padding ? padding : '30px')};
   overflow-y: auto;
-  height: 50vh;
-  // height: calc(50vh - 100px);
-  box-sizing: border-box;
 `
 
+const MainWrap = styled.div`
+  border-radius: 20px;
+  background-color: #313144;
+`
 const Modal = (props) => {
   const {
     open,
@@ -30,37 +31,33 @@ const Modal = (props) => {
     maxWidth,
     backgroundColor,
     border,
-    borderRadius,
-    padding,
-    boxShadowColor
+    padding
   } = props
 
   const { dispatch } = useMuonState()
 
   const customStyles = {
     overlay: {
-      backgroundColor: 'rgba(0,0,0,0.5)'
+      backgroundColor: 'rgba(49, 49, 68, 0.9)'
     },
     content: {
       top: '50%',
       left: '50%',
       right: 'auto',
       bottom: 'auto',
-      marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       padding: 0,
       display: 'flex',
       flexDirection: 'column',
       maxWidth: maxWidth ? maxWidth : '450px',
+      background: backgroundColor ? backgroundColor : 'transparent',
       width: '95%',
-      background: backgroundColor ? backgroundColor : '#ffffff',
-      border: border ? border : '0.5px solid #D2D2D2',
-      borderRadius: borderRadius ? borderRadius : '20px',
+      border: border ? border : '0',
       overFlowY: 'hidden',
-      boxSizing: 'border-box',
-      boxShadow: `0px 4px 4px ${
-        boxShadowColor ? boxShadowColor : 'rgba(239, 239, 239, 0.25)'
-      }`
+      boxSizing: 'border-box'
+      // boxShadow: `0px 4px 4px ${
+      //   boxShadowColor ? boxShadowColor : 'rgba(239, 239, 239, 0.25)'
+      // }`
     }
   }
 
@@ -78,24 +75,24 @@ const Modal = (props) => {
       onRequestClose={hide}
       shouldCloseOnOverlayClick={true}
     >
-      <Flex flexDirection="column">
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          padding={padding ? padding : '30px 30px 25px'}
-        >
-          <Type.LG fontFamily="FH Oscar" color="#313144" fontSizeXS="16px">
-            {title}
-          </Type.LG>
-          <ImageWithCursor
-            width="12.5px"
-            height="12.5px"
-            paddingRight="0"
-            src="/media/common/x.svg"
-            onClick={hide}
-          />
-        </Flex>
-        {search && (
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        padding={padding ? padding : '15px 15px 15px'}
+      >
+        <Type.MD color="#D3DBE3" fontWeight="bold" fontSizeXS="16px">
+          {title}
+        </Type.MD>
+        <ImageWithCursor
+          width="12.5px"
+          height="12.5px"
+          paddingRight="0"
+          src="/media/common/x.svg"
+          onClick={hide}
+        />
+      </Flex>
+      {search && (
+        <>
           <Flex
             justifyContent="center"
             alignItems="center"
@@ -106,10 +103,12 @@ const Modal = (props) => {
               onChange={(e) => handleSearch(e.target.value)}
             />
           </Flex>
-        )}
-        <BorderBottom />
+          <BorderBottom />
+        </>
+      )}
+      <MainWrap>
         <Wrapper>{children}</Wrapper>
-      </Flex>
+      </MainWrap>
     </ReactModal>
   )
 }
