@@ -9,6 +9,8 @@ import { useWeb3React } from '@web3-react/core'
 import { NameChainMap } from '../../constants/chainsMap'
 import { Image } from '../common/FormControlls'
 import MuonNetwork from '../common/MuonNetwork'
+import { validChains } from '../../constants/chains'
+import { addRPC } from '../../helper/addRPC'
 // import WalletModal from '../common/WalletModal'
 const WalletModal = dynamic(() => import('../common/WalletModal'))
 
@@ -21,10 +23,12 @@ const AppInfo = styled(Flex)`
 const Button = styled.button`
   padding: ${({ padding }) => (padding ? padding : '0 15px')};
   cursor: ${({ active }) => (active ? 'pointer' : 'default')};
+  border: ${({ active, border }) =>
+    border ? border : active ? '1px solid #00AA58' : '1px solid #d2d2d2'};
   height: 35px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 0.5px solid #d2d2d2;
-  border-radius: 10px;
+  background: #f8faff;
+  border-radius: 5px;
+  box-sizing: border-box;
   font-style: normal;
   font-weight: normal;
   font-size: 15px;
@@ -46,7 +50,8 @@ const Button = styled.button`
   }
 `
 const Status = styled.div`
-  background-color: ${({ active }) => (active ? '#00e376' : '#FFA451')};
+  background-color: ${({ active, color }) =>
+    color ? color : active ? '#00e376' : '#FFA451'};
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -81,29 +86,56 @@ const Menu = () => {
         <MuonNetwork logo="muonNetwork" />
       </AppInfo>
       <AppInfo>
-        <Button
-          padding="0 17px !important"
-          onClick={handleConnect}
-          active={account}
-        >
-          <Status active={account} />
-          {account ? (
-            <Type.SM fontSize="15px" color="#313144">
-              {formatAddress(account)}
-            </Type.SM>
+        {account ? (
+          validChains.includes(chainId) ? (
+            <Button padding="0 17px !important" active={account}>
+              <Status active={account} />
+              <Type.SM fontSize="15px" color="#313144">
+                {formatAddress(account)}
+              </Type.SM>
+            </Button>
           ) : (
+            <Button
+              padding="0 17px !important"
+              active={account}
+              onClick={() => addRPC(validChains[0])}
+            >
+              <Type.SM fontSize="15px" color="#313144">
+                Change to {NameChainMap[validChains[0]]}
+              </Type.SM>
+            </Button>
+          )
+        ) : (
+          <Button
+            padding="0 17px !important"
+            onClick={handleConnect}
+            active={account}
+          >
+            <Status active={account} />
             <Type.SM fontSize="15px" color="#313144" cursor="pointer">
               Connect Wallet
             </Type.SM>
-          )}
-        </Button>
+          </Button>
+        )}
 
-        {NameChainMap[chainId] && (
-          <Button hide={!NameChainMap[chainId]}>
-            <Label>Network:</Label>
-            <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
-              {NameChainMap[chainId] || 'NaN'}
-            </Type.SM>
+        {validChains.includes(chainId) ? (
+          NameChainMap[chainId] && (
+            <Button
+              hide={!NameChainMap[chainId]}
+              active={validChains.includes(chainId)}
+            >
+              <Label>Network:</Label>
+              <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
+                {NameChainMap[chainId] || 'NaN'}
+              </Type.SM>
+            </Button>
+          )
+        ) : (
+          <Button border="1px solid #DC0000">
+            <Status color="#DC0000" />
+            <Type.MD color="#313144" padding="0 0 0 3px">
+              Wrong Network
+            </Type.MD>
           </Button>
         )}
       </AppInfo>
