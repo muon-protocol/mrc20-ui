@@ -20,7 +20,6 @@ const useWeb3 = () => {
 }
 
 export const useCrossWeb3 = (targetChainId) => {
-  console.log({ targetChainId })
   const { library, chainId } = useWeb3React()
   const [web3, setweb3] = useState(
     library && chainId === targetChainId

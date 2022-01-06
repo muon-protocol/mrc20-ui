@@ -134,7 +134,6 @@ const HomePage = () => {
     )
     setDestChains(filter)
   }, [state.bridge.fromChain])
-  console.log(state)
   React.useEffect(() => {
     const getClaims = async () => {
       let claims = []
@@ -250,15 +249,6 @@ const HomePage = () => {
       if (claims.length === 0) setActive('bridge')
     }
 
-    // const getBalance = async () => {
-    //   let tokenBalances = []
-    //   tokenBalances = await getAssetBalances(chains, state.tokens, account)
-    //   dispatch({
-    //     type: 'UPDATE_TOKENS',
-    //     payload: tokenBalances
-    //   })
-    // }
-
     if (account) {
       dispatch({
         type: 'UPDATE_NETWORK_INFO',
@@ -268,7 +258,6 @@ const HomePage = () => {
           network: NameChainMap[chainId]
         }
       })
-      // getBalance()
       if (originWeb3 && destWeb3) {
         getClaims()
       }
@@ -739,7 +728,6 @@ const HomePage = () => {
           depositNetwork: fromChain.id
         })
         .call()
-      console.log(muonResponse)
       let { sigs, reqId } = muonResponse
       const token = findToken(Number(claim.tokenId.toString()))
 
