@@ -23,7 +23,7 @@ export const Container = styled.div`
   box-shadow: 0px 4px 4px
     ${({ shadowColor }) =>
       shadowColor ? shadowColor : 'rgba(239, 239, 239, 0.25)'};
-  min-height: 570px;
+  min-height: 540px;
   position: relative;
   display: flex;
   flex-direction: column;

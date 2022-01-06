@@ -5,17 +5,14 @@ import { Flex } from 'rebass'
 // import { ImageWithCursor } from './FormControlls'
 
 const Amount = styled.div`
-  // max-width: 450px;
-  width: 100%;
-  height: 55px;
-  background: #e6ecf2;
-  border-radius: 5px;
-  border: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
-  border: ${({ error }) => (error ? '1px solid #DC5151' : '1px solid #FFFFFF')};
+  background: #2b2b3c;
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 45px;
+  border: ${({ error }) => (error ? '1px solid #DC5151' : '1px solid #ffffff')};
 `
 
 const Wrapper = styled.div`
@@ -33,7 +30,7 @@ const Input = styled.input.attrs({
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
-  color: #313144;
+  color: #ffffff;
   background: transparent;
   border: transparent;
   &:focus {

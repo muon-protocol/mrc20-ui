@@ -36,7 +36,7 @@ const ActionButton = (props) => {
     case 'bridgeFromChain':
       content = (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           cursor="default"
           background="rgba(85, 81, 255, 0.15)"
         >
@@ -49,7 +49,7 @@ const ActionButton = (props) => {
     case 'bridgeToChain':
       content = (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           cursor="default"
           background="rgba(85, 81, 255, 0.15)"
         >
@@ -65,7 +65,7 @@ const ActionButton = (props) => {
         state.transaction.type === TransactionType.Approve
       content = (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           background="#5F5CFE"
           onClick={handleApprove}
           background={approveStatus ? '#B4B3FD' : '#5F5CFE'}
@@ -88,7 +88,7 @@ const ActionButton = (props) => {
         state.transaction.type === TransactionType.DEPOSIT
       content = (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           background={depositStatus ? '#B4B3FD' : '#5F5CFE'}
           border={depositStatus ? '1px solid #5F5CFE' : 'transparent'}
           onClick={handleDeposit}
@@ -107,11 +107,11 @@ const ActionButton = (props) => {
     case 'select':
       content = (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           cursor="default"
           background="rgba(85, 81, 255, 0.15)"
         >
-          <Type.LG color="#ffffff" fontSizeXS="16px" fontSizeXXS="14px">
+          <Type.LG color="#8888db" fontSizeXS="16px" fontSizeXXS="14px">
             Select Asset and Chains
           </Type.LG>
         </Button>
@@ -127,7 +127,7 @@ const ActionButton = (props) => {
       {state.account ? (
         wrongNetwork || validChainId ? (
           <Button
-            margin="50px 0 0"
+            margin="25px 0 0"
             background={'rgba(255, 164, 81, 0.2)'}
             border="1px solid rgba(255, 164, 81, 1)"
             cursor="pointer"
@@ -158,7 +158,7 @@ const ActionButton = (props) => {
         )
       ) : (
         <Button
-          margin="50px 0 0"
+          margin="25px 0 0"
           background="#5F5CFE"
           onClick={handleConnectWallet}
         >
