@@ -5,7 +5,7 @@ import { ChainMap } from '../constants/chainsMap'
 
 const getContract = (abi, address, web3) => {
   // const _web3 = web3 ?? web3NoAccount
-  return new _web3.eth.Contract(abi, address)
+  return new web3.eth.Contract(abi, address)
 }
 
 export const getMultiCallContract = (web3, chainId = ChainMap.ETH) => {
