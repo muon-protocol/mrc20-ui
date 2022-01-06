@@ -1,10 +1,10 @@
-import { web3NoAccount } from './web3'
+// import { web3NoAccount } from './web3'
 import { MultiCall_ABI } from '../constants/ABI'
 import { MULTICALL_NETWORKS } from '../constants/multicallContracts'
 import { ChainMap } from '../constants/chainsMap'
 
 const getContract = (abi, address, web3) => {
-  const _web3 = web3 ?? web3NoAccount
+  // const _web3 = web3 ?? web3NoAccount
   return new _web3.eth.Contract(abi, address)
 }
 
