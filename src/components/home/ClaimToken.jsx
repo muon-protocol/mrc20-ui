@@ -9,6 +9,7 @@ import { Image, Button, BorderBottom, ImageSpin } from '../common/FormControlls'
 import { Type } from '../common/Text'
 import { ChangeNetwork, Span } from '../home'
 import { addRPC } from '../../helper/addRPC'
+import { NameChainMap } from '../../constants/chainsMap'
 
 const NetWork = styled.div`
   width: 40px;
@@ -94,14 +95,14 @@ const ClaimToken = (props) => {
             ) : (
               <Button
                 margin="15px 0 30px"
-                background=" rgba(255, 255, 255, 0.5)"
-                border="0.5px solid rgba(210, 210, 210, 0.5)"
+                background={'rgba(255, 164, 81, 0.2)'}
+                border="1px solid rgba(255, 164, 81, 1)"
                 height="35px"
                 cursor="pointer"
                 onClick={() => addRPC(claim.toChain)}
               >
                 <Type.SM fontSize="12.5px" color="#313144" cursor="pointer">
-                  Change Network to Claim
+                  Switch to {NameChainMap[claim.toChain]}
                 </Type.SM>
               </Button>
             )}

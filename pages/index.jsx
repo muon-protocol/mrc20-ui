@@ -6,7 +6,6 @@ import Muon from 'muon'
 import { useWeb3React } from '@web3-react/core'
 import { useMuonState } from '../src/context'
 import { findChain, toWei, findToken } from '../src/utils/utils'
-// import multicall from '../src/helper/multicall'
 const ClaimToken = dynamic(() => import('../src/components/home/ClaimToken'))
 const CustomTranaction = dynamic(() =>
   import('../src/components/common/CustomTranaction')
@@ -30,7 +29,7 @@ import {
   TransactionStatus,
   TransactionType
 } from '../src/constants/transactionStatus'
-import { findAndAddToken, getToken } from '../src/helper/Tokens'
+import { findAndAddToken } from '../src/helper/Tokens'
 import useWeb3, { useCrossWeb3 } from '../src/hooks/useWeb3'
 // import getAssetBalances from '../src/helper/getAssetBalances'
 import { ERC20_ABI, MRC20Bridge_ABI } from '../src/constants/ABI'
@@ -74,6 +73,20 @@ const HomePage = () => {
       setWrongNetwork(false)
     }
   }, [chainId, state.bridge, account])
+
+  //  set ChainId and account
+  React.useEffect(() => {
+    if (account) {
+      dispatch({
+        type: 'UPDATE_NETWORK_INFO',
+        payload: {
+          account,
+          chainId,
+          network: NameChainMap[chainId]
+        }
+      })
+    }
+  }, [chainId, account])
 
   React.useEffect(() => {
     dispatch({
@@ -249,31 +262,18 @@ const HomePage = () => {
       if (claims.length === 0) setActive('bridge')
     }
 
-    if (account) {
-      dispatch({
-        type: 'UPDATE_NETWORK_INFO',
-        payload: {
-          account,
-          chainId,
-          network: NameChainMap[chainId]
-        }
-      })
-      if (originWeb3 && destWeb3) {
-        getClaims()
-      }
+    if (account && originWeb3 && destWeb3) {
+      getClaims()
     }
 
     const interval = setInterval(() => {
-      if (account) {
-        // getBalance()
-        if (originWeb3 && destWeb3) {
-          getClaims()
-        }
+      if (account && originWeb3 && destWeb3) {
+        getClaims()
       }
     }, 15000)
 
     return () => clearInterval(interval)
-  }, [account, chainId, fetch, originWeb3, destWeb3])
+  }, [account, fetch, originWeb3, destWeb3])
 
   React.useEffect(() => {
     const checkToken = async () => {

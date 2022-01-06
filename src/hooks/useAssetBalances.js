@@ -5,21 +5,16 @@ import { ERC20_ABI } from '../constants/ABI'
 import multicall from '../helper/multicall'
 import { getBalanceNumber } from '../helper/formatBalance'
 import { useCrossWeb3 } from './useWeb3'
+import { getWeb3NoAccount } from '../helper/web3'
 
 const useAssetBalances = (chains, tokens) => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const [balances, setBalances] = React.useState(null)
-
-  let crossWeb3 = {}
-  for (let index = 0; index < chains.length; index++) {
-    const chainId = chains[index]
-    const web3 = useCrossWeb3(chainId)
-    crossWeb3 = { ...crossWeb3, [chainId]: web3 }
-  }
   React.useEffect(() => {
     const fetchBalances = async () => {
       for (let index = 0; index < chains.length; index++) {
         const chainId = chains[index]
+        const web3 = getWeb3NoAccount(chainId)
         const calls = tokens
           .filter((item) => item.address[chainId])
           .map((token) => {
@@ -29,12 +24,7 @@ const useAssetBalances = (chains, tokens) => {
               params: [account]
             }
           })
-        const result = await multicall(
-          crossWeb3[chainId],
-          ERC20_ABI,
-          calls,
-          chainId
-        )
+        const result = await multicall(web3, ERC20_ABI, calls, chainId)
         if (result && result.length > 0) {
           for (let i = 0; i < result.length; i++) {
             const balance = result[i]
