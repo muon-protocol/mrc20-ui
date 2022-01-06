@@ -44,17 +44,20 @@ const Input = styled.input.attrs({
   }
   ::placeholder {
     color: #909090;
+    font-size: 12px;
     opacity: 1; /* Firefox */
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: #909090;
+    font-size: 12px;
   }
 
   ::-ms-input-placeholder {
     /* Microsoft Edge */
     color: #909090;
+    font-size: 12px;
   }
 `
 const Max = styled.div`
@@ -85,7 +88,7 @@ const AmountBox = (props) => {
             {tokenBalance}
           </Type.SM>
           <Max onClick={() => onChange(tokenBalance.split(' ')[0])}>
-            <Type.SM color="#FFFFFF" fontSize="10px">
+            <Type.SM color="#FFFFFF" fontSize="10px" cursor="pointer">
               Max
             </Type.SM>
           </Max>
@@ -95,7 +98,7 @@ const AmountBox = (props) => {
       <Amount error={errorAmount}>
         <Input
           value={value}
-          // placeholder="Enter Amount"
+          placeholder="Enter Amount"
           onChange={(e) => onChange(e.target.value)}
         />
       </Amount>

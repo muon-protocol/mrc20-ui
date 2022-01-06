@@ -11,19 +11,25 @@ export const Span = styled.div`
   color: #5551ff;
 `
 export const CopyBtn = styled.div`
+  height: 15px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid #d0d0d3;
+  border-radius: 4px;
   width: 45px;
   padding: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  1px solid #D3DBE3;
   border-radius: 25px;
   font-style: normal;
   font-weight: 500;
   font-size: 7.5px;
   cursor: pointer;
   text-transform: uppercase;
-  color: #acaff3;
+  color: #373749;
+  &:hover {
+    filter: brightness(0.9);
+  }
 `
 export const WrapTokenAddress = styled.div`
   width: ${({ width }) => width};
@@ -171,7 +177,7 @@ export const BoxDestination = styled.div`
   padding: ${({ padding }) => (padding ? padding : '20px')};
   border-top: none;
   position: absolute;
-  bottom: -10px;
+  bottom: 0;
 `
 export const ModalItem = styled.div`
   background: #2b2b3c;

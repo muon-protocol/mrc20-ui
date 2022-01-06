@@ -9,6 +9,7 @@ import { Button } from '../common/FormControlls'
 import { Type } from '../common/Text'
 import { addRPC } from '../../helper/addRPC'
 import { NameChainMap } from '../../constants/chainsMap'
+import { validChains } from '../../constants/chains'
 
 const ActionButton = (props) => {
   const { state } = useMuonState()
@@ -127,18 +128,28 @@ const ActionButton = (props) => {
         wrongNetwork || validChainId ? (
           <Button
             margin="50px 0 0"
-            background={wrongNetwork ? '#DC0000' : 'rgba(255, 164, 81, 0.2)'}
+            background={'rgba(255, 164, 81, 0.2)'}
             border="1px solid rgba(255, 164, 81, 1)"
-            cursor="default"
-            onClick={() => (wrongNetwork ? undefined : addRPC(validChainId))}
+            cursor="pointer"
+            onClick={() =>
+              wrongNetwork
+                ? addRPC(
+                    state.bridge.fromChain.id
+                      ? state.bridge.fromChain.id
+                      : validChains[0]
+                  )
+                : addRPC(validChainId)
+            }
           >
-            <Type.MD
-              color={wrongNetwork ? '#ffffff' : 'rgba(49, 49, 68, 1)'}
-              fontSizeXS="16px"
-              fontWeight="bold"
-            >
+            <Type.MD color={'rgba(49, 49, 68, 1)'} fontWeight="bold">
               {wrongNetwork
-                ? 'Wrong Network'
+                ? ` Switch to ${
+                    NameChainMap[
+                      state.bridge.fromChain.id
+                        ? state.bridge.fromChain.id
+                        : validChains[0]
+                    ]
+                  }`
                 : ` Switch to ${NameChainMap[validChainId]}`}
             </Type.MD>
           </Button>

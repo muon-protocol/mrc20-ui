@@ -11,12 +11,11 @@ import { ChangeNetwork, Span } from '../home'
 import { addRPC } from '../../helper/addRPC'
 
 const NetWork = styled.div`
-  width: 26px;
-  height: 10px;
+  width: 40px;
+  height: 15px;
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #d3dbe3;
-  box-sizing: border-box;
-  border-radius: 2px;
+  border: 1px solid #d0d0d3;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,7 +64,7 @@ const ClaimToken = (props) => {
                   {token.symbol}
                 </Type.MD>
                 <NetWork>
-                  <Type.XS color="#ACAFF3" fontSize="6px">
+                  <Type.XS color="#373749" fontSize="9px">
                     {chain.symbol}
                   </Type.XS>
                 </NetWork>
@@ -98,7 +97,7 @@ const ClaimToken = (props) => {
                 background=" rgba(255, 255, 255, 0.5)"
                 border="0.5px solid rgba(210, 210, 210, 0.5)"
                 height="35px"
-                cursor="default"
+                cursor="pointer"
                 onClick={() => addRPC(claim.toChain)}
               >
                 <Type.SM fontSize="12.5px" color="#313144" cursor="pointer">

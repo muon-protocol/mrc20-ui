@@ -11,6 +11,7 @@ import { Image } from '../common/FormControlls'
 import MuonNetwork from '../common/MuonNetwork'
 import { validChains } from '../../constants/chains'
 import { addRPC } from '../../helper/addRPC'
+import { useMuonState } from '../../context'
 // import WalletModal from '../common/WalletModal'
 const WalletModal = dynamic(() => import('../common/WalletModal'))
 
@@ -73,6 +74,7 @@ const Label = styled.span`
 
 const Menu = () => {
   const { account, chainId } = useWeb3React()
+  const { state } = useMuonState()
 
   const [open, setOpen] = React.useState(false)
 
@@ -80,6 +82,9 @@ const Menu = () => {
     setOpen(true)
   }
 
+  const validChainId = state.bridge.fromChain.id
+    ? state.bridge.fromChain.id
+    : validChains[0]
   return (
     <>
       <AppInfo>
@@ -98,10 +103,10 @@ const Menu = () => {
             <Button
               padding="0 17px !important"
               active={account}
-              onClick={() => addRPC(validChains[0])}
+              onClick={() => addRPC(validChainId)}
             >
               <Type.SM fontSize="15px" color="#313144">
-                Change to {NameChainMap[validChains[0]]}
+                Change to {NameChainMap[validChainId]}
               </Type.SM>
             </Button>
           )
@@ -118,19 +123,18 @@ const Menu = () => {
           </Button>
         )}
 
-        {validChains.includes(chainId) ? (
-          NameChainMap[chainId] && (
-            <Button
-              hide={!NameChainMap[chainId]}
-              active={validChains.includes(chainId)}
-            >
-              <Label>Network:</Label>
-              <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
-                {NameChainMap[chainId] || 'NaN'}
-              </Type.SM>
-            </Button>
-          )
-        ) : (
+        {validChains.includes(chainId) && NameChainMap[chainId] && (
+          <Button
+            hide={!NameChainMap[chainId]}
+            active={validChains.includes(chainId)}
+          >
+            <Label>Network:</Label>
+            <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
+              {NameChainMap[chainId] || 'NaN'}
+            </Type.SM>
+          </Button>
+        )}
+        {!validChains.includes(chainId) && account && (
           <Button border="1px solid #DC0000">
             <Status color="#DC0000" />
             <Type.MD color="#313144" padding="0 0 0 3px">

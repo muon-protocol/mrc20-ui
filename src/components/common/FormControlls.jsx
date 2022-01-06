@@ -13,8 +13,12 @@ export const Selector = styled.div`
   color: ${({ color }) => (color ? color : '#919191')};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
+  cursor: ${({ cursor }) => (cursor ? cursor : 'default')};
   &:focus {
     outline: none;
+  }
+  &:hover {
+    filter: brightness(0.9);
   }
 `
 
@@ -24,7 +28,7 @@ export const Button = styled.button`
   align-items: center;
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '390px')};
   width: 100%;
-  height: ${({ height }) => (height ? height : '55px')};
+  height: ${({ height }) => (height ? height : '45px')};
   background: ${({ background }) => (background ? background : '#D7D7D7')};
   border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5px')};
   border: ${({ border }) => (border ? border : 'transparent')};
@@ -33,6 +37,11 @@ export const Button = styled.button`
   cursor: ${({ cursor }) => (cursor ? cursor : 'pointer')};
   &:focus {
     outline: none;
+  }
+
+  &:hover {
+    filter: ${({ cursor }) =>
+      cursor !== 'pointer' ? 'brightness(1)' : 'brightness(0.9)'};
   }
 `
 export const BorderBottom = styled.div`

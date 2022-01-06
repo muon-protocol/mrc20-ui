@@ -123,6 +123,7 @@ const SelectBox = (props) => {
         padding="0 18px 0 15px"
         onClick={handleOpenModal}
         border={border}
+        cursor="pointer"
       >
         {selectedValue ? (
           <Flex alignItems="center">
@@ -136,9 +137,9 @@ const SelectBox = (props) => {
             </Type.MD>
           </Flex>
         ) : (
-          <Type.MD color="#919191" fontSizeXXS="14px">
-            {/* {placeholder ? placeholder : label} */}
-          </Type.MD>
+          <Type.SM color="#919191" fontSizeXXS="14px">
+            {placeholder ? placeholder : label}
+          </Type.SM>
         )}
 
         <Arrow

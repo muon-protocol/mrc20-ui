@@ -27,11 +27,11 @@ const Info = (props) => {
     >
       <WrapTokenAddress width="100%">
         <Flex alignItems="center">
-          <Circle background={generateBridge ? '#00e376' : '#DC5151'} />
+          <Circle background={generateBridge ? '#00aa58' : '#DC5151'} />
           <Type.SM
             fontSize="12px"
             fontSizeXXS="9px"
-            color={generateBridge ? 'rgba(0, 227, 118, 1)' : '#DC5151'}
+            color={generateBridge ? '#00aa58' : '#DC5151'}
           >
             {`${state.bridge.token.name} ${
               !generateBridge ? 'is not yet available on' : 'is available on'

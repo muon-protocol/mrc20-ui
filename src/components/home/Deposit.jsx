@@ -7,11 +7,12 @@ import AmountBox from '../common/AmountBox'
 import { Box, Container } from '../common/Container'
 import { Type } from '../common/Text'
 import SelectBox from './SelectBox'
-import { chains } from '../../constants/chains'
+import { chains, validChains } from '../../constants/chains'
 import { useMuonState } from '../../context'
 import { GradientTitle, Title, TriangleDown, BoxDestination } from '.'
 import MuonNetwork from '../common/MuonNetwork'
 import NetworkHint from '../common/NetworkHint'
+import { NameChainMap } from '../../constants/chainsMap'
 
 const CopyTokenAddress = dynamic(() => import('./CopyTokenAddress'))
 const Info = dynamic(() => import('./Info'))
@@ -48,6 +49,9 @@ const Deposit = (props) => {
           <Flex flexDirection="column" width="100%">
             <SelectBox
               label="Select Origin Chain"
+              placeholder={`${NameChainMap[validChains[0]]}, ${
+                NameChainMap[validChains[1]]
+              }, ...`}
               data={chains}
               type="chain"
               value={state.bridge.fromChain.id}
@@ -84,10 +88,10 @@ const Deposit = (props) => {
               tokenBalance={state.tokenBalance}
               errorAmount={errorAmount}
               onChange={(data) => updateBridge('amount', data)}
-              margin={state.bridge.token.id ? '0 0 5px' : '0 0 45px'}
+              margin={state.bridge.token.id ? '0 0 5px' : '0 0 35px'}
             />
             {state.bridge.token && state.bridge.fromChain && (
-              <CopyTokenAddress />
+              <CopyTokenAddress marginBottom="0" />
             )}
           </Flex>
         </Box>
@@ -96,7 +100,9 @@ const Deposit = (props) => {
           <SelectBox
             marginBottom={state.bridge.toChain.id ? '5px' : '35px'}
             label="Select Destination Chain"
-            placeholder="Destination Chain"
+            placeholder={`${NameChainMap[validChains[0]]}, ${
+              NameChainMap[validChains[1]]
+            }, ...`}
             data={destChains}
             type="chain"
             value={state.bridge.toChain.id}
