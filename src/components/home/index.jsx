@@ -173,3 +173,17 @@ export const BoxDestination = styled.div`
   position: absolute;
   bottom: -10px;
 `
+export const ModalItem = styled.div`
+  background: #2b2b3c;
+  border: 1px solid rgba(172, 175, 243, 0.29);
+  margin: 7.5px auto;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background: #42425f;
+  }
+`

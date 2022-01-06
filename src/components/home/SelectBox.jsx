@@ -8,25 +8,12 @@ import { Type } from '../common/Text'
 const Modal = dynamic(() => import('../common/Modal'))
 // import Modal from '../common/Modal'
 import { useMuonState } from '../../context'
+import { ModalItem } from '.'
 
 const Wrapper = styled.div`
   width: 100%;
   margin-bottom: ${({ marginBottom }) =>
     marginBottom ? marginBottom : '20px'};
-`
-const Item = styled.div`
-  background: #2b2b3c;
-  border: 1px solid rgba(172, 175, 243, 0.29);
-  margin: 7.5px auto;
-  padding: 10px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background: #42425f;
-  }
 `
 const ContentItem = styled(Flex)`
   box-sizing: unset !important;
@@ -70,7 +57,7 @@ const SelectBox = (props) => {
     data.map((item, index) => {
       if (type === 'chain') {
         return (
-          <Item
+          <ModalItem
             key={index}
             onClick={() => {
               onChange(item)
@@ -86,13 +73,13 @@ const SelectBox = (props) => {
                 {item.name}
               </Type.MD>
             </ContentItem>
-          </Item>
+          </ModalItem>
         )
       } else {
         if (item && item.address[state.bridge.fromChain.id]) {
           const icon = item.symbol.toLowerCase()
           return (
-            <Item
+            <ModalItem
               key={index}
               onClick={() => {
                 onChange(item)
@@ -118,7 +105,7 @@ const SelectBox = (props) => {
               <Type.MD color="#D3DBE3">
                 {item.balances[state.bridge.fromChain.id]}
               </Type.MD>
-            </Item>
+            </ModalItem>
           )
         }
       }
