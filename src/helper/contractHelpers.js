@@ -1,4 +1,4 @@
-import web3NoAccount from './web3'
+import { web3NoAccount } from './web3'
 import { MultiCall_ABI } from '../constants/ABI'
 import { MULTICALL_NETWORKS } from '../constants/multicallContracts'
 import { ChainMap } from '../constants/chainsMap'
