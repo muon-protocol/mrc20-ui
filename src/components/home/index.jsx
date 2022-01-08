@@ -36,12 +36,12 @@ export const WrapTokenAddress = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 576px) {
-    flex-direction: column;
-    & > * {
-      margin-bottom: 5px;
-    }
-  }
+  // @media screen and (max-width: 576px) {
+  //   flex-direction: column;
+  //   & > * {
+  //     margin-bottom: 5px;
+  //   }
+  // }
 `
 export const Wrapper = styled.div`
   display: flex;
@@ -79,12 +79,12 @@ export const ClaimWrapper = styled(Box)`
 export const WrapperInfo = styled(Flex)`
   margin-bottom: ${({ marginBottom }) =>
     marginBottom ? marginBottom : '22px !important'};
-  @media screen and (max-width: 576px) {
-    flex-direction: column;
-    & > * {
-      margin-bottom: 5px;
-    }
-  }
+  // @media screen and (max-width: 576px) {
+  //   flex-direction: column;
+  //   & > * {
+  //     margin-bottom: 5px;
+  //   }
+  // }
 `
 export const TabContainer = styled(Flex)`
   width: 100%;
