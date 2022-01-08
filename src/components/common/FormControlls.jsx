@@ -67,10 +67,10 @@ export const Input = styled.input`
   padding: 0 17px;
   @media screen and (max-width: 576px) {
     font-size: ${({ fontSizeXS }) => (fontSizeXS ? fontSizeXS : '13px')};
-    max-width: 150px;
+    // max-width: 150px;
   }
   @media screen and (max-width: 460px) {
-    max-width: 120px;
+    // max-width: 120px;
     /* font-size: 10px; */
   }
   ::placeholder {

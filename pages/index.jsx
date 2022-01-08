@@ -584,12 +584,12 @@ const HomePage = () => {
       if (!account) {
         return
       }
-
       if (
+        parseFloat(state.bridge.amount) <= 0 ||
         state.bridge.amount === '0' ||
         state.bridge.amount === '' ||
-        state.bridge.amount >
-          state.bridge.token.balances[state.bridge.fromChain.id]
+        parseFloat(state.bridge.amount) >
+          parseFloat(state.bridge.token.balances[state.bridge.fromChain.id])
       ) {
         setErrorAmount(true)
         return

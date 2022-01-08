@@ -41,7 +41,7 @@ const Deposit = (props) => {
       <Title>Muon MRC20 </Title>
       <GradientTitle margin="0 0 10px">Cross-Chain Transfer</GradientTitle>
       {/* <Flex flexDirection="column" width="100%"> */}
-      <Container>
+      <Container maxWidth="470px">
         <Box
           background="linear-gradient(0deg, #D3DBE3 0%, rgba(231, 235, 243, 0) 126.95%)"
           // minHeight="395px"

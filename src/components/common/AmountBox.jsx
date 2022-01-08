@@ -96,6 +96,7 @@ const AmountBox = (props) => {
         <Input
           value={value}
           placeholder="Enter Amount"
+          min={`0`}
           onChange={(e) => onChange(e.target.value)}
         />
       </Amount>
