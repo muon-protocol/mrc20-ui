@@ -12,7 +12,7 @@ const Amount = styled.div`
   border-radius: 5px;
   padding: 5px 10px;
   height: 45px;
-  border: ${({ error }) => (error ? '1px solid #DC5151' : '1px solid #ffffff')};
+  border: ${({ error }) => (error ? '2px solid #DC5151' : '1px solid #ffffff')};
 `
 
 const Wrapper = styled.div`

@@ -106,7 +106,7 @@ const Menu = () => {
               onClick={() => addRPC(validChainId)}
             >
               <Type.SM fontSize="15px" color="#313144">
-                Change to {NameChainMap[validChainId]}
+                Switch to {NameChainMap[validChainId]}
               </Type.SM>
             </Button>
           )
