@@ -18,6 +18,10 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 576px) {
+    height: 45px;
+    padding: 0 10px;
+  }
 `
 
 const Content = styled.div``

@@ -20,6 +20,11 @@ const AppInfo = styled(Flex)`
   & > * {
     margin-right: 10px;
   }
+  .hide-on-mobile {
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
 `
 
 const Button = styled.button`
@@ -38,14 +43,16 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #919191;
-  @media (max-width: 380px) {
-    font-size: 13px !important;
-    padding: 0 3px;
+  @media (max-width: 576px) {
+    height: 30px;
+    font-size: 13px;
+    padding: 0 10px;
+    /* display: ${({ hide }) => (hide ? 'none' : 'flex')}; */
   }
-  @media (max-width: 767px) {
-    display: ${({ hide }) => (hide ? 'none' : 'flex')};
+  @media (max-width: 380px) {
+    font-size: 12px !important;
+    padding: 0 10px;
   }
   &:hover {
     filter: ${({ active }) => (active ? 'brightness(0.9)' : 'brightness(1)')};
@@ -114,6 +121,7 @@ const Menu = () => {
             <Button
               padding="0 17px !important"
               active={account}
+              className="hide-on-mobile"
               onClick={() => addRPC(validChainId)}
             >
               <Type.SM fontSize="15px" color="#313144">
@@ -138,6 +146,7 @@ const Menu = () => {
           <Button
             hide={!NameChainMap[chainId]}
             active={validChains.includes(chainId)}
+            className="hide-on-mobile"
           >
             <Label>Network:</Label>
             <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
