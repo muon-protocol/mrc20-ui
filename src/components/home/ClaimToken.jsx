@@ -12,7 +12,7 @@ import { addRPC } from '../../helper/addRPC'
 import { NameChainMap } from '../../constants/chainsMap'
 
 const NetWork = styled.div`
-  width: 40px;
+  width: 50px;
   height: 15px;
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid #d0d0d3;
@@ -22,7 +22,7 @@ const NetWork = styled.div`
   justify-content: center;
   letter-spacing: 0.005em;
   margin-left: 7px;
-  padding: 2px 6px;
+  // padding: 2px 6px;
 `
 
 const ClaimToken = (props) => {

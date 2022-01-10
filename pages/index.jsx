@@ -266,13 +266,13 @@ const HomePage = () => {
       getClaims()
     }
 
-    const interval = setInterval(() => {
-      if (account && originWeb3 && destWeb3) {
-        getClaims()
-      }
-    }, 15000)
+    // const interval = setInterval(() => {
+    //   if (account && originWeb3 && destWeb3) {
+    //     getClaims()
+    //   }
+    // }, 15000)
 
-    return () => clearInterval(interval)
+    // return () => clearInterval(interval)
   }, [account, fetch, originWeb3, destWeb3])
 
   React.useEffect(() => {
@@ -728,6 +728,26 @@ const HomePage = () => {
           depositNetwork: fromChain.id
         })
         .call()
+      if (!muonResponse.confirmed) {
+        const errorMessage = muonResponse.error?.message
+          ? muonResponse.error.message
+          : muonResponse.error
+          ? muonResponse.error
+          : 'Muon response failed'
+        dispatch({
+          type: 'UPDATE_TRANSACTION',
+          payload: {
+            type: TransactionType.SWAP,
+            message: errorMessage,
+            status: TransactionStatus.FAILED,
+            chainId: toChain.id,
+            toChain: toChain.symbol,
+            amount: amount,
+            tokenSymbol: token.symbol
+          }
+        })
+        return
+      }
       let { sigs, reqId } = muonResponse
       const token = findToken(Number(claim.tokenId.toString()))
 
