@@ -20,7 +20,7 @@ const NetworkHint = () => {
   const validChain = state.bridge.fromChain.id
 
   return (
-    <Flex style={{ margin: '0px 0 22px 5px', alignItems: 'center' }}>
+    <Flex margin="0px 0px 22px 5px" alignItems="center">
       {!chainId ? (
         <>
           <Circle color="#ff6a00" />

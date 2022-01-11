@@ -7,6 +7,7 @@ const TextWrapper = styled(Text)`
   cursor: ${({ cursor }) => (cursor ? cursor : 'default')};
   position: ${({ position }) => position};
   font-weight: ${({ fontWeight }) => fontWeight};
+  text-transform: ${(textTransform) => textTransform};
   @media screen and (max-width: 576px) {
     font-size: ${({ fontSizeXS }) => fontSizeXS};
   }
