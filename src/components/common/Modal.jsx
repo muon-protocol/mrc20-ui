@@ -80,7 +80,7 @@ const Modal = (props) => {
         alignItems="center"
         padding={padding ? padding : '15px 15px 15px'}
       >
-        <Type.MD color="#D3DBE3" fontWeight="bold" fontSizeXS="16px">
+        <Type.MD color="#D3DBE3" fontWeight="bold">
           {title}
         </Type.MD>
         <ImageWithCursor
