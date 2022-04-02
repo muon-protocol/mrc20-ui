@@ -3,16 +3,14 @@ import { Flex } from 'rebass'
 import dynamic from 'next/dynamic'
 
 import styled from 'styled-components'
-import { Type } from '../common/Text'
-import { formatAddress } from '../../utils/utils'
+import { Type } from '../text/Text'
+import { formatAddress } from '../../utils/formatAddress'
 import { useWeb3React } from '@web3-react/core'
 import { NameChainMap } from '../../constants/chainsMap'
 import MuonNetwork from '../common/MuonNetwork'
-import { validChains } from '../../constants/chains'
-import { addRPC } from '../../helper/addRPC'
-import { useMuonState } from '../../context'
-// import WalletModal from '../common/WalletModal'
-const WalletModal = dynamic(() => import('../common/WalletModal'))
+import { validChains } from '../../constants/settings'
+import { addRPC } from '../../utils/addRPC'
+const WalletModal = dynamic(() => import('../modal/WalletModal'))
 
 const Image = styled.img``
 
@@ -30,8 +28,7 @@ const AppInfo = styled(Flex)`
 const Button = styled.button`
   padding: ${({ padding }) => (padding ? padding : '0 15px')};
   cursor: ${({ active }) => (active ? 'pointer' : 'default')};
-  border: ${({ active, border }) =>
-    border ? border : active ? '1px solid #00AA58' : '1px solid #d2d2d2'};
+  border: ${({ active, border }) => (border ? border : active ? '1px solid #00AA58' : '1px solid #d2d2d2')};
   height: 35px;
   background: #f8faff;
   border-radius: 5px;
@@ -57,10 +54,12 @@ const Button = styled.button`
   &:hover {
     filter: ${({ active }) => (active ? 'brightness(0.9)' : 'brightness(1)')};
   }
+  &:focus {
+    outline: none;
+  }
 `
 const Status = styled.div`
-  background-color: ${({ active, color }) =>
-    color ? color : active ? '#00e376' : '#FFA451'};
+  background-color: ${({ active, color }) => (color ? color : active ? '#00e376' : '#FFA451')};
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -85,9 +84,8 @@ const Label = styled.span`
   }
 `
 
-const Menu = () => {
+const Menu = ({ selectedChain }) => {
   const { account, chainId } = useWeb3React()
-  const { state } = useMuonState()
 
   const [open, setOpen] = React.useState(false)
 
@@ -95,9 +93,7 @@ const Menu = () => {
     setOpen(true)
   }
 
-  const validChainId = state.bridge.fromChain.id
-    ? state.bridge.fromChain.id
-    : validChains[0]
+  const validChainId = selectedChain ? selectedChain : validChains[0]
   return (
     <>
       <AppInfo>
@@ -130,11 +126,7 @@ const Menu = () => {
             </Button>
           )
         ) : (
-          <Button
-            padding="0 17px !important"
-            onClick={handleConnect}
-            active={account}
-          >
+          <Button padding="0 17px !important" onClick={handleConnect} active={account}>
             <Status active={account} />
             <Type.SM fontSize="15px" color="#313144" cursor="pointer">
               Connect Wallet
@@ -143,11 +135,7 @@ const Menu = () => {
         )}
 
         {validChains.includes(chainId) && NameChainMap[chainId] && (
-          <Button
-            hide={!NameChainMap[chainId]}
-            active={validChains.includes(chainId)}
-            className="hide-on-mobile"
-          >
+          <Button hide={!NameChainMap[chainId]} active={validChains.includes(chainId)} className="hide-on-mobile">
             <Label>Network:</Label>
             <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
               {NameChainMap[chainId] || 'NaN'}

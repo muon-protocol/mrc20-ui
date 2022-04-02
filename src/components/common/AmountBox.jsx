@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { FlexBetween } from './Container'
-import { Type } from '../common/Text'
+import { Type } from '../text/Text'
 import { Flex } from 'rebass'
 // import { ImageWithCursor } from './FormControlls'
 
@@ -16,13 +15,14 @@ const Amount = styled.div`
 `
 
 const Wrapper = styled.div`
+  width: 100%;
   margin: ${({ margin }) => (margin ? margin : '10px 0')};
 `
 const Input = styled.input.attrs({
   type: 'number',
   autocomplete: 'off',
   autocorrect: 'off',
-  spellcheck: 'false'
+  spellcheck: 'false',
 })`
   max-width: 450px;
   width: 100%;
@@ -93,12 +93,7 @@ const AmountBox = (props) => {
       </Flex>
 
       <Amount error={errorAmount}>
-        <Input
-          value={value}
-          placeholder="Enter Amount"
-          min={`0`}
-          onChange={(e) => onChange(e.target.value)}
-        />
+        <Input value={value} placeholder="Enter Amount" min={`0`} onChange={(e) => onChange(e.target.value)} />
       </Amount>
     </Wrapper>
   )

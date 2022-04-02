@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Type } from './Text'
 import { Flex } from 'rebass'
 import { useWeb3React } from '@web3-react/core'
-import { useMuonState } from '../../context/index'
 import { NameChainMap } from '../../constants/chainsMap'
+import { Type } from '../text/Text'
 
 const Circle = styled.div`
   width: 10px;
@@ -14,13 +13,11 @@ const Circle = styled.div`
   background-color: ${({ color }) => color ?? '#00AA58'};
 `
 
-const NetworkHint = () => {
-  const { state } = useMuonState()
+const NetworkHint = ({ validChain }) => {
   const { chainId } = useWeb3React()
-  const validChain = state.bridge.fromChain.id
 
   return (
-    <Flex margin="0px 0px 22px 5px" alignItems="center">
+    <Flex margin="0px 0px 22px 5px" alignItems="center" width="100%">
       {!chainId ? (
         <>
           <Circle color="#ff6a00" />

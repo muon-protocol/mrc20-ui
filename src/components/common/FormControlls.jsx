@@ -22,31 +22,8 @@ export const Selector = styled.div`
   }
 `
 
-export const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '390px')};
-  width: 100%;
-  height: ${({ height }) => (height ? height : '45px')};
-  background: ${({ background }) => (background ? background : '#D7D7D7')};
-  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5px')};
-  border: ${({ border }) => (border ? border : 'transparent')};
-  margin: ${({ margin }) => margin};
-  box-sizing: border-box;
-  cursor: ${({ cursor }) => (cursor ? cursor : 'pointer')};
-  &:focus {
-    outline: none;
-  }
-
-  &:hover {
-    filter: ${({ cursor }) =>
-      cursor !== 'pointer' ? 'brightness(1)' : 'brightness(0.9)'};
-  }
-`
 export const BorderBottom = styled.div`
-  border-bottom: ${({ border }) =>
-    border ? border : ' 1px solid rgba(172, 175, 243, 0.3)'};
+  border-bottom: ${({ border }) => (border ? border : ' 1px solid rgba(172, 175, 243, 0.3)')};
 `
 export const Input = styled.input`
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '400px')};
@@ -94,9 +71,9 @@ export const Input = styled.input`
 export const Image = styled.img`
   width: ${({ width }) => (width ? width : '26px')};
   height: ${({ height }) => (height ? height : '26px')};
-  padding-right: ${({ paddingRight }) =>
-    paddingRight ? paddingRight : '11px'};
+  padding-right: ${({ paddingRight }) => (paddingRight ? paddingRight : '11px')};
   box-sizing: ${({ boxSizing }) => boxSizing};
+  margin-left: ${({ marginLeft }) => (marginLeft ? marginLeft : '10px')};
 `
 
 export const ImageWithCursor = styled(Image)`

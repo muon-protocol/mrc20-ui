@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import styled from 'styled-components'
 const Menu = dynamic(() => import('./Menu'))
-// import Menu from './Menu'
 
 const Container = styled.div`
   background: #f8f8ff;
