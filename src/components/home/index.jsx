@@ -120,9 +120,6 @@ export const Title = styled.div`
   text-align: center;
   color: #313144;
   margin: ${({ margin }) => margin};
-  @media screen and (max-width: 1200px) {
-    display: none !important;
-  }
   @media screen and (max-width: 576px) {
     font-size: 17px;
   }
