@@ -16,7 +16,6 @@ const useSearchToken = () => {
   useEffect(() => {
     const searchToken = async () => {
       try {
-        console.log(bridge.fromChain && defaultTokens, bridge.fromChain, defaultTokens)
         // search address
         if (searchQuery && bridge.fromChain) {
           let result = await findAndAddToken(searchQuery, account, bridge.fromChain.id)
@@ -25,7 +24,6 @@ const useSearchToken = () => {
         //  filter based on chain
         else if (bridge.fromChain && defaultTokens) {
           const filter = defaultTokens.filter((item) => bridge.fromChain.id === item.chainId)
-          console.log({ filter })
           setTokens(filter)
         } else {
           setTokens([])

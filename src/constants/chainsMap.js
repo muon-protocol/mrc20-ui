@@ -205,9 +205,3 @@ export const rpcConfig = {
     blockExplorerUrls: ['https://cchain.explorer.avax.network/'],
   },
 }
-
-export const ChainGraphMap = {
-  [ChainMap.RINKEBY]: process.env.NEXT_PUBLIC_RINKEBY_GRAPH_URL,
-  [ChainMap.BSC_TESTNET]: process.env.NEXT_PUBLIC_BSC_TESTNET_GRAPH_URL,
-  [ChainMap.MATIC_TESTNET]: process.env.NEXT_PUBLIC_MATIC_TESTNET_GRAPH_URL,
-}

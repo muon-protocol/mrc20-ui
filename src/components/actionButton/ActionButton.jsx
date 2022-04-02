@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
-import { Button, ActionButton, WarningButton, ActionText } from '../button/Button'
+import { Button, ActionButton, ActionText } from '../button/Button'
 import { Type } from '../text/Text'
 import WalletModal from '../modal/WalletModal'
 import { ActionBtnType } from '../../constants/constants'
@@ -83,15 +83,6 @@ const ActionButtonComponent = (props) => {
           <ActionButton onClick={handleDeposit} active={!status.deposit}>
             <ActionText active={!status.deposit}>{status.deposit ? 'Depositing ...' : 'Deposit Asset'}</ActionText>
           </ActionButton>
-        )
-        break
-      case ActionBtnType.NOT_OWNER:
-        contentBtn = (
-          <WarningButton active={false}>
-            <Type.LG color="rgba(49, 49, 68, 1)" fontSizeXS="16px">
-              You’re not the owner of this NFT
-            </Type.LG>
-          </WarningButton>
         )
         break
 

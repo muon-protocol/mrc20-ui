@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'
 import { TransactionType } from '../constants/transactionStatus'
 import { sendTransaction } from '../utils/sendTx'
 
-const useCalim = () => {
+const useClaim = () => {
   const { account } = useWeb3React()
   const addTransaction = useAddTransaction()
   const web3 = useWeb3()
@@ -34,4 +34,4 @@ const useCalim = () => {
   return doClaim
 }
 
-export default useCalim
+export default useClaim

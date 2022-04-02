@@ -1,6 +1,8 @@
-export const validChains = [3, 4]
+import { ChainMap } from './chainsMap'
 
-const tokens = [
+export const validChains = [3, 4, 97]
+
+let tokens = [
   {
     chainId: 3,
     address: '0xA093B771F127FbBdbd2e2E722Aa2ee01F361384c',
@@ -19,15 +21,15 @@ const tokens = [
     logo: '/media/tokens/bt.svg',
     balance: 0,
   },
-  // {
-  //   chainId: 97,
-  //   address: '0x987Dcd895948c476654792d92f282A256099EA02',
-  //   name: 'BloodToken',
-  //   symbol: 'BT',
-  //   decimals: 18,
-  //   logo: '/media/tokens/bt.svg',
-  //   balance: 0,
-  // },
+  {
+    chainId: 97,
+    address: '0x987Dcd895948c476654792d92f282A256099EA02',
+    name: 'BloodToken',
+    symbol: 'BT',
+    decimals: 18,
+    logo: '/media/tokens/bt.svg',
+    balance: 0,
+  },
   // {
   //   chainId: 80001,
   //   address: '0xC879CE4DB4AeD72E1ad243A2F9d775e60BED0D33',
@@ -49,3 +51,9 @@ const tokens = [
 ]
 
 export default tokens
+
+export const ChainGraphMap = {
+  [ChainMap.RINKEBY]: process.env.NEXT_PUBLIC_RINKEBY_GRAPH_URL,
+  [ChainMap.ROPSTEN]: process.env.NEXT_PUBLIC_ROPSTEN_GRAPH_URL,
+  [ChainMap.BSC_TESTNET]: process.env.NEXT_PUBLIC_BSC_TESTNET_GRAPH_URL,
+}

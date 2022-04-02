@@ -1,6 +1,5 @@
-import axios from "axios"
-import { ChainGraphMap } from "../constants/chainsMap"
-import { validChains } from '../constants/settings'
+import axios from 'axios'
+import { validChains, ChainGraphMap } from '../constants/settings'
 
 const getDepositClaimTxs = async (user, chainId) => {
   let depositEntities = []
@@ -22,7 +21,7 @@ const getDepositClaimTxs = async (user, chainId) => {
             txId
             tokenId
             toChain
-            nftIds
+            amount
           }
           claimEntities(
             first: 1000, 
@@ -38,24 +37,20 @@ const getDepositClaimTxs = async (user, chainId) => {
       `
       skip += 1000
       let response = await axios.post(apiUrl, {
-        query: query 
+        query: query,
       })
       const data = response.data
-      if(data !== null && response.status === 200)
-      {
+      if (data !== null && response.status === 200) {
         let breakLoop = true
-        if(data.data?.depositEntities?.length)
-        {
+        if (data.data?.depositEntities?.length) {
           depositEntities = [...depositEntities, ...data.data.depositEntities]
           breakLoop = false
         }
-        if(data.data?.claimEntities?.length)
-        {
+        if (data.data?.claimEntities?.length) {
           claimEntities = [...claimEntities, ...data.data.claimEntities]
           breakLoop = false
         }
-        if(breakLoop)
-        {
+        if (breakLoop) {
           continueQuery = false
         }
       } else {
@@ -63,9 +58,9 @@ const getDepositClaimTxs = async (user, chainId) => {
       }
     }
   } catch (error) {
-    console.log("Error happend in fetching data from graph", error)
+    console.log('Error happend in fetching data from graph', error)
   }
-  return [depositEntities, claimEntities];
+  return [depositEntities, claimEntities]
 }
 
 export const getPendingTxs = async (account) => {
@@ -80,12 +75,11 @@ export const getPendingTxs = async (account) => {
     })
   )
   Object.keys(depositTxs).map((depositChain) => {
-    depositTxs[depositChain].map(dEntity => {
-      let found = claimTxs[dEntity.toChain].find(cEntity => {
+    depositTxs[depositChain].map((dEntity) => {
+      let found = claimTxs[dEntity.toChain].find((cEntity) => {
         return cEntity.fromChain === depositChain && cEntity.txId === dEntity.txId
       })
-      if(!found)
-      {
+      if (!found) {
         pendingTxs[dEntity.toChain] = pendingTxs[dEntity.toChain] || []
         dEntity['fromChain'] = depositChain
         pendingTxs[dEntity.toChain] = [...pendingTxs[dEntity.toChain], dEntity]

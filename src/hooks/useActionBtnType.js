@@ -7,11 +7,10 @@ const useActionBtnType = (allowance) => {
   const bridge = useBridge()
   useEffect(() => {
     let action = ActionBtnType.SELECT
-    if (!bridge.NFTOnOriginBridge && bridge.fromChain && bridge.token) action = ActionBtnType.ADD_MAIN_TOKEN
-    if (!bridge.NFTOnDestBridge && bridge.token) action = ActionBtnType.ADD_BRIDGE_TOKEN
+    if (!bridge.tokenOnOriginBridge && bridge.fromChain && bridge.token) action = ActionBtnType.ADD_MAIN_TOKEN
+    if (!bridge.tokenOnDestBridge && bridge.token) action = ActionBtnType.ADD_BRIDGE_TOKEN
 
-    if (allowance === '0' && bridge.fromChain && bridge.token && bridge.nftId && bridge.toChain)
-      action = ActionBtnType.APPROVE
+    if (allowance === '0' && bridge.fromChain && bridge.token && bridge.toChain) action = ActionBtnType.APPROVE
     if (
       allowance !== '0' &&
       bridge.fromChain &&

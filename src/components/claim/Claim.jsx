@@ -8,10 +8,10 @@ import { addRPC } from '../../utils/addRPC'
 import { NameChainMap, rpcConfig } from '../../constants/chainsMap'
 import { useWeb3React } from '@web3-react/core'
 import { BorderBottom, ImageSpin } from '../common/FormControlls'
-import useCalim from '../../hooks/useCalim'
+import useClaim from '../../hooks/useClaim'
 import { useSetFetch } from '../../state/bridge/hooks'
-import { MRC721Bridge } from '../../constants/contracts'
-import { MRC721Bridge_ABI } from '../../constants/ABI'
+import { MRC20Bridge } from '../../constants/contracts'
+import { MRC20Bridge_ABI } from '../../constants/ABI'
 import MuonResponse from '../../utils/MuonResponse'
 import { addTransaction } from '../../state/transactions/actions'
 import { TransactionStatus, TransactionType } from '../../constants/transactionStatus'
@@ -20,16 +20,16 @@ import { useClaims, useDelClaim } from '../../state/application/hooks'
 const Claim = () => {
   const delClaim = useDelClaim()
   const claims = useClaims()
-  const { chainId } = useWeb3React()
+  const { chainId, account } = useWeb3React()
   const [lock, setLock] = useState(false)
-  const doClaim = useCalim()
+  const doClaim = useClaim()
   const setFetch = useSetFetch()
 
   const handleClaim = async (claim) => {
     setLock(claim)
 
-    const muonResponse = await MuonResponse('mrc721_bridge', 'claim', {
-      depositAddress: MRC721Bridge[claim.fromChain],
+    const muonResponse = await MuonResponse('mrc20_bridge', 'claim', {
+      depositAddress: MRC20Bridge[claim.fromChain],
       depositTxId: claim.txId,
       depositNetwork: claim.fromChain,
     })
@@ -45,11 +45,14 @@ const Claim = () => {
       })
       return
     }
-    let { sigs, reqId, data } = muonResponse
-    doClaim(claim, MRC721Bridge[claim.toChain], MRC721Bridge_ABI, [
-      claim.nftId,
-      data.result.nftParams?data.result.nftParams:"0x",
-      [claim.fromChain, claim.toChain, claim.tokenId, claim.txId],
+    let { sigs, reqId } = muonResponse
+    doClaim(claim, MRC20Bridge[claim.toChain], MRC20Bridge_ABI, [
+      account,
+      claim.amount,
+      claim.fromChain,
+      claim.toChain,
+      claim.tokenId,
+      claim.txId,
       reqId,
       sigs,
     ])
@@ -74,12 +77,13 @@ const Claim = () => {
         <Type.SM color="#313144">Claim Token</Type.SM>
       </Flex>
       {claims.map((claim, index) => {
+        console.log({ claim })
         return (
           <Flex width="100%" padding="0 3px" key={index} flexDirection="column">
             <Flex justifyContent="space-between" width="100%" alignItems="center" padding="30px 0 0">
               <Flex alignItems="center">
                 <Type.MD color="#313144" fontWeight="bold">
-                  {`${claim.name} #${claim.nftId}`}
+                  {claim.name}
                 </Type.MD>
                 <NetWork>
                   <Type.XS color="#313144" fontSize="9px">
@@ -97,7 +101,7 @@ const Claim = () => {
                 onClick={() => handleClaim({ ...claim })}
               >
                 <Type.SM fontSize="12.5px" color="#ffffff" cursor="pointer">
-                  Claim NFT
+                  Claim
                 </Type.SM>
                 {lock &&
                   lock.fromChain === claim.fromChain &&

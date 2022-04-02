@@ -26,7 +26,6 @@ const Deposit = () => {
     const checkTokenExist = async () => {
       if (bridge.fromChain && bridge.token) {
         let tokenId = await getTokenId(bridge.fromChain.id, bridge.token.address)
-        console.log({ tokenId })
         changeTokenOnOriginBridge(tokenId)
       }
     }
@@ -38,7 +37,6 @@ const Deposit = () => {
       setFetchExist(true)
       if (bridge.toChain) {
         let address = await checkTokenOnDestBridge(bridge.toChain.id, bridge.tokenOnOriginBridge)
-        console.log({ address })
         if (address !== AddressZero) {
           changeTokenOnDestBridge(address)
         } else {

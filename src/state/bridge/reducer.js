@@ -35,7 +35,6 @@ export default createReducer(initialState, (builder) => {
   })
   //   add amount
   builder.addCase(addAmount, (state, action) => {
-    console.log(action)
     return { ...state, amount: action.payload }
   })
   // Update token on bridge

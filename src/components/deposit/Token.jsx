@@ -25,7 +25,6 @@ const Token = (props) => {
   const [tokensList, setTokensList] = useState(tokens)
 
   useEffect(() => {
-    console.log({ tokens })
     setTokensList(tokens)
   }, [tokens])
 
@@ -57,7 +56,6 @@ const Token = (props) => {
     const filteredTokens = await findAndAddToken(address, account, fromChain.id)
     if (filteredTokens) updateTokenList(filteredTokens)
   }
-  console.log({ tokensList })
   return (
     <>
       <SelectBox
