@@ -20,6 +20,7 @@ import useDeposit from '../../hooks/useDeposit'
 import { useFetchClaimFromGraph } from '../../hooks/useFetchClaim'
 import { useAddClaim, useChangeClaims, useClaims } from '../../state/application/hooks'
 import { getPendingTxs } from '../../utils/graph'
+import { toWei } from '../../utils/wei'
 
 const MRC20 = () => {
   const { account, chainId } = useWeb3React()
@@ -30,7 +31,7 @@ const MRC20 = () => {
     bridge.token?.address,
     MRC20Bridge[bridge.fromChain?.id],
     ERC20_ABI,
-    fetch
+    bridge.fetch
   )
   const tx = useTx()
   const setApprove = useApprove()
@@ -74,6 +75,7 @@ const MRC20 = () => {
     if (!chainId) return
     if (tx.type === TransactionType.DEPOSIT && tx.status === TransactionStatus.PENDING) return
     if (bridge.fromChain.id !== chainId) return
+
     deposit()
       .then((receipt) => {
         fetchClaims({
@@ -83,7 +85,7 @@ const MRC20 = () => {
               tokenId: bridge.tokenOnOriginBridge,
               fromChain: bridge.fromChain.id,
               toChain: bridge.toChain.id,
-              amount: bridge.amount,
+              amount: toWei(bridge.amount),
             },
           ],
         }).then((cls) => cls.map((claim) => addClaim(claim)))

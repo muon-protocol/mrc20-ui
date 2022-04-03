@@ -5,7 +5,7 @@ export const validChains = [3, 4, 97]
 let tokens = [
   {
     chainId: 3,
-    address: '0xA093B771F127FbBdbd2e2E722Aa2ee01F361384c',
+    address: '0x72709925c7439687fA680995119715aeF21013B8',
     name: 'BloodToken',
     symbol: 'BT',
     decimals: 18,
@@ -14,7 +14,7 @@ let tokens = [
   },
   {
     chainId: 4,
-    address: '0xc3b99c2a46b8DC82C96B8b61ED3A4c5E271164D7',
+    address: '0x78C47CDffF49e93C20B0892BBb0446Ae44a75B2C',
     name: 'BloodToken',
     symbol: 'BT',
     decimals: 18,
@@ -23,7 +23,7 @@ let tokens = [
   },
   {
     chainId: 97,
-    address: '0x987Dcd895948c476654792d92f282A256099EA02',
+    address: '0x7e55e7A475F0188194b3EC0A1ecA896aaD77D808',
     name: 'BloodToken',
     symbol: 'BT',
     decimals: 18,

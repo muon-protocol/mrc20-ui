@@ -6,6 +6,7 @@ import { rpcConfig } from '../constants/chainsMap'
 import { useWeb3React } from '@web3-react/core'
 import { TransactionType } from '../constants/transactionStatus'
 import { sendTransaction } from '../utils/sendTx'
+import { fromWei } from '../utils/wei'
 
 const useClaim = () => {
   const { account } = useWeb3React()
@@ -20,7 +21,8 @@ const useClaim = () => {
           chainId: claim.toChain,
           fromChain: rpcConfig[claim.toChain].symbol,
           toChain: '',
-          tokenSymbol: claim.name,
+          tokenSymbol: claim.symbol,
+          amount: fromWei(claim.amount),
         }
 
         const contract = getContract(abi, destAddress, web3)

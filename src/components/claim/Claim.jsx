@@ -7,7 +7,7 @@ import { NetWork, ChangeNetwork, Span } from './Claim.style'
 import { addRPC } from '../../utils/addRPC'
 import { NameChainMap, rpcConfig } from '../../constants/chainsMap'
 import { useWeb3React } from '@web3-react/core'
-import { BorderBottom, ImageSpin } from '../common/FormControlls'
+import { BorderBottom, Image, ImageSpin } from '../common/FormControlls'
 import useClaim from '../../hooks/useClaim'
 import { useSetFetch } from '../../state/bridge/hooks'
 import { MRC20Bridge } from '../../constants/contracts'
@@ -16,6 +16,7 @@ import MuonResponse from '../../utils/MuonResponse'
 import { addTransaction } from '../../state/transactions/actions'
 import { TransactionStatus, TransactionType } from '../../constants/transactionStatus'
 import { useClaims, useDelClaim } from '../../state/application/hooks'
+import { fromWei } from '../../utils/wei'
 
 const Claim = () => {
   const delClaim = useDelClaim()
@@ -39,7 +40,7 @@ const Claim = () => {
         chainId: claim.toChain,
         fromChain: rpcConfig[claim.toChain].symbol,
         toChain: '',
-        tokenSymbol: claim.name,
+        tokenSymbol: claim.symbol,
         message: muonResponse.errorMessage,
         status: TransactionStatus.FAILED,
       })
@@ -77,13 +78,18 @@ const Claim = () => {
         <Type.SM color="#313144">Claim Token</Type.SM>
       </Flex>
       {claims.map((claim, index) => {
-        console.log({ claim })
         return (
           <Flex width="100%" padding="0 3px" key={index} flexDirection="column">
             <Flex justifyContent="space-between" width="100%" alignItems="center" padding="30px 0 0">
               <Flex alignItems="center">
+                <Image
+                  src={`/media/tokens/${claim.symbol.toLowerCase()}.svg`}
+                  boxSizing="unset"
+                  onError={(e) => (e.target.src = '/media/tokens/default.svg')}
+                  marginLeft="0"
+                />
                 <Type.MD color="#313144" fontWeight="bold">
-                  {claim.name}
+                  {claim.symbol}
                 </Type.MD>
                 <NetWork>
                   <Type.XS color="#313144" fontSize="9px">
@@ -91,6 +97,9 @@ const Claim = () => {
                   </Type.XS>
                 </NetWork>
               </Flex>
+              <Type.MD color="#313144" fontWeight="bold">
+                {fromWei(claim.amount)}
+              </Type.MD>
             </Flex>
             {claim.toChain === chainId ? (
               <Button

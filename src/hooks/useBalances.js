@@ -29,9 +29,7 @@ const useBalances = (chains, tokens, fetch, refresh) => {
           for (let i = 0; i < result.length; i++) {
             let token = tokens.find((token) => token.address === calls[i].address && token.chainId === chainId)
             let balance = fromWei(result[i].toString(), token.decimals)
-            // Object.assign(token, { balance })
-            // token['balance'] = balance
-            tokenB.push({ token, balance })
+            tokenB.push({ ...token, balance })
           }
         }
       }

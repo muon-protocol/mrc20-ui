@@ -60,6 +60,12 @@ const Transaction = () => {
       <Flex justifyContent="space-between" width="100%" marginTop="15px">
         {tx.tokenSymbol && (
           <Flex alignItems="center">
+            <Image
+              src={`/media/tokens/${tx.tokenSymbol.toLowerCase()}.svg`}
+              boxSizing="unset"
+              onError={(e) => (e.target.src = '/media/tokens/default.svg')}
+              marginLeft="0"
+            />
             <Type.MD color="#313144" fontWeight="bold">
               {tx.tokenSymbol}
             </Type.MD>

@@ -25,6 +25,7 @@ const SelectBox = (props) => {
               boxSizing="unset"
               width="20px"
               height="20px"
+              marginLeft="0"
             />
             <Type.MD color="#313144" cursor="pointer">
               {selectedValue.name}

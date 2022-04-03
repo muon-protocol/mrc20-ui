@@ -7,6 +7,7 @@ import { useBridge } from '../state/bridge/hooks'
 import { useAddTransaction } from '../state/transactions/hooks'
 import { getContract } from '../utils/contractHelpers'
 import { sendTransaction } from '../utils/sendTx'
+import { toWei } from '../utils/wei'
 import useWeb3 from './useWeb3'
 
 const useDeposit = (chainId) => {
@@ -22,7 +23,7 @@ const useDeposit = (chainId) => {
       chainId: bridge.fromChain?.id,
       fromChain: bridge.fromChain?.symbol,
       toChain: bridge.toChain?.symbol,
-      tokenSymbol: bridge.token?.name,
+      tokenSymbol: bridge.token?.symbol,
       amount: bridge.amount,
     }
     const deposit = useCallback(async () => {
@@ -34,7 +35,7 @@ const useDeposit = (chainId) => {
         return sendTransaction(
           contract,
           'deposit',
-          [bridge.amount, bridge.toChain.id, bridge.tokenOnOriginBridge],
+          [toWei(bridge.amount), bridge.toChain.id, bridge.tokenOnOriginBridge],
           account,
           info,
           addTransaction

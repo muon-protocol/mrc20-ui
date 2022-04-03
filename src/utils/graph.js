@@ -6,6 +6,7 @@ const getDepositClaimTxs = async (user, chainId) => {
   let claimEntities = []
   try {
     const apiUrl = ChainGraphMap[chainId]
+    console.log(apiUrl)
     let skip = 0
     let continueQuery = true
     while (continueQuery) {
@@ -70,6 +71,7 @@ export const getPendingTxs = async (account) => {
   await Promise.all(
     validChains.map(async (chainId) => {
       let [chainDepositTxs, chainClaimTxs] = await getDepositClaimTxs(account, chainId)
+      console.log({ chainDepositTxs, chainClaimTxs })
       depositTxs[chainId.toString()] = chainDepositTxs
       claimTxs[chainId.toString()] = chainClaimTxs
     })
