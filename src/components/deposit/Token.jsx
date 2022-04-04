@@ -53,8 +53,8 @@ const Token = (props) => {
 
   const handleSearch = async (address) => {
     if (!address) updateTokenList('all')
-    const filteredTokens = await findAndAddToken(address, account, fromChain.id)
-    if (filteredTokens) updateTokenList(filteredTokens)
+    const filteredToken = await findAndAddToken(address, account, fromChain.id)
+    if (filteredToken) updateTokenList([filteredToken])
   }
   return (
     <>

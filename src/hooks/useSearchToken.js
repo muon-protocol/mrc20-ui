@@ -19,7 +19,7 @@ const useSearchToken = () => {
         // search address
         if (searchQuery && bridge.fromChain) {
           let result = await findAndAddToken(searchQuery, account, bridge.fromChain.id)
-          setTokens(result)
+          setTokens([result])
         }
         //  filter based on chain
         else if (bridge.fromChain && defaultTokens) {

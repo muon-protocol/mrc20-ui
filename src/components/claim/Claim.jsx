@@ -15,57 +15,58 @@ import { MRC20Bridge_ABI } from '../../constants/ABI'
 import MuonResponse from '../../utils/MuonResponse'
 import { addTransaction } from '../../state/transactions/actions'
 import { TransactionStatus, TransactionType } from '../../constants/transactionStatus'
-import { useClaims, useDelClaim } from '../../state/application/hooks'
 import { fromWei } from '../../utils/wei'
 
-const Claim = () => {
-  const delClaim = useDelClaim()
-  const claims = useClaims()
+const Claim = (props) => {
+  const { claims, fetchData } = props
   const { chainId, account } = useWeb3React()
   const [lock, setLock] = useState(false)
   const doClaim = useClaim()
-  const setFetch = useSetFetch()
+  const updateFetchData = useSetFetch()
 
   const handleClaim = async (claim) => {
     setLock(claim)
-
-    const muonResponse = await MuonResponse('mrc20_bridge', 'claim', {
-      depositAddress: MRC20Bridge[claim.fromChain],
-      depositTxId: claim.txId,
-      depositNetwork: claim.fromChain,
-    })
-    if (!muonResponse.confirmed) {
-      addTransaction({
-        type: TransactionType.CLAIM,
-        chainId: claim.toChain,
-        fromChain: rpcConfig[claim.toChain].symbol,
-        toChain: '',
-        tokenSymbol: claim.symbol,
-        message: muonResponse.errorMessage,
-        status: TransactionStatus.FAILED,
+    try {
+      const muonResponse = await MuonResponse('mrc20_bridge', 'claim', {
+        depositAddress: MRC20Bridge[claim.fromChain],
+        depositTxId: claim.txId,
+        depositNetwork: claim.fromChain,
       })
-      return
+      if (!muonResponse.confirmed) {
+        addTransaction({
+          type: TransactionType.CLAIM,
+          chainId: claim.toChain,
+          fromChain: rpcConfig[claim.toChain].symbol,
+          toChain: '',
+          tokenSymbol: claim.symbol,
+          message: muonResponse.errorMessage,
+          status: TransactionStatus.FAILED,
+        })
+        return
+      }
+      let { sigs, reqId } = muonResponse
+      doClaim(claim, MRC20Bridge[claim.toChain], MRC20Bridge_ABI, [
+        account,
+        claim.amount,
+        claim.fromChain,
+        claim.toChain,
+        claim.tokenId,
+        claim.txId,
+        reqId,
+        sigs,
+      ])
+        .then(() => {
+          setLock(false)
+          updateFetchData(Date.now())
+          fetchData(claim.txId)
+        })
+        .catch(() => {
+          setLock(false)
+        })
+    } catch (error) {
+      setLock(false)
+      console.log('error happend in claim', error)
     }
-    let { sigs, reqId } = muonResponse
-    doClaim(claim, MRC20Bridge[claim.toChain], MRC20Bridge_ABI, [
-      account,
-      claim.amount,
-      claim.fromChain,
-      claim.toChain,
-      claim.tokenId,
-      claim.txId,
-      reqId,
-      sigs,
-    ])
-      .then(() => {
-        setLock(false)
-        delClaim(claim)
-        setFetch(Date.now())
-      })
-      .catch(() => {
-        setFetch(Date.now())
-        setLock(false)
-      })
   }
   return (
     <Box

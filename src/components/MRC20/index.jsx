@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Flex } from 'rebass'
 import ActionButton from '../actionButton/ActionButton'
 import Claim from '../claim/Claim'
@@ -18,12 +18,12 @@ import { MRC20Bridge } from '../../constants/contracts'
 import { ERC20_ABI } from '../../constants/ABI'
 import useDeposit from '../../hooks/useDeposit'
 import { useFetchClaimFromGraph } from '../../hooks/useFetchClaim'
-import { useAddClaim, useChangeClaims, useClaims } from '../../state/application/hooks'
 import { getPendingTxs } from '../../utils/graph'
 import { toWei } from '../../utils/wei'
 
 const MRC20 = () => {
   const { account, chainId } = useWeb3React()
+  const [pendingTxs, setPendingTxs] = useState([])
 
   const bridge = useBridge()
   const allowance = useAllowance(
@@ -37,19 +37,18 @@ const MRC20 = () => {
   const setApprove = useApprove()
   const updateFetchData = useSetFetch()
   const deposit = useDeposit(chainId)
-  const claims = useClaims()
-  const updateClaims = useChangeClaims()
-  const addClaim = useAddClaim()
-  const fetchClaims = useFetchClaimFromGraph()
+
+  const claims = useFetchClaimFromGraph(pendingTxs, bridge.fetch)
 
   useEffect(() => {
-    let showClaims = async () => {
-      getPendingTxs(account).then((pendingTxs) => {
-        console.log(pendingTxs)
-        fetchClaims(pendingTxs).then((claims) => updateClaims(claims))
-      })
+    let getPending = async () => {
+      let pendingTxs = await getPendingTxs(account)
+      if (pendingTxs != undefined) {
+        setPendingTxs(pendingTxs)
+      }
     }
-    if (account) showClaims()
+
+    if (account) getPending()
   }, [account])
 
   const handleApprove = async () => {
@@ -62,7 +61,7 @@ const MRC20 = () => {
       chainId: bridge.fromChain?.id,
       fromChain: bridge.fromChain?.symbol,
       toChain: bridge.toChain?.symbol,
-      tokenSymbol: bridge.token?.name,
+      tokenSymbol: bridge.token?.symbol,
     }
 
     setApprove(info, bridge.token.address, MRC20Bridge[bridge.fromChain?.id], ERC20_ABI).then(() =>
@@ -78,20 +77,27 @@ const MRC20 = () => {
 
     deposit()
       .then((receipt) => {
-        fetchClaims({
-          [bridge.toChain.id]: [
-            {
-              txId: receipt.events.Deposit.returnValues.txId,
-              tokenId: bridge.tokenOnOriginBridge,
-              fromChain: bridge.fromChain.id,
-              toChain: bridge.toChain.id,
-              amount: toWei(bridge.amount),
-            },
-          ],
-        }).then((cls) => cls.map((claim) => addClaim(claim)))
+        let pending = {
+          txId: receipt.events.Deposit.returnValues.txId,
+          tokenId: bridge.tokenOnOriginBridge,
+          fromChain: bridge.fromChain.id,
+          toChain: bridge.toChain.id,
+          amount: toWei(bridge.amount),
+          user: account,
+          tokenAddress: bridge.token.address,
+          deposited: true,
+          claimed: false,
+        }
+        setPendingTxs((prev) => [...prev, pending])
         updateFetchData(Date.now())
       })
       .catch(() => updateFetchData(Date.now()))
+  }
+
+  const updatePendingTx = (txId) => {
+    let pendingFiltered = pendingTxs.filter((item) => item.txId != txId)
+    console.log("filter after claim",pendingFiltered, pendingTxs,txId)
+    setPendingTxs(pendingFiltered)
   }
   return (
     <Container>
@@ -109,7 +115,7 @@ const MRC20 = () => {
       </Wrapper>
       <Wrapper maxWidth="300px" width="100%">
         {tx.status && <Transaction />}
-        {claims.length > 0 && <Claim />}
+        {claims.length > 0 && <Claim claims={claims} fetchData={(txId)=>updatePendingTx(txId)} />}
       </Wrapper>
     </Container>
   )

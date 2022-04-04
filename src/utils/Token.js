@@ -57,7 +57,7 @@ export const findAndAddToken = async (searchQuery, account, chainId) => {
   let finalTokens = combineDefaultAndLocalStorage()
   let token = ''
 
-  let resultFilter = finalTokens.filter((item) => {
+  let resultFilter = finalTokens.find((item) => {
     return item.chainId === chainId && toCheckSumAddress(item.address) === toCheckSumAddress(searchQuery)
   })
   if (resultFilter.length === 0 && isAddress(searchQuery)) {
@@ -75,7 +75,7 @@ export const findAndAddToken = async (searchQuery, account, chainId) => {
         localStorage.setItem('tokens', JSON.stringify(customTokens))
       }
 
-      resultFilter.push(token)
+      resultFilter = token
     }
   }
   return resultFilter

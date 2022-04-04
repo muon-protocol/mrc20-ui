@@ -9,9 +9,9 @@ export const ActionBtnType = {
   SELECT: 'select',
   ADD_MAIN_TOKEN: 'addMainToken',
   ADD_BRIDGE_TOKEN: 'addBridgeToken',
-  NOT_OWNER: 'notOwner',
   APPROVE: 'approve',
   DEPOSIT: 'deposit',
+  CLAIM:'claim'
 }
 
 export const NetworkContextName = 'NETWORK'

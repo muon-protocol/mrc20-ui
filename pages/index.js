@@ -32,9 +32,9 @@ export default function Home() {
             symbol: rpcConfig[chainId].symbol,
           }
           let token = await findAndAddToken(query['token'], account, chainId)
-          if (token?.length > 0) {
+          if (token) {
             addOriginChain(originChain)
-            addToken(token[0])
+            addToken(token)
           }
         }
       } catch (error) {
