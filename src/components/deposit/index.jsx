@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Flex } from 'rebass'
 import { AddressZero } from '@ethersproject/constants'
 import { ChainStatus } from '../../constants/constants'
@@ -15,14 +15,34 @@ import CopyAddress from './CopyAddress'
 import { Container, TriangleDown } from './deposit.style'
 import AmountBox from '../common/AmountBox'
 import { useError } from '../../state/application/hooks'
+import { findAndAddToken } from '../../utils/Token'
+import useSearchToken from '../../hooks/useSearchToken'
+import { useWeb3React } from '@web3-react/core'
 
 const Deposit = () => {
   const bridge = useBridge()
   const changeTokenOnOriginBridge = useChangeTokenOnOriginChain()
   const changeTokenOnDestBridge = useChangeTokenOnDestChain()
   const addAmount = useAddAmount()
-  const [fetchExist, setFetchExist] = useState(false)
   const { removeErrorInfo } = useError()
+
+  const tokens = useSearchToken()
+  const { account } = useWeb3React()
+  const [fetchExist, setFetchExist] = useState(false)
+  const [tokenBalance, setTokenBalance] = useState(bridge.token?.balance)
+  const [tokensList, setTokensList] = useState(tokens)
+
+  useEffect(() => {
+    setTokensList(tokens)
+  }, [tokens])
+
+  const updateTokenList = useCallback(
+    (tokensList) => {
+      if (tokensList === 'all') setTokensList(tokens)
+      else setTokensList(tokensList)
+    },
+    [tokensList]
+  )
 
   useEffect(() => {
     const checkTokenExist = async () => {
@@ -50,6 +70,18 @@ const Deposit = () => {
     checkTokenExist()
   }, [bridge.toChain, bridge.tokenOnOriginBridge])
 
+  useEffect(() => {
+    let token = tokensList.find((item) => (item.address === bridge.token?.address))
+    if (token) setTokenBalance(token.balance)
+  }, [tokensList,bridge.token])
+
+  const handleSearch = async (address) => {
+    if (!address) updateTokenList('all')
+
+    const filteredToken = await findAndAddToken(address, account, bridge.fromChain.id)
+    if (filteredToken) updateTokenList([filteredToken])
+  }
+
   const updateAmount = (value) => {
     removeErrorInfo()
     addAmount(value)
@@ -63,7 +95,12 @@ const Deposit = () => {
         <Box background="linear-gradient(0deg, #D3DBE3 0%, rgba(231, 235, 243, 0) 126.95%)">
           <Chain type={ChainStatus.ORIGIN_CHAIN} value={bridge?.fromChain} />
           {bridge.fromChain && <NetworkHint validChain={bridge.fromChain.id} />}
-          <Token value={bridge?.token} />
+          <Token
+            value={bridge?.token}
+            tokensList={tokensList}
+            updateTokenList={updateTokenList}
+            handleSearch={handleSearch}
+          />
           {bridge.fromChain && bridge.token && (
             <>
               <Info chain={bridge.fromChain.name} name={bridge.token.name} exist={bridge.tokenOnOriginBridge !== '0'} />
@@ -77,8 +114,7 @@ const Deposit = () => {
           <AmountBox
             onChange={(value) => updateAmount(value)}
             value={bridge.amount}
-            tokenBalance={bridge.token?.balance}
-            // errorAmount={errorAmount}
+            tokenBalance={tokenBalance}
             margin={bridge.token?.id ? '0 0 5px' : '0 0 35px'}
           />
         </Box>
