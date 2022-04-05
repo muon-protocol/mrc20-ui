@@ -36,6 +36,7 @@ export const sendTransaction = (contract, methodName, params, account, info, add
               message: 'Transaction rejected.',
               status: TransactionStatus.FAILED,
             })
+            reject()
             return
           }
           addTransaction({

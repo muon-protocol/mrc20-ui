@@ -77,7 +77,6 @@ const Deposit = () => {
 
   const handleSearch = async (address) => {
     if (!address) updateTokenList('all')
-
     const filteredToken = await findAndAddToken(address, account, bridge.fromChain.id)
     if (filteredToken) updateTokenList([filteredToken])
   }

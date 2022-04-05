@@ -18,6 +18,7 @@ export const useFetchClaimFromGraph = (pendingTxs, fetch) => {
               let deposit = pendingTxs[index]
               let token = await findAndAddToken(deposit.tokenAddress, account, parseInt(deposit.fromChain))
               let result = {
+                id:deposit.id,
                 fromChain: parseInt(deposit.fromChain),
                 amount: deposit.amount,
                 toChain: parseInt(deposit.toChain),

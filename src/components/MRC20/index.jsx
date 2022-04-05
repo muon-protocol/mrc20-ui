@@ -54,60 +54,69 @@ const MRC20 = () => {
   }, [account])
 
   const handleApprove = async () => {
-    if (!account || allowance !== '0') return
-    if (!chainId) return
-    if (bridge.fromChain.id !== chainId) return
-    if (tx.type === TransactionType.APPROVE && tx.status === TransactionStatus.PENDING) return
-    let info = {
-      type: TransactionType.APPROVE,
-      chainId: bridge.fromChain?.id,
-      fromChain: bridge.fromChain?.symbol,
-      toChain: bridge.toChain?.symbol,
-      tokenSymbol: bridge.token?.symbol,
+    try {
+      if (!account || allowance !== '0') return
+      if (!chainId) return
+      if (bridge.fromChain.id !== chainId) return
+      if (tx.type === TransactionType.APPROVE && tx.status === TransactionStatus.PENDING) return
+      let info = {
+        type: TransactionType.APPROVE,
+        chainId: bridge.fromChain?.id,
+        fromChain: bridge.fromChain?.symbol,
+        toChain: bridge.toChain?.symbol,
+        tokenSymbol: bridge.token?.symbol,
+      }
+  
+      setApprove(info, bridge.token.address, MRC20Bridge[bridge.fromChain?.id], ERC20_ABI).then(() =>
+        updateFetchData(ActionBtnType.APPROVE)
+      )
+    } catch (error) {
+      console.log("error happend in approve",error)
     }
-
-    setApprove(info, bridge.token.address, MRC20Bridge[bridge.fromChain?.id], ERC20_ABI).then(() =>
-      updateFetchData(ActionBtnType.APPROVE)
-    )
   }
 
   const handleDeposit = async () => {
-    removeErrorInfo()
-    if (!account) return
-    if (!chainId) return
-    if (tx.type === TransactionType.DEPOSIT && tx.status === TransactionStatus.PENDING) return
-    if (bridge.fromChain.id !== chainId) return
-    if (
-      parseFloat(bridge.amount) <= 0 ||
-      bridge.amount === '0' ||
-      bridge.amount === '' ||
-      parseFloat(bridge.amount) > parseFloat(bridge.token.balance)
-    ) {
-      
-      setErrorInfo({ message: 'Wrong Amount', type: ErrorType.AMOUNT_INPUT })
-      return
+    try {
+      removeErrorInfo()
+      if (!account) return
+      if (!chainId) return
+      if (tx.type === TransactionType.DEPOSIT && tx.status === TransactionStatus.PENDING) return
+      if (bridge.fromChain.id !== chainId) return
+      if (
+        parseFloat(bridge.amount) <= 0 ||
+        bridge.amount === '0' ||
+        bridge.amount === '' ||
+        parseFloat(bridge.amount) > parseFloat(bridge.token.balance)
+      ) {
+        setErrorInfo({ message: 'Wrong Amount', type: ErrorType.AMOUNT_INPUT })
+        return
+      }
+      deposit()
+        .then((receipt) => {
+          let pending = {
+            id: receipt.events.Deposit.returnValues.txId.toString().concat(':').concat(bridge.fromChain.id.toString()),
+            txId: receipt.events.Deposit.returnValues.txId,
+            tokenId: bridge.tokenOnOriginBridge,
+            fromChain: bridge.fromChain.id,
+            toChain: bridge.toChain.id,
+            amount: toWei(bridge.amount),
+            user: account,
+            tokenAddress: bridge.token.address,
+            deposited: true,
+            claimed: false,
+          }
+          setPendingTxs((prev) => [...prev, pending])
+          updateFetchData(Date.now())
+        })
+        .catch(() => updateFetchData(Date.now()))
+    } catch (error) {
+      console.log('error happend in deposit', error)
     }
-    deposit()
-      .then((receipt) => {
-        let pending = {
-          txId: receipt.events.Deposit.returnValues.txId,
-          tokenId: bridge.tokenOnOriginBridge,
-          fromChain: bridge.fromChain.id,
-          toChain: bridge.toChain.id,
-          amount: toWei(bridge.amount),
-          user: account,
-          tokenAddress: bridge.token.address,
-          deposited: true,
-          claimed: false,
-        }
-        setPendingTxs((prev) => [...prev, pending])
-        updateFetchData(Date.now())
-      })
-      .catch(() => updateFetchData(Date.now()))
   }
 
-  const updatePendingTx = (txId) => {
-    let pendingFiltered = pendingTxs.filter((item) => item.txId != txId)
+  const updatePendingTx = (id) => {
+    let pendingFiltered = pendingTxs.filter((item) => item.id != id)
+    console.log(pendingFiltered, id)
     setPendingTxs(pendingFiltered)
   }
   return (
