@@ -11,6 +11,7 @@ const useBalance = (contractAddress, chainId, abi, fetch) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
+     try {
       const web3 = getWeb3NoAccount(chainId)
 
       const contract = getContract(abi, contractAddress, web3)
@@ -21,6 +22,9 @@ const useBalance = (contractAddress, chainId, abi, fetch) => {
         walletBalance = await contract.methods.balanceOf(account).call()
       }
       setBalance(fromWei(walletBalance))
+     } catch (error) {
+       console.log("error happend in fetch balance",error)
+     }
     }
     if (account) fetchBalance()
   }, [account, chainId, fetch])

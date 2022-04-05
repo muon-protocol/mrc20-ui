@@ -11,29 +11,33 @@ const useBalances = (chains, tokens, fetch, refresh) => {
   const [balances, setBalances] = React.useState(null)
   React.useEffect(() => {
     const fetchBalances = async () => {
-      let tokenB = []
-      for (let index = 0; index < chains.length; index++) {
-        const chainId = chains[index]
-        const web3 = getWeb3NoAccount(chainId)
-        const calls = tokens
-          .filter((item) => item.chainId === chainId)
-          .map((token) => {
-            return {
-              address: token.address,
-              name: 'balanceOf',
-              params: [account],
+      try {
+        let tokenB = []
+        for (let index = 0; index < chains.length; index++) {
+          const chainId = chains[index]
+          const web3 = getWeb3NoAccount(chainId)
+          const calls = tokens
+            .filter((item) => item.chainId === chainId)
+            .map((token) => {
+              return {
+                address: token.address,
+                name: 'balanceOf',
+                params: [account],
+              }
+            })
+          const result = await multicall(web3, ERC20_ABI, calls, chainId)
+          if (result && result.length > 0) {
+            for (let i = 0; i < result.length; i++) {
+              let token = tokens.find((token) => token.address === calls[i].address && token.chainId === chainId)
+              let balance = fromWei(result[i].toString(), token.decimals)
+              tokenB.push({ ...token, balance })
             }
-          })
-        const result = await multicall(web3, ERC20_ABI, calls, chainId)
-        if (result && result.length > 0) {
-          for (let i = 0; i < result.length; i++) {
-            let token = tokens.find((token) => token.address === calls[i].address && token.chainId === chainId)
-            let balance = fromWei(result[i].toString(), token.decimals)
-            tokenB.push({ ...token, balance })
           }
         }
+        setBalances(tokenB)
+      } catch (error) {
+        console.log('error happend in fetch balances', error)
       }
-      setBalances(tokenB)
     }
     if (account) fetchBalances()
   }, [account, fetch, refresh])

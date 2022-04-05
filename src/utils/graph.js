@@ -56,6 +56,7 @@ const getDepositTxs = async (user, chainId) => {
 }
 
 export const getPendingTxs = async (account) => {
+try {
   let depositTxs = []
   await Promise.all(
     validChains.map(async (chainId) => {
@@ -77,4 +78,7 @@ export const getPendingTxs = async (account) => {
   }, [])
 
   return pendingTxs
+} catch (error) {
+  console.log("error happend in get pending tx",error)
+}
 }

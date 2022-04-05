@@ -48,6 +48,7 @@ export const getToken = async (address, chainId, account) => {
 
 // TODO complete this function and catch error localstorage safari
 export const findAndAddToken = async (searchQuery, account, chainId) => {
+ try {
   if (!isAddress(searchQuery)) {
     console.log(`Invalid 'address' parameter '${searchQuery}'.`)
     return
@@ -77,10 +78,17 @@ export const findAndAddToken = async (searchQuery, account, chainId) => {
     }
   }
   return resultFilter
+ } catch (error) {
+   console.log("error happend in find and add token",error)
+ }
 }
 
 export const combineDefaultAndLocalStorage = () => {
+ try {
   const localStorageToken = JSON.parse(localStorage.getItem('tokens'))
   const tokensList = localStorageToken ? [...tokens, ...localStorageToken] : tokens
   return tokensList
+ } catch (error) {
+   console.log("error happend in combine",error)
+ }
 }

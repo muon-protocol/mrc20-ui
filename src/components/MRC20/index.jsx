@@ -44,10 +44,15 @@ const MRC20 = () => {
 
   useEffect(() => {
     let getPending = async () => {
-      let pendingTxs = await getPendingTxs(account)
-      if (pendingTxs != undefined) {
-        setPendingTxs(pendingTxs)
+      try {
+        let pendingTxs = await getPendingTxs(account)
+        if (pendingTxs != undefined) {
+          setPendingTxs(pendingTxs)
+        }
+      } catch (error) {
+        console.log("error happend in get pending",error)
       }
+    
     }
 
     if (account) getPending()
