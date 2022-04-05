@@ -15,7 +15,6 @@ export const getToken = async (address, chainId, account) => {
     if (!isAddress(address) || address === AddressZero) {
       throw Error(`Invalid 'address' parameter '${address}'.`)
     }
-console.log({address ,chainId})
     const calls = Object.keys(ERC20_FUN).map((methodName) => {
       if (ERC20_FUN[methodName] === 'balanceOf')
         return {
@@ -31,7 +30,6 @@ console.log({address ,chainId})
       }
     })
     const result = await multicall(web3, ERC20_ABI, calls, chainId)
-    console.log(result)
     if (result && result.length > 0) {
       token = {
         chainId,

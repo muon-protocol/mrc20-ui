@@ -60,9 +60,17 @@ const ActionButtonComponent = (props) => {
     )
   } else {
     switch (actionBtn) {
-      case ActionBtnType.SELECT:
       case ActionBtnType.ADD_BRIDGE_TOKEN:
-      case ActionBtnType.ADD_MAIN_TOKEN:
+        case ActionBtnType.ADD_MAIN_TOKEN:
+          contentBtn = (
+            <Button margin="25px 0 0" cursor="default" background="rgba(85, 81, 255, 0.15)">
+              <Type.LG color="#8888db" fontSizeXS="16px" fontSizeXXS="14px">
+              Token is not yet available on Bridge
+              </Type.LG>
+            </Button>
+          )
+          break
+      case ActionBtnType.SELECT:
         contentBtn = (
           <Button margin="25px 0 0" cursor="default" background="rgba(85, 81, 255, 0.15)">
             <Type.LG color="#8888db" fontSizeXS="16px" fontSizeXXS="14px">
