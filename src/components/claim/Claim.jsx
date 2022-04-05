@@ -45,7 +45,6 @@ const Claim = (props) => {
         return
       }
       let { sigs, reqId } = muonResponse
-      console.log(claim)
       doClaim(claim, MRC20Bridge[claim.toChain], MRC20Bridge_ABI, [
         account,
         claim.amount,

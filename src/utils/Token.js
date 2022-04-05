@@ -65,7 +65,6 @@ export const findAndAddToken = async (searchQuery, account, chainId) => {
     // step 2: check ERC20 and Add to  list
 
     token = await getToken(searchQuery, chainId,account)
-console.log({token})
     if (token) {
       if (!customTokens) {
         localStorage.setItem('tokens', JSON.stringify([token]))

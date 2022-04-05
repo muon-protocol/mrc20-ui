@@ -116,7 +116,6 @@ const MRC20 = () => {
 
   const updatePendingTx = (id) => {
     let pendingFiltered = pendingTxs.filter((item) => item.id != id)
-    console.log(pendingFiltered, id)
     setPendingTxs(pendingFiltered)
   }
   return (
