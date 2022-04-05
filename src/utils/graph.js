@@ -36,7 +36,6 @@ const getDepositTxs = async (user, chainId) => {
       let { data, status } = await axios.post(apiUrl, {
         query: query,
       })
-      console.log({data})
       if (data !== null && status === 200) {
         let breakLoop = true
         if (data.data?.bridgeEntities?.length) {
@@ -66,19 +65,16 @@ export const getPendingTxs = async (account) => {
   )
   let txGroupedById = groupBy(depositTxs, 'id')
 
-  console.log({txGroupedById})
 
   let pendingTxs = Object.entries(txGroupedById).reduce((acc,  [id,txs]) => {
   
    
     const claimedIndex = findIndex(txs, 'claimed')
     if (claimedIndex !== -1) return acc
-    console.log(id,acc)
-  
+  console.log(id)
     acc.push(orderBy(txs, ['time'])[0])
     return acc
   }, [])
 
-  console.log("pending reduce",pendingTxs)
   return pendingTxs
 }

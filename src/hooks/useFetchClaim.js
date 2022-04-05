@@ -9,7 +9,6 @@ export const useFetchClaimFromGraph = (pendingTxs, fetch) => {
 
   useEffect(() => {
     const fetchClaim = async () => {
-      console.log("fetch claim receive this pending",pendingTxs)
       let claims = []
       try {
         if (pendingTxs.length > 0) {

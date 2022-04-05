@@ -15,7 +15,7 @@ export const getToken = async (address, chainId, account) => {
     if (!isAddress(address) || address === AddressZero) {
       throw Error(`Invalid 'address' parameter '${address}'.`)
     }
-
+console.log({address ,chainId})
     const calls = Object.keys(ERC20_FUN).map((methodName) => {
       if (ERC20_FUN[methodName] === 'balanceOf')
         return {
@@ -31,13 +31,14 @@ export const getToken = async (address, chainId, account) => {
       }
     })
     const result = await multicall(web3, ERC20_ABI, calls, chainId)
+    console.log(result)
     if (result && result.length > 0) {
       token = {
         chainId,
         symbol: result[ERC20_FUN_MAP.symbol][0],
         name: result[ERC20_FUN_MAP.name][0],
         decimals: result[ERC20_FUN_MAP.decimals][0],
-        balance: fromWei(result[ERC20_FUN_MAP.balanceOf], result[ERC20_FUN_MAP.decimals][0]),
+        balance: fromWei(result[ERC20_FUN_MAP.balanceOf].toString(), result[ERC20_FUN_MAP.decimals][0].toString()),
         address,
       }
     }
@@ -60,13 +61,13 @@ export const findAndAddToken = async (searchQuery, account, chainId) => {
   let resultFilter = finalTokens.find((item) => {
     return item.chainId === chainId && toCheckSumAddress(item.address) === toCheckSumAddress(searchQuery)
   })
-  if (resultFilter.length === 0 && isAddress(searchQuery)) {
+  if (!resultFilter && isAddress(searchQuery)) {
     let customTokens = JSON.parse(localStorage.getItem('tokens'))
 
     // step 2: check ERC20 and Add to  list
 
-    token = await getToken(searchQuery, account, chainId)
-
+    token = await getToken(searchQuery, chainId,account)
+console.log({token})
     if (token) {
       if (!customTokens) {
         localStorage.setItem('tokens', JSON.stringify([token]))
