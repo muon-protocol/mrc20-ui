@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Type } from '../text/Text'
 import { Flex } from 'rebass'
+import { useAppState } from '../../state/application/hooks'
+import { ErrorType } from '../../constants/constants'
 // import { ImageWithCursor } from './FormControlls'
 
 const Amount = styled.div`
@@ -72,7 +74,8 @@ const Max = styled.div`
   }
 `
 const AmountBox = (props) => {
-  const { margin, onChange, value, tokenBalance, errorAmount } = props
+  const { margin, onChange, value, tokenBalance } = props
+  const { error, errorType } = useAppState()
   return (
     <Wrapper margin={margin}>
       <Flex width="100%" justifyContent="space-between" alignItems="center">
@@ -92,7 +95,7 @@ const AmountBox = (props) => {
         </Flex>
       </Flex>
 
-      <Amount error={errorAmount}>
+      <Amount error={error && errorType === ErrorType.AMOUNT_INPUT}>
         <Input value={value} placeholder="Enter Amount" min={`0`} onChange={(e) => onChange(e.target.value)} />
       </Amount>
     </Wrapper>

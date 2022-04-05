@@ -1,28 +1,12 @@
 import { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import { updateSearchQuery } from './actions'
+import { updateSearchQuery,setError, removeError } from './actions'
 
-// export function useActionBtn() {
-//   return useAppSelector((state) => state.application.actionBtnType)
-// }
-
-// export function useChangeActionBtn() {
-//   const dispatch = useAppDispatch()
-//   return useCallback(
-//     (btnType) => {
-//       dispatch(updateActionBtnType(btnType))
-//     },
-//     [dispatch]
-//   )
-// }
-
-export function useSearchQuery() {
-  return useAppSelector((state) => state.application.searchQuery)
+export function useAppState() {
+  return useAppSelector((state) => state.application)
 }
 
-export function useClaims() {
-  return useAppSelector((state) => state.application.claims)
-}
+
 
 export function useChangeSearchQuery() {
   const dispatch = useAppDispatch()
@@ -33,3 +17,18 @@ export function useChangeSearchQuery() {
     [dispatch]
   )
 }
+export function useError(){
+
+  const dispatch = useAppDispatch()
+
+  const setErrorInfo = useCallback((data) => {
+    dispatch(setError(data))
+  })
+  
+  const removeErrorInfo = useCallback(() => {
+    dispatch(removeError())
+  })
+
+  return { setErrorInfo, removeErrorInfo }
+}
+

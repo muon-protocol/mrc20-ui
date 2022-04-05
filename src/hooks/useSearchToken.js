@@ -1,14 +1,14 @@
 import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState } from 'react'
 import { validChains } from '../constants/settings'
-import { useSearchQuery } from '../state/application/hooks'
+import { useAppState } from '../state/application/hooks'
 import { useBridge } from '../state/bridge/hooks'
 import { combineDefaultAndLocalStorage, findAndAddToken } from '../utils/Token'
 import useBalances from './useBalances'
 
 const useSearchToken = () => {
   const { account } = useWeb3React()
-  const searchQuery = useSearchQuery()
+  const { searchQuery } = useAppState()
   const bridge = useBridge()
   const defaultTokens = useBalances(validChains, combineDefaultAndLocalStorage(), bridge.fetch)
   const [tokens, setTokens] = useState([])

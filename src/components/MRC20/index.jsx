@@ -13,13 +13,14 @@ import { useWeb3React } from '@web3-react/core'
 import { useBridge, useSetFetch } from '../../state/bridge/hooks'
 import { useTx } from '../../state/transactions/hooks'
 import { TransactionStatus, TransactionType } from '../../constants/transactionStatus'
-import { ActionBtnType } from '../../constants/constants'
+import { ActionBtnType, ErrorType } from '../../constants/constants'
 import { MRC20Bridge } from '../../constants/contracts'
 import { ERC20_ABI } from '../../constants/ABI'
 import useDeposit from '../../hooks/useDeposit'
 import { useFetchClaimFromGraph } from '../../hooks/useFetchClaim'
 import { getPendingTxs } from '../../utils/graph'
 import { toWei } from '../../utils/wei'
+import { useError } from '../../state/application/hooks'
 
 const MRC20 = () => {
   const { account, chainId } = useWeb3React()
@@ -34,6 +35,7 @@ const MRC20 = () => {
     bridge.fetch
   )
   const tx = useTx()
+  const { setErrorInfo, removeErrorInfo } = useError()
   const setApprove = useApprove()
   const updateFetchData = useSetFetch()
   const deposit = useDeposit(chainId)
@@ -70,11 +72,21 @@ const MRC20 = () => {
   }
 
   const handleDeposit = async () => {
+    removeErrorInfo()
     if (!account) return
     if (!chainId) return
     if (tx.type === TransactionType.DEPOSIT && tx.status === TransactionStatus.PENDING) return
     if (bridge.fromChain.id !== chainId) return
-
+    if (
+      parseFloat(bridge.amount) <= 0 ||
+      bridge.amount === '0' ||
+      bridge.amount === '' ||
+      parseFloat(bridge.amount) > parseFloat(bridge.token.balance)
+    ) {
+      
+      setErrorInfo({ message: 'Wrong Amount', type: ErrorType.AMOUNT_INPUT })
+      return
+    }
     deposit()
       .then((receipt) => {
         let pending = {
@@ -96,7 +108,6 @@ const MRC20 = () => {
 
   const updatePendingTx = (txId) => {
     let pendingFiltered = pendingTxs.filter((item) => item.txId != txId)
-    console.log("filter after claim",pendingFiltered, pendingTxs,txId)
     setPendingTxs(pendingFiltered)
   }
   return (
@@ -115,7 +126,7 @@ const MRC20 = () => {
       </Wrapper>
       <Wrapper maxWidth="300px" width="100%">
         {tx.status && <Transaction />}
-        {claims.length > 0 && <Claim claims={claims} fetchData={(txId)=>updatePendingTx(txId)} />}
+        {claims.length > 0 && <Claim claims={claims} fetchData={(txId) => updatePendingTx(txId)} />}
       </Wrapper>
     </Container>
   )

@@ -14,6 +14,7 @@ import { useChangeTokenOnOriginChain, useChangeTokenOnDestChain } from '../../st
 import CopyAddress from './CopyAddress'
 import { Container, TriangleDown } from './deposit.style'
 import AmountBox from '../common/AmountBox'
+import { useError } from '../../state/application/hooks'
 
 const Deposit = () => {
   const bridge = useBridge()
@@ -21,6 +22,7 @@ const Deposit = () => {
   const changeTokenOnDestBridge = useChangeTokenOnDestChain()
   const addAmount = useAddAmount()
   const [fetchExist, setFetchExist] = useState(false)
+  const { removeErrorInfo } = useError()
 
   useEffect(() => {
     const checkTokenExist = async () => {
@@ -47,6 +49,12 @@ const Deposit = () => {
     }
     checkTokenExist()
   }, [bridge.toChain, bridge.tokenOnOriginBridge])
+
+  const updateAmount = (value) => {
+    removeErrorInfo()
+    addAmount(value)
+  }
+
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center" width="100%">
       <Title>Muon MRC20 </Title>
@@ -67,7 +75,7 @@ const Deposit = () => {
             </>
           )}
           <AmountBox
-            onChange={(value) => addAmount(value)}
+            onChange={(value) => updateAmount(value)}
             value={bridge.amount}
             tokenBalance={bridge.token?.balance}
             // errorAmount={errorAmount}
