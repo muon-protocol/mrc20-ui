@@ -13,9 +13,9 @@ import { useSetFetch } from '../../state/bridge/hooks'
 import { MRC20Bridge } from '../../constants/contracts'
 import { MRC20Bridge_ABI } from '../../constants/ABI'
 import MuonResponse from '../../utils/MuonResponse'
-import { addTransaction } from '../../state/transactions/actions'
 import { TransactionStatus, TransactionType } from '../../constants/transactionStatus'
 import { fromWei } from '../../utils/wei'
+import { useAddTransaction } from '../../state/transactions/hooks'
 
 const Claim = (props) => {
   const { claims, fetchData } = props
@@ -23,6 +23,7 @@ const Claim = (props) => {
   const [lock, setLock] = useState(false)
   const doClaim = useClaim()
   const updateFetchData = useSetFetch()
+  const addTransaction = useAddTransaction()
 
   const handleClaim = async (claim) => {
     setLock(claim)
@@ -32,7 +33,7 @@ const Claim = (props) => {
         depositTxId: claim.txId,
         depositNetwork: claim.fromChain,
       })
-      if (!muonResponse.confirmed) {
+      if (!muonResponse.confirmed || !muonResponse.success) {
         addTransaction({
           type: TransactionType.CLAIM,
           chainId: claim.toChain,

@@ -10,12 +10,12 @@ const MuonResponse = async (app, method, params) => {
         ...params,
       })
       .call()
-    if (!muonResponse.confirmed) {
+    if (!muonResponse.confirmed || !muonResponse.success) {
       const errorMessage = muonResponse.error?.message
         ? muonResponse.error.message
-        : muonResponse.error
-        ? muonResponse.error
-        : 'Muon response failed.'
+        : // : muonResponse.error
+          // ? muonResponse.error
+          'Muon response failed.'
       return { ...muonResponse, errorMessage }
     }
     return muonResponse

@@ -56,29 +56,26 @@ const getDepositTxs = async (user, chainId) => {
 }
 
 export const getPendingTxs = async (account) => {
-try {
-  let depositTxs = []
-  await Promise.all(
-    validChains.map(async (chainId) => {
-      let chainDepositTxs = await getDepositTxs(account, chainId)
-      depositTxs.push(...chainDepositTxs)
-    })
-  )
-  let txGroupedById = groupBy(depositTxs, 'id')
+  try {
+    let depositTxs = []
+    await Promise.all(
+      validChains.map(async (chainId) => {
+        let chainDepositTxs = await getDepositTxs(account, chainId)
+        depositTxs.push(...chainDepositTxs)
+      })
+    )
+    let txGroupedById = groupBy(depositTxs, 'id')
 
+    let pendingTxs = Object.entries(txGroupedById).reduce((acc, [id, txs]) => {
+      const claimedIndex = findIndex(txs, 'claimed')
+      if (claimedIndex !== -1) return acc
+      console.log(id)
+      acc.push(orderBy(txs, ['time'])[0])
+      return acc
+    }, [])
 
-  let pendingTxs = Object.entries(txGroupedById).reduce((acc,  [id,txs]) => {
-  
-   
-    const claimedIndex = findIndex(txs, 'claimed')
-    if (claimedIndex !== -1) return acc
-  console.log(id)
-    acc.push(orderBy(txs, ['time'])[0])
-    return acc
-  }, [])
-
-  return pendingTxs
-} catch (error) {
-  console.log("error happend in get pending tx",error)
-}
+    return pendingTxs
+  } catch (error) {
+    console.log('error happend in get pending tx', error)
+  }
 }
