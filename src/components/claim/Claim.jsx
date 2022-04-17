@@ -33,7 +33,7 @@ const Claim = (props) => {
         depositTxId: claim.txId,
         depositNetwork: claim.fromChain,
       })
-      if (!muonResponse.confirmed || !muonResponse.success) {
+      if (!muonResponse.confirmed) {
         addTransaction({
           type: TransactionType.CLAIM,
           chainId: claim.toChain,
