@@ -43,6 +43,8 @@ const Claim = (props) => {
           message: muonResponse.errorMessage,
           status: TransactionStatus.FAILED,
         })
+        setLock(false)
+
         return
       }
       let { sigs, reqId } = muonResponse
