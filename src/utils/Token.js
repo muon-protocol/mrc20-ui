@@ -48,47 +48,48 @@ export const getToken = async (address, chainId, account) => {
 
 // TODO complete this function and catch error localstorage safari
 export const findAndAddToken = async (searchQuery, account, chainId) => {
- try {
-  if (!isAddress(searchQuery)) {
-    console.log(`Invalid 'address' parameter '${searchQuery}'.`)
-    return
-  }
-  // Step 1: search in token list
-  let finalTokens = combineDefaultAndLocalStorage()
-  let token = ''
-
-  let resultFilter = finalTokens.find((item) => {
-    return item.chainId === chainId && toCheckSumAddress(item.address) === toCheckSumAddress(searchQuery)
-  })
-  if (!resultFilter && isAddress(searchQuery)) {
-    let customTokens = JSON.parse(localStorage.getItem('tokens'))
-
-    // step 2: check ERC20 and Add to  list
-
-    token = await getToken(searchQuery, chainId,account)
-    if (token) {
-      if (!customTokens) {
-        localStorage.setItem('tokens', JSON.stringify([token]))
-      } else {
-        customTokens = [...customTokens, token]
-        localStorage.setItem('tokens', JSON.stringify(customTokens))
-      }
-
-      resultFilter = token
+  try {
+    if (!isAddress(searchQuery)) {
+      console.log(`Invalid 'address' parameter '${searchQuery}'.`)
+      return
     }
+    // Step 1: search in token list
+    let finalTokens = combineDefaultAndLocalStorage()
+    let token = ''
+
+    let resultFilter = finalTokens.find((item) => {
+      return item.chainId === chainId && toCheckSumAddress(item.address) === toCheckSumAddress(searchQuery)
+    })
+    console.log('resultFilter', resultFilter)
+    if (!resultFilter && isAddress(searchQuery)) {
+      let customTokens = JSON.parse(localStorage.getItem('tokens'))
+
+      // step 2: check ERC20 and Add to  list
+
+      token = await getToken(searchQuery, chainId, account)
+      if (token) {
+        if (!customTokens) {
+          localStorage.setItem('tokens', JSON.stringify([token]))
+        } else {
+          customTokens = [...customTokens, token]
+          localStorage.setItem('tokens', JSON.stringify(customTokens))
+        }
+
+        resultFilter = token
+      }
+    }
+    return resultFilter
+  } catch (error) {
+    console.log('error happend in find and add token', error)
   }
-  return resultFilter
- } catch (error) {
-   console.log("error happend in find and add token",error)
- }
 }
 
 export const combineDefaultAndLocalStorage = () => {
- try {
-  const localStorageToken = JSON.parse(localStorage.getItem('tokens'))
-  const tokensList = localStorageToken ? [...tokens, ...localStorageToken] : tokens
-  return tokensList
- } catch (error) {
-   console.log("error happend in combine",error)
- }
+  try {
+    const localStorageToken = JSON.parse(localStorage.getItem('tokens'))
+    const tokensList = localStorageToken ? [...tokens, ...localStorageToken] : tokens
+    return tokensList
+  } catch (error) {
+    console.log('error happend in combine', error)
+  }
 }

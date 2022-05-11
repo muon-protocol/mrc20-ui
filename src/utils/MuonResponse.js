@@ -1,5 +1,16 @@
 import Muon from 'muon'
 
+const getErrorMessage = (error) => {
+  switch (true) {
+    case error.includes('Invalid JSON RPC response'):
+      return 'Invalid JSON RPC Response'
+    // : muonResponse.error['Returned error']
+    // ? muonResponse.error['Returned error'].error.details
+    default:
+      break
+  }
+}
+
 const MuonResponse = async (app, method, params) => {
   try {
     const muon = new Muon(process.env.NEXT_PUBLIC_MUON_NODE_GATEWAY)
@@ -10,12 +21,12 @@ const MuonResponse = async (app, method, params) => {
         ...params,
       })
       .call()
-    if (!muonResponse.confirmed || !muonResponse.success) {
+    if (!muonResponse.confirmed) {
       const errorMessage = muonResponse.error?.message
         ? muonResponse.error.message
-        : // : muonResponse.error
-          // ? muonResponse.error
-          'Muon response failed.'
+        : muonResponse.error
+        ? `Muonization error: ${getErrorMessage(muonResponse.error)}`
+        : 'Muon response failed.'
       return { ...muonResponse, errorMessage }
     }
     return muonResponse
