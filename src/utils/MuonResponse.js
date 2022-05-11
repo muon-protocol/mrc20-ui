@@ -7,7 +7,7 @@ const getErrorMessage = (error) => {
     // : muonResponse.error['Returned error']
     // ? muonResponse.error['Returned error'].error.details
     default:
-      break
+      return error
   }
 }
 
