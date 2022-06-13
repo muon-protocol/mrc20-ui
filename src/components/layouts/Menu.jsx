@@ -10,6 +10,7 @@ import { NameChainMap } from '../../constants/chainsMap'
 import MuonNetwork from '../common/MuonNetwork'
 import { validChains } from '../../constants/settings'
 import { addRPC } from '../../utils/addRPC'
+import { MuonTools } from 'muon-toolbox'
 const WalletModal = dynamic(() => import('../modal/WalletModal'))
 
 const Image = styled.img``
@@ -65,6 +66,7 @@ const Status = styled.div`
   border-radius: 50%;
   margin-right: 5px;
 `
+
 const Media = styled.div`
   display: flex;
   align-items: center;
@@ -92,6 +94,7 @@ const Menu = ({ selectedChain }) => {
   const handleConnect = async () => {
     setOpen(true)
   }
+  console.log(process.env.NEXT_PUBLIC_MODE)
 
   const validChainId = selectedChain ? selectedChain : validChains[0]
   return (
@@ -103,6 +106,12 @@ const Menu = ({ selectedChain }) => {
         <Media>
           <Image src="/media/common/logo.svg" alt="logo" />
         </Media>
+        <MuonTools mode={process.env.NEXT_PUBLIC_MODE} />
+        {/* <Flex alignItems="center">
+          <Type.SM color="#313144" padding="10px">
+            App Settings
+          </Type.SM>
+        </Flex> */}
       </AppInfo>
       <AppInfo>
         {account ? (

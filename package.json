@@ -24,6 +24,7 @@
     "ethereum-multicall": "^2.10.0",
     "lodash": "^4.17.21",
     "muon": "github:muon-protocol/muon-client-js",
+    "muon-toolbox": "github:znamazi/muon-toolbox",
     "next": "^12.1.1",
     "next-transpile-modules": "^9.0.0",
     "react": "^17.0.2",

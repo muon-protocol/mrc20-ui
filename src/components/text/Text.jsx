@@ -52,5 +52,5 @@ export const Type = {
   },
   XXS(props) {
     return <TextWrapper fontSize={8} {...props} />
-  }
+  },
 }
