@@ -41,7 +41,8 @@ export default function Home() {
         console.log('Error happend in adding default token', error)
       }
     }
-  })
+  }, [])
+
   return (
     <>
       <Head>
