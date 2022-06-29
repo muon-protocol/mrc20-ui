@@ -59,7 +59,7 @@ export const getPendingTxs = async (account) => {
   try {
     let depositTxs = []
     await Promise.all(
-      validChains.map(async (chainId) => {
+      validChains[process.env.NEXT_PUBLIC_MODE].map(async (chainId) => {
         let chainDepositTxs = await getDepositTxs(account, chainId)
         depositTxs.push(...chainDepositTxs)
       })

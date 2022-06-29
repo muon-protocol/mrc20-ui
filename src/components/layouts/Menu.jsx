@@ -96,7 +96,7 @@ const Menu = ({ selectedChain }) => {
   }
   console.log(process.env.NEXT_PUBLIC_MODE)
 
-  const validChainId = selectedChain ? selectedChain : validChains[0]
+  const validChainId = selectedChain ? selectedChain : validChains[process.env.NEXT_PUBLIC_MODE][0]
   return (
     <>
       <AppInfo>
@@ -115,7 +115,7 @@ const Menu = ({ selectedChain }) => {
       </AppInfo>
       <AppInfo>
         {account ? (
-          validChains.includes(chainId) ? (
+          validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) ? (
             <Button padding="0 17px !important" active={account}>
               <Status active={account} />
               <Type.SM fontSize="15px" color="#313144">
@@ -143,15 +143,19 @@ const Menu = ({ selectedChain }) => {
           </Button>
         )}
 
-        {validChains.includes(chainId) && NameChainMap[chainId] && (
-          <Button hide={!NameChainMap[chainId]} active={validChains.includes(chainId)} className="hide-on-mobile">
+        {validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) && NameChainMap[chainId] && (
+          <Button
+            hide={!NameChainMap[chainId]}
+            active={validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId)}
+            className="hide-on-mobile"
+          >
             <Label>Network:</Label>
             <Type.SM fontSize="15px" color="#313144" padding="0 0 0 3px">
               {NameChainMap[chainId] || 'NaN'}
             </Type.SM>
           </Button>
         )}
-        {!validChains.includes(chainId) && account && (
+        {!validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) && account && (
           <Button border="1px solid #DC0000">
             <Status color="#DC0000" />
             <Type.MD color="#313144" padding="0 0 0 3px">

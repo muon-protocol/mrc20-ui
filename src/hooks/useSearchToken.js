@@ -10,7 +10,11 @@ const useSearchToken = () => {
   const { account } = useWeb3React()
   const { searchQuery } = useAppState()
   const bridge = useBridge()
-  const defaultTokens = useBalances(validChains, combineDefaultAndLocalStorage(), bridge.fetch)
+  const defaultTokens = useBalances(
+    validChains[process.env.NEXT_PUBLIC_MODE],
+    combineDefaultAndLocalStorage(),
+    bridge.fetch
+  )
   const [tokens, setTokens] = useState([])
 
   useEffect(() => {

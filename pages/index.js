@@ -22,7 +22,7 @@ export default function Home() {
       try {
         if (
           query['chain'] !== undefined &&
-          validChains.includes(parseInt(query['chain'])) &&
+          validChains[process.env.NEXT_PUBLIC_MODE].includes(parseInt(query['chain'])) &&
           query['token'] !== undefined
         ) {
           const chainId = parseInt(query['chain'])

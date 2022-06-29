@@ -26,7 +26,7 @@ const Chain = (props) => {
   }, [type, bridge])
 
   const fetchChain = () => {
-    const chains = validChains.map((item) => ({
+    const chains = validChains[process.env.NEXT_PUBLIC_MODE].map((item) => ({
       id: item,
       name: NameChainMap[item],
       symbol: rpcConfig[item].symbol,

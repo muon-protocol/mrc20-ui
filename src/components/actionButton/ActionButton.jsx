@@ -20,7 +20,7 @@ const ActionButtonComponent = (props) => {
   let actionBtn = useActionBtnType(allowance)
   const status = useActionBtnStatus()
 
-  const wrongNetwork = !validChains.includes(chainId)
+  const wrongNetwork = !validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId)
 
   let validChainId = null
   if (bridge.fromChain) {
@@ -48,12 +48,16 @@ const ActionButtonComponent = (props) => {
         border="1px solid rgba(255, 164, 81, 1)"
         cursor="pointer"
         onClick={() =>
-          wrongNetwork ? addRPC(bridge.fromChain ? bridge.fromChain.id : validChains[0]) : addRPC(validChainId)
+          wrongNetwork
+            ? addRPC(bridge.fromChain ? bridge.fromChain.id : validChains[process.env.NEXT_PUBLIC_MODE][0])
+            : addRPC(validChainId)
         }
       >
         <Type.MD color={'rgba(49, 49, 68, 1)'} fontWeight="bold">
           {wrongNetwork
-            ? ` Switch to ${NameChainMap[bridge.fromChain ? bridge.fromChain.id : validChains[0]]}`
+            ? ` Switch to ${
+                NameChainMap[bridge.fromChain ? bridge.fromChain.id : validChains[process.env.NEXT_PUBLIC_MODE][0]]
+              }`
             : ` Switch to ${NameChainMap[validChainId]}`}
         </Type.MD>
       </Button>
@@ -61,15 +65,15 @@ const ActionButtonComponent = (props) => {
   } else {
     switch (actionBtn) {
       case ActionBtnType.ADD_BRIDGE_TOKEN:
-        case ActionBtnType.ADD_MAIN_TOKEN:
-          contentBtn = (
-            <Button margin="25px 0 0" cursor="default" background="rgba(85, 81, 255, 0.15)">
-              <Type.LG color="#8888db" fontSizeXS="16px" fontSizeXXS="14px">
+      case ActionBtnType.ADD_MAIN_TOKEN:
+        contentBtn = (
+          <Button margin="25px 0 0" cursor="default" background="rgba(85, 81, 255, 0.15)">
+            <Type.LG color="#8888db" fontSizeXS="16px" fontSizeXXS="14px">
               Token is not yet available on Bridge
-              </Type.LG>
-            </Button>
-          )
-          break
+            </Type.LG>
+          </Button>
+        )
+        break
       case ActionBtnType.SELECT:
         contentBtn = (
           <Button margin="25px 0 0" cursor="default" background="rgba(85, 81, 255, 0.15)">

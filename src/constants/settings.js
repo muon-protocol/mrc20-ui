@@ -1,6 +1,10 @@
 import { ChainMap } from './chainsMap'
 
-export const validChains = [3, 4, 97]
+export const validChains = {
+  local: [ChainMap.ROPSTEN, ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
+  dev: [ChainMap.ROPSTEN, ChainMap.RINKEBY, ChainMap.BSC_TESTNET],
+  production: [ChainMap.ETH, ChainMap.BSC],
+}
 
 let tokens = [
   {
