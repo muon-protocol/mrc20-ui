@@ -137,7 +137,7 @@ const Menu = ({ selectedChain }) => {
         ) : (
           <Button padding="0 17px !important" onClick={handleConnect} active={account}>
             <Status active={account} />
-            <Type.SM fontSize="15px" color="#313144" cursor="pointer">
+            <Type.SM fontSize="15px" color="#313144" cursor="pointer" fontSizeXS="13px">
               Connect Wallet
             </Type.SM>
           </Button>

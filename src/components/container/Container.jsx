@@ -7,12 +7,14 @@ export const Container = styled.div`
   @media screen and (max-width: 1200px) {
     flex-direction: column;
     padding: 20px 5px;
+    align-items: center;
   }
 
   @media screen and (max-width: 780px) {
     flex-direction: column;
     padding: 0 20px;
     padding-top: 50px;
+    align-items: center;
   }
 `
 
