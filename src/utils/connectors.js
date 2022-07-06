@@ -43,15 +43,15 @@ export const injected = new InjectedConnector({
 
 const POLLING_INTERVAL = 2000
 
-//only mainnet (walletconnect only one chain supports)
-export const walletconnect = new WalletConnectConnector({
+//only mainnet (walletConnect only one chain supports)
+export const walletConnect = new WalletConnectConnector({
   rpc: { 1: RPC_URLS[1] },
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 })
 
-export const walletlink = new WalletLinkConnector({
+export const walletLink = new WalletLinkConnector({
   url: RPC_URLS[1],
   appName: 'app.deus.finance',
 })
@@ -77,8 +77,8 @@ export const ConnectorNames = {
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
-  [ConnectorNames.WalletConnect]: walletconnect,
-  [ConnectorNames.WalletLink]: walletlink,
+  [ConnectorNames.WalletConnect]: walletConnect,
+  [ConnectorNames.WalletLink]: walletLink,
   // [ConnectorNames.Frame]: frame,
   // [ConnectorNames.Fortmatic]: fortmatic
   // [ConnectorNames.Network]: network,

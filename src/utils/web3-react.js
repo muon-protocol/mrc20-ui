@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { injected } from './connectors'
+import { connectorsByName, injected } from './connectors'
 
 export function getLibrary(provider) {
   return provider
@@ -12,6 +12,11 @@ export function useEagerConnect() {
   const [tried, setTried] = useState(false)
 
   useEffect(() => {
+    const walletType = localStorage.getItem('walletType')
+    const walletConnect = sessionStorage.getItem('walletConnect')
+    if (walletConnect && walletType) {
+      activate(connectorsByName[walletType])
+    }
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
         activate(injected, undefined, true).catch(() => {

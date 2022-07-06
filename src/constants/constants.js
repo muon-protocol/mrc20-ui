@@ -11,7 +11,7 @@ export const ActionBtnType = {
   ADD_BRIDGE_TOKEN: 'addBridgeToken',
   APPROVE: 'approve',
   DEPOSIT: 'deposit',
-  CLAIM:'claim'
+  CLAIM: 'claim',
 }
 
 export const NetworkContextName = 'NETWORK'
@@ -39,6 +39,4 @@ export const ERC20_FUN_MAP = {
 
 export const ErrorType = {
   AMOUNT_INPUT: 'amount-input',
-
 }
-
