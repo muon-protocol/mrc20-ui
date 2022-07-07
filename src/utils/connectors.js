@@ -3,6 +3,8 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { FrameConnector } from '@web3-react/frame-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
+import { flow } from 'lodash'
+import { validChains } from '../constants/settings'
 
 const supportedChainIds = [
   1, // Mainet
@@ -23,7 +25,7 @@ const INFURA_KEY = process.env.NEXT_PUBLIC_INFURA_KEY
 
 const RPC_URLS = {
   1: 'https://mainnet.infura.io/v3/' + INFURA_KEY,
-  3: 'https://mainnet.infura.io/v3/' + INFURA_KEY,
+  3: 'https://ropsten.infura.io/v3/' + INFURA_KEY,
   4: 'https://rinkeby.infura.io/v3/' + INFURA_KEY,
   56: 'https://bsc-dataseed1.binance.org',
   97: 'https://data-seed-prebsc-1-s1.binance.org:8545',
@@ -37,21 +39,24 @@ const RPC_URLS = {
   80001: 'https://matic-mumbai.chainstacklabs.com',
 }
 
+const validRPC = flow([
+  Object.entries,
+  (arr) => arr.filter(([key]) => validChains[process.env.NEXT_PUBLIC_MODE].includes(Number(key))),
+  Object.fromEntries,
+])(RPC_URLS)
+
 export const injected = new InjectedConnector({
   supportedChainIds,
 })
 
-const POLLING_INTERVAL = 2000
-
 export const walletConnect = new WalletConnectConnector({
   rpc: RPC_URLS,
-  bridge: 'https://bridge.walletconnect.org',
+  supportedChainIds: validChains[process.env.NEXT_PUBLIC_MODE],
   qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
 })
 
 export const walletLink = new WalletLinkConnector({
-  url: RPC_URLS,
+  url: validRPC,
   appName: 'MRC20-Bridge',
 })
 

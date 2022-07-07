@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
+import { UnsupportedChainIdError } from '@web3-react/core'
 
 import { Button, ActionButton, ActionText } from '../button/Button'
 import { Type } from '../text/Text'
@@ -15,7 +16,7 @@ import { NameChainMap } from '../../constants/chainsMap'
 const ActionButtonComponent = (props) => {
   const { handleApprove, handleDeposit, allowance } = props
   const [open, setOpen] = useState(false)
-  const { account, chainId } = useWeb3React()
+  const { account, chainId, error } = useWeb3React()
   const bridge = useBridge()
   let actionBtn = useActionBtnType(allowance)
   const status = useActionBtnStatus()
@@ -32,7 +33,7 @@ const ActionButtonComponent = (props) => {
     setOpen(true)
   }
   let contentBtn = ''
-  if (!account)
+  if (!account && !(error instanceof UnsupportedChainIdError))
     contentBtn = (
       <Button margin="25px 0 0" background="#5F5CFE" onClick={handleConnectWallet}>
         <Type.LG color="#ffffff" fontSizeXS="16px">
@@ -40,7 +41,7 @@ const ActionButtonComponent = (props) => {
         </Type.LG>
       </Button>
     )
-  else if (wrongNetwork || validChainId) {
+  else if (wrongNetwork || validChainId || error instanceof UnsupportedChainIdError) {
     contentBtn = (
       <Button
         margin="25px 0 0"

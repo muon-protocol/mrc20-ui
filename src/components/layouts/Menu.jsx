@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex } from 'rebass'
 import dynamic from 'next/dynamic'
+import { UnsupportedChainIdError } from '@web3-react/core'
 
 import styled from 'styled-components'
 import { Type } from '../text/Text'
@@ -87,16 +88,17 @@ const Label = styled.span`
 `
 
 const Menu = ({ selectedChain }) => {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId, error } = useWeb3React()
 
   const [open, setOpen] = React.useState(false)
 
   const handleConnect = async () => {
     setOpen(true)
   }
-  console.log(process.env.NEXT_PUBLIC_MODE)
 
   const validChainId = selectedChain ? selectedChain : validChains[process.env.NEXT_PUBLIC_MODE][0]
+  console.log({ account, chainId, error })
+
   return (
     <>
       <AppInfo>
@@ -134,6 +136,17 @@ const Menu = ({ selectedChain }) => {
               </Type.SM>
             </Button>
           )
+        ) : error instanceof UnsupportedChainIdError ? (
+          <Button
+            padding="0 17px !important"
+            active={account}
+            className="hide-on-mobile"
+            onClick={() => addRPC(validChainId)}
+          >
+            <Type.SM fontSize="15px" color="#313144">
+              Switch to {NameChainMap[validChainId]}
+            </Type.SM>
+          </Button>
         ) : (
           <Button padding="0 17px !important" onClick={handleConnect} active={account}>
             <Status active={account} />
@@ -155,7 +168,8 @@ const Menu = ({ selectedChain }) => {
             </Type.SM>
           </Button>
         )}
-        {!validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) && account && (
+        {((!validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) && account) ||
+          error instanceof UnsupportedChainIdError) && (
           <Button border="1px solid #DC0000">
             <Status color="#DC0000" />
             <Type.MD color="#313144" padding="0 0 0 3px">
