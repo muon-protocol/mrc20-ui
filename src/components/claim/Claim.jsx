@@ -5,7 +5,7 @@ import { Box } from '../container/Container'
 import { Type } from '../text/Text'
 import { NetWork, ChangeNetwork, Span } from './Claim.style'
 import { addRPC } from '../../utils/addRPC'
-import { NameChainMap, rpcConfig } from '../../constants/chainsMap'
+import { MUON_CHAINS_MAP, NameChainMap, rpcConfig } from '../../constants/chainsMap'
 import { useWeb3React } from '@web3-react/core'
 import { BorderBottom, Image, ImageSpin } from '../common/FormControlls'
 import useClaim from '../../hooks/useClaim'
@@ -31,7 +31,7 @@ const Claim = (props) => {
       const muonResponse = await MuonResponse('mrc20_bridge', 'claim', {
         depositAddress: MRC20Bridge[claim.fromChain],
         depositTxId: claim.txId,
-        depositNetwork: claim.fromChain,
+        depositNetwork: MUON_CHAINS_MAP[claim.fromChain],
       })
       if (!muonResponse.confirmed) {
         addTransaction({
@@ -47,7 +47,12 @@ const Claim = (props) => {
 
         return
       }
-      let { sigs, reqId } = muonResponse
+      let { reqId } = muonResponse
+      const signature = {
+        signature: muonResponse["signatures"][0]["signature"],
+        owner: muonResponse["signatures"][0]["owner"],
+        nonce: muonResponse["data"]["init"]["nonceAddress"],
+      };
       doClaim(claim, MRC20Bridge[claim.toChain], MRC20Bridge_ABI, [
         account,
         claim.amount,
@@ -56,7 +61,7 @@ const Claim = (props) => {
         claim.tokenId,
         claim.txId,
         reqId,
-        sigs,
+        signature,
       ])
         .then(() => {
           setLock(false)

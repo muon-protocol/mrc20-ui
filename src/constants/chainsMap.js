@@ -32,6 +32,11 @@ export const NameChainMap = {
   43114: 'AVAX',
 }
 
+export const MUON_CHAINS_MAP = {
+  97: 'bsctest',
+  80001: 'mumbai'
+}
+
 export const rpcConfig = {
   [ChainMap.ETH]: {
     chainId: '0x1',
@@ -90,7 +95,7 @@ export const rpcConfig = {
       symbol: 'BNB',
       decimals: 18,
     },
-    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+    rpcUrls: ['https://bsc-testnet.publicnode.com'],
     blockExplorerUrls: ['https://testnet.bscscan.com'],
   },
   [ChainMap.MATIC]: {
@@ -115,7 +120,7 @@ export const rpcConfig = {
       symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+    rpcUrls: ['https://rpc.ankr.com/polygon_mumbai/'],
     blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
     iconUrls: [],
   },

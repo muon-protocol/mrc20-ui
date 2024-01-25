@@ -64,7 +64,7 @@ export const getPendingTxs = async (account) => {
         depositTxs.push(...chainDepositTxs)
       })
     )
-    let txGroupedById = groupBy(depositTxs, 'id')
+    let txGroupedById = groupBy(depositTxs, (tx) => `${tx.txId}-${tx.fromChain}`)
 
     let pendingTxs = Object.entries(txGroupedById).reduce((acc, [id, txs]) => {
       const claimedIndex = findIndex(txs, 'claimed')
