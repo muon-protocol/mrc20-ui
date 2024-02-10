@@ -39,6 +39,9 @@ export const NameChainMap = {
 export const MUON_CHAINS_MAP = {
   97: 'bsctest',
   80001: 'mumbai',
+  1: 'eth',
+  10: 'optimism',
+  42161: 'arbitrum'
 }
 
 export const rpcConfig = {
