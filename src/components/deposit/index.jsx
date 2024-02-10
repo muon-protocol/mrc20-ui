@@ -88,7 +88,7 @@ const Deposit = () => {
 
   return (
     <Flex flexDirection="column" justifyContent="center" alignItems="center" width="100%">
-      <Title>Muon MRC20 </Title>
+      <Title>Muon ERC404 </Title>
       <GradientTitle margin="0 0 10px">Cross-Chain Transfer</GradientTitle>
       <Container>
         <Box background="linear-gradient(0deg, #D3DBE3 0%, rgba(231, 235, 243, 0) 126.95%)">
