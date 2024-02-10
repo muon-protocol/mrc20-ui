@@ -19,6 +19,8 @@ const supportedChainIds = [
   4002, // Fantom TEST,
   137, // Matic
   80001, // Maticc Mumbai
+  10,
+  42161,
 ]
 const INFURA_KEY = process.env.NEXT_PUBLIC_INFURA_KEY
 // const FORTMATIC_KEY = process.env.NEXT_PUBLIC_FORTMATIC_KEY
@@ -37,6 +39,8 @@ const RPC_URLS = {
   250: 'https://rpcapi.fantom.network',
   137: 'https://rpc-mainnet.maticvigil.com/',
   80001: 'https://matic-mumbai.chainstacklabs.com',
+  10: 'https://rpc.ankr.com/optimism',
+  42161: 'https://endpoints.omniatech.io/v1/arbitrum/one/public',
 }
 
 const validRPC = flow([

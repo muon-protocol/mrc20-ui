@@ -13,6 +13,8 @@ export const ChainMap = {
   HECO: 128,
   HECO_TESTNET: 256,
   AVAX: 43114,
+  OPTIMISM: 10,
+  ARB: 42161,
 }
 
 export const NameChainMap = {
@@ -30,11 +32,13 @@ export const NameChainMap = {
   128: 'HECO',
   256: 'HECOT',
   43114: 'AVAX',
+  10: 'OPTIMISM',
+  42161: 'ARB',
 }
 
 export const MUON_CHAINS_MAP = {
   97: 'bsctest',
-  80001: 'mumbai'
+  80001: 'mumbai',
 }
 
 export const rpcConfig = {
@@ -208,5 +212,29 @@ export const rpcConfig = {
     },
     rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     blockExplorerUrls: ['https://cchain.explorer.avax.network/'],
+  },
+  [ChainMap.OPTIMISM]: {
+    chainId: '0xa',
+    chainName: 'Optimism LlamaNodes',
+    symbol: 'ETH',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'Ethereum',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc.ankr.com/optimism'],
+    blockExplorerUrls: ['https://optimistic.etherscan.io/'],
+  },
+  [ChainMap.ARB]: {
+    chainId: '0xa4b1',
+    chainName: 'Arbitrum LlamaNodes',
+    symbol: 'ETH',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'Ethereum',
+      decimals: 18,
+    },
+    rpcUrls: ['https://endpoints.omniatech.io/v1/arbitrum/one/public'],
+    blockExplorerUrls: ['https://arbiscan.io'],
   },
 }

@@ -71,9 +71,9 @@ const Deposit = () => {
   }, [bridge.toChain, bridge.tokenOnOriginBridge])
 
   useEffect(() => {
-    let token = tokensList.find((item) => (item.address === bridge.token?.address))
+    let token = tokensList.find((item) => item.address === bridge.token?.address)
     if (token) setTokenBalance(token.balance)
-  }, [tokensList,bridge.token])
+  }, [tokensList, bridge.token])
 
   const handleSearch = async (address) => {
     if (!address) updateTokenList('all')
