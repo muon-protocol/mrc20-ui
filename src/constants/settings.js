@@ -3,7 +3,7 @@ import { ChainMap } from './chainsMap'
 export const validChains = {
   local: [ChainMap.MATIC_TESTNET, ChainMap.BSC_TESTNET],
   dev: [ChainMap.ARB, ChainMap.OPTIMISM, ChainMap.ETH],
-  production: [ChainMap.ETH, ChainMap.ARB, ChainMap.OPTIMISM],
+  production: [ChainMap.ARB, ChainMap.OPTIMISM],
 }
 
 let tokens = [
@@ -18,7 +18,7 @@ let tokens = [
   },
   {
     chainId: 10,
-    address: '0x38cC8863fe8FEfaa859198B49dcA4c68cdabec94',
+    address: '0x15A1F0B6e5A01935C1276B3338A614fF08fC91DC',
     name: 'ERC404m',
     symbol: 'ERC404m',
     decimals: 18,
@@ -27,7 +27,7 @@ let tokens = [
   },
   {
     chainId: 42161,
-    address: '0x38cC8863fe8FEfaa859198B49dcA4c68cdabec94',
+    address: '0x15A1F0B6e5A01935C1276B3338A614fF08fC91DC',
     name: 'ERC404m',
     symbol: 'ERC404m',
     decimals: 18,
