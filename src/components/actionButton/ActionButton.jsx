@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { UnsupportedChainIdError } from '@web3-react/core'
 
-import { Button, ActionButton, ActionText } from '../button/Button'
+import { Button, ActionText, PrimaryButton } from '../button/Button'
 import { Type } from '../text/Text'
 import WalletModal from '../modal/WalletModal'
 import { ActionBtnType } from '../../constants/constants'
@@ -35,11 +35,9 @@ const ActionButtonComponent = (props) => {
   let contentBtn = ''
   if (!account && !(error instanceof UnsupportedChainIdError))
     contentBtn = (
-      <Button margin="25px 0 0" background="#5F5CFE" onClick={handleConnectWallet}>
-        <Type.LG color="#ffffff" fontSizeXS="16px">
-          Connect Wallet
-        </Type.LG>
-      </Button>
+      <PrimaryButton onClick={handleConnectWallet}>
+        Connect Wallet3
+      </PrimaryButton>
     )
   else if (wrongNetwork || validChainId || error instanceof UnsupportedChainIdError) {
     contentBtn = (
@@ -56,9 +54,8 @@ const ActionButtonComponent = (props) => {
       >
         <Type.MD color={'rgba(49, 49, 68, 1)'} fontWeight="bold">
           {wrongNetwork
-            ? ` Switch to ${
-                NameChainMap[bridge.fromChain ? bridge.fromChain.id : validChains[process.env.NEXT_PUBLIC_MODE][0]]
-              }`
+            ? ` Switch to ${NameChainMap[bridge.fromChain ? bridge.fromChain.id : validChains[process.env.NEXT_PUBLIC_MODE][0]]
+            }`
             : ` Switch to ${NameChainMap[validChainId]}`}
         </Type.MD>
       </Button>
@@ -86,16 +83,16 @@ const ActionButtonComponent = (props) => {
         break
       case ActionBtnType.APPROVE:
         contentBtn = (
-          <ActionButton onClick={handleApprove} active={!status.approve}>
+          <PrimaryButton onClick={handleApprove} active={!status.approve}>
             <ActionText active={!status.approve}>{status.approve ? 'Approving ...' : 'Approve'}</ActionText>
-          </ActionButton>
+          </PrimaryButton>
         )
         break
       case ActionBtnType.DEPOSIT:
         contentBtn = (
-          <ActionButton onClick={handleDeposit} active={!status.deposit}>
+          <PrimaryButton onClick={handleDeposit} active={!status.deposit}>
             <ActionText active={!status.deposit}>{status.deposit ? 'Depositing ...' : 'Deposit Asset'}</ActionText>
-          </ActionButton>
+          </PrimaryButton>
         )
         break
 

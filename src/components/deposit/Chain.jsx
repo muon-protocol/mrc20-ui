@@ -51,7 +51,7 @@ const Chain = (props) => {
     <>
       <SelectBox
         label={`Select ${type === ChainStatus.ORIGIN_CHAIN ? 'Origin' : 'Destination'} Chain`}
-        marginBottom={marginBottom ? '35px' : value ? '5px' : '35px'}
+        marginBottom={marginBottom ? '35px' : value ? '10px' : '35px'}
         selectedValue={value}
         selectType={SelectType.CHAIN}
         handleOpenModal={handleOpenModal}

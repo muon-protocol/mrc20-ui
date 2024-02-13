@@ -7,21 +7,21 @@ const TextWrapper = styled(Text)`
   cursor: ${({ cursor }) => (cursor ? cursor : 'default')};
   position: ${({ position }) => position};
   font-weight: ${({ fontWeight }) => fontWeight};
-  text-transform: ${(textTransform) => textTransform};
   @media screen and (max-width: 576px) {
     font-size: ${({ fontSizeXS }) => fontSizeXS};
   }
   @media screen and (max-width: 415px) {
     font-size: ${({ fontSizeXXS }) => fontSizeXXS};
   }
+  font-family: Koulen;
 `
 
 export const Type = {
   Primary(props) {
     return <TextWrapper color={'primary'} {...props} />
   },
-  Secodery(props) {
-    return <TextWrapper color={'secodery'} {...props} />
+  Secondary(props) {
+    return <TextWrapper color={'secondary'} {...props} />
   },
   Warning(props) {
     return <TextWrapper color={'warning'} {...props} />
@@ -42,7 +42,7 @@ export const Type = {
     return <TextWrapper fontSize={20} {...props} />
   },
   MD(props) {
-    return <TextWrapper fontSize={15} {...props} />
+    return <TextWrapper fontSize={14} {...props} />
   },
   SM(props) {
     return <TextWrapper fontSize={12} {...props} />

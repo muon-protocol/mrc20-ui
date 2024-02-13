@@ -8,10 +8,10 @@ import { Type } from '../text/Text'
 import { formatAddress } from '../../utils/formatAddress'
 import { useWeb3React } from '@web3-react/core'
 import { NameChainMap } from '../../constants/chainsMap'
-import MuonNetwork from '../common/MuonNetwork'
 import { validChains } from '../../constants/settings'
 import { addRPC } from '../../utils/addRPC'
-import { MuonTools } from 'muon-toolbox'
+import Socials from './socials'
+
 const WalletModal = dynamic(() => import('../modal/WalletModal'))
 
 const Image = styled.img``
@@ -27,18 +27,15 @@ const AppInfo = styled(Flex)`
   }
 `
 
+
 const Button = styled.button`
   padding: ${({ padding }) => (padding ? padding : '0 15px')};
   cursor: ${({ active }) => (active ? 'pointer' : 'default')};
   border: ${({ active, border }) => (border ? border : active ? '1px solid #00AA58' : '1px solid #d2d2d2')};
-  height: 35px;
+  height: 32px;
   background: #f8faff;
   border-radius: 5px;
-  box-sizing: border-box;
-  font-style: normal;
-  font-weight: normal;
   font-size: 15px;
-  line-height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +44,6 @@ const Button = styled.button`
     height: 30px;
     font-size: 13px;
     padding: 0 10px;
-    /* display: ${({ hide }) => (hide ? 'none' : 'flex')}; */
   }
   @media (max-width: 380px) {
     font-size: 12px !important;
@@ -73,14 +69,10 @@ const Media = styled.div`
   align-items: center;
   justify-content: center;
   @media (min-width: 767px) {
-    display: none;
+    /* display: none; */
   }
 `
-const WrapMuonNetwork = styled.div`
-  @media (max-width: 767px) {
-    display: none;
-  }
-`
+
 const Label = styled.span`
   @media (max-width: 767px) {
     display: none;
@@ -97,25 +89,17 @@ const Menu = ({ selectedChain }) => {
   }
 
   const validChainId = selectedChain ? selectedChain : validChains[process.env.NEXT_PUBLIC_MODE][0]
-  console.log({ account, chainId, error })
 
   return (
     <>
       <AppInfo>
-        <WrapMuonNetwork>
-          <MuonNetwork logo="muonNetwork" />
-        </WrapMuonNetwork>
         <Media>
           <Image src="/media/common/logo.svg" alt="logo" />
         </Media>
-        <MuonTools mode={process.env.NEXT_PUBLIC_MODE} />
-        {/* <Flex alignItems="center">
-          <Type.SM color="#313144" padding="10px">
-            App Settings
-          </Type.SM>
-        </Flex> */}
       </AppInfo>
+
       <AppInfo>
+        <Socials />
         {account ? (
           validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) ? (
             <Button padding="0 17px !important" active={account}>
@@ -138,7 +122,7 @@ const Menu = ({ selectedChain }) => {
           )
         ) : error instanceof UnsupportedChainIdError ? (
           <Button
-            padding="0 17px !important"
+            padding="0 10px !important"
             active={account}
             className="hide-on-mobile"
             onClick={() => addRPC(validChainId)}
@@ -148,10 +132,10 @@ const Menu = ({ selectedChain }) => {
             </Type.SM>
           </Button>
         ) : (
-          <Button padding="0 17px !important" onClick={handleConnect} active={account}>
+          <Button padding="0 10px !important" style={{ background: "#000", borderColor: "#FF0" }} onClick={handleConnect} active={account}>
             <Status active={account} />
-            <Type.SM fontSize="15px" color="#313144" cursor="pointer" fontSizeXS="13px">
-              Connect Wallet
+            <Type.SM fontSize="20px" color="#FFCC00" cursor="pointer" fontSizeXS="13px">
+              Connect Wallet2
             </Type.SM>
           </Button>
         )}
@@ -170,13 +154,13 @@ const Menu = ({ selectedChain }) => {
         )}
         {((!validChains[process.env.NEXT_PUBLIC_MODE].includes(chainId) && account) ||
           error instanceof UnsupportedChainIdError) && (
-          <Button border="1px solid #DC0000">
-            <Status color="#DC0000" />
-            <Type.MD color="#313144" padding="0 0 0 3px">
-              Wrong Network
-            </Type.MD>
-          </Button>
-        )}
+            <Button border="1px solid #DC0000">
+              <Status color="#DC0000" />
+              <Type.MD color="#313144" padding="0 0 0 3px">
+                Wrong Network
+              </Type.MD>
+            </Button>
+          )}
       </AppInfo>
       <WalletModal open={open} hide={() => setOpen(!open)} />
     </>

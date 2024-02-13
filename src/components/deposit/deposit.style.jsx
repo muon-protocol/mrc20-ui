@@ -5,7 +5,7 @@ export const Container = styled.div`
   max-width: '470px';
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px ${({ shadowColor }) => (shadowColor ? shadowColor : 'rgba(239, 239, 239, 0.25)')};
+  /* box-shadow: 0px 4px 4px ${({ shadowColor }) => (shadowColor ? shadowColor : 'rgba(239, 239, 239, 0.25)')}; */
   min-height: ${({ minHeight }) => (minHeight ? minHeight : '500px')};
   position: relative;
   display: flex;

@@ -18,7 +18,7 @@ let tokens = [
   },
   {
     chainId: 10,
-    address: '0x15A1F0B6e5A01935C1276B3338A614fF08fC91DC',
+    address: '0x15a1f0b6e5a01935c1276b3338a614ff08fc91dc',
     name: 'ERC404m',
     symbol: 'ERC404m',
     decimals: 18,
@@ -27,7 +27,7 @@ let tokens = [
   },
   {
     chainId: 42161,
-    address: '0x15A1F0B6e5A01935C1276B3338A614fF08fC91DC',
+    address: '0x15a1f0b6e5a01935c1276b3338a614ff08fc91dc',
     name: 'ERC404m',
     symbol: 'ERC404m',
     decimals: 18,

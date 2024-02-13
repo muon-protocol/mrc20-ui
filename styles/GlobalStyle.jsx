@@ -10,13 +10,13 @@ const GlobalStyle = createGlobalStyle`
     html,
     body {
       overflow-y:auto;
-      font-family: Montserrat;
-      background: #f8f8ff;
+      font-family: Koulen;
+      color:#000000;
+      background: #000;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
       -moz-osx-font-smoothing: grayscale;
-      font-smoothing: antialiased;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -26,33 +26,9 @@ const GlobalStyle = createGlobalStyle`
     }
 
     @font-face {
-      font-family: 'Montserrat';
-      font-weight:normal;
-      src: url(/fonts/montserrat-v18-latin-regular.eot) format('eot'),
-        url(/fonts/montserrat-v18-latin-regular.ttf) format('turetype'),
-        url(/fonts/montserrat-v18-latin-regular.woff) format('woff');
-      font-display: block;
+      font-family: 'Koulen';
+      src:  url(/fonts/Koulen-Regular.ttf);
     }
-    @font-face {
-      font-family: 'Montserrat';
-      font-weight:bold;
-      src:  url(/fonts/Montserrat-Bold.ttf) format('turetype'),
-        url(/fonts/Montserrat-Bold.woff) format('woff');
-      font-display: block;
-    }
-    /* @font-face {
-      font-family: 'FH Oscar';
-      src: url(/fonts/FHOscar-Regular.eot) format('eot'),
-        url(/fonts/FHOscar-Regular.ttf) format('turetype'),
-        url(/fonts/FHOscar-Regular.woff) format('woff');
-    }
-
-    @font-face {
-      font-family: 'Reckless';
-      src: url(/fonts/Reckless-Regular.eot) format('eot'),
-        url(/fonts/Reckless-Regular.ttf) format('turetype'),
-        url(/fonts/Reckless-Regular.woff) format('woff');
-    } */
 
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
@@ -63,6 +39,8 @@ const GlobalStyle = createGlobalStyle`
 
     /* Firefox */
     input[type='number'] {
+      font-family: 'Koulen';
+      -moz-appearance: textfield;
       -moz-appearance: textfield;
       border:0; 
     }

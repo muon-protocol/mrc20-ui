@@ -6,11 +6,11 @@ export const Selector = styled.div`
   align-items: center;
   max-width: ${({ maxWidth }) => maxWidth};
   width: 100%;
-  height: ${({ height }) => (height ? height : '45px')};
-  background: ${({ background }) => (background ? background : '#E6ECF2')};
-  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '5px')};
-  border: ${({ border }) => (border ? border : '1px solid #FFFFFF')};
-  color: ${({ color }) => (color ? color : '#919191')};
+  height: ${({ height }) => (height ? height : '32px')};
+  background: ${({ background }) => (background ? background : '#08091A')};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '4px')};
+  border: ${({ border }) => (border ? border : '1px solid #0F0')};
+  color: ${({ color }) => (color ? color : '#FFFFFF')};
   padding: ${({ padding }) => padding};
   margin: ${({ margin }) => margin};
   cursor: ${({ cursor }) => (cursor ? cursor : 'default')};

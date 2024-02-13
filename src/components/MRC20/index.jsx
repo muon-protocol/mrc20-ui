@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Flex } from 'rebass'
 import ActionButton from '../actionButton/ActionButton'
 import Claim from '../claim/Claim'
 import { Container, Wrapper } from '../container/Container'
 import Deposit from '../deposit'
-import { Type } from '../text/Text'
 import Transaction from '../transaction/Transaction'
-import MuonNetwork from '../common/MuonNetwork'
 import useAllowance from '../../hooks/useAllowance'
 import useApprove from '../../hooks/useApprove'
 import { useWeb3React } from '@web3-react/core'
@@ -21,6 +18,28 @@ import { useFetchClaimFromGraph } from '../../hooks/useFetchClaim'
 import { getPendingTxs } from '../../utils/graph'
 import { toWei } from '../../utils/wei'
 import { useError } from '../../state/application/hooks'
+import styled from 'styled-components'
+import { GunPortal } from './Title'
+
+
+const MainWrap = styled.div`
+  width: 100%;
+  max-width: 470px;
+  
+`
+const PortalWrap = styled.div`
+  width: 100%;
+  padding: 30px 20px;
+position: relative;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+      border-radius: 12px;
+    border: 3px solid #0F0;
+    background: linear-gradient(180deg, #000 0%, rgba(24, 53, 46, 0.51) 48.5%, #152E28 100%);
+`
+
 
 const MRC20 = () => {
   const { account, chainId } = useWeb3React()
@@ -50,9 +69,9 @@ const MRC20 = () => {
           setPendingTxs(pendingTxs)
         }
       } catch (error) {
-        console.log("error happend in get pending",error)
+        console.log("error happend in get pending", error)
       }
-    
+
     }
 
     if (account) getPending()
@@ -71,12 +90,12 @@ const MRC20 = () => {
         toChain: bridge.toChain?.symbol,
         tokenSymbol: bridge.token?.symbol,
       }
-  
+
       setApprove(info, bridge.token.address, MRC20Bridge[bridge.fromChain?.id], ERC20_ABI).then(() =>
         updateFetchData(ActionBtnType.APPROVE)
       )
     } catch (error) {
-      console.log("error happend in approve",error)
+      console.log("error happened in approve", error)
     }
   }
 
@@ -126,17 +145,13 @@ const MRC20 = () => {
   return (
     <Container>
       <Wrapper maxWidth="300px" width="100%"></Wrapper>
-      <Wrapper maxWidth="470px" width="100%">
-        <Deposit />
-        <ActionButton handleApprove={handleApprove} handleDeposit={handleDeposit} allowance={allowance} />
-
-        <Flex justifyContent="center" margin="50px 0 20px">
-          <Type.SM color="#313144" fontSize="10px" padding="10px">
-            Powered by
-          </Type.SM>
-          <MuonNetwork logo="muonNetworkBlack" />
-        </Flex>
-      </Wrapper>
+      <MainWrap>
+        <GunPortal />
+        <PortalWrap >
+          <Deposit />
+          <ActionButton handleApprove={handleApprove} handleDeposit={handleDeposit} allowance={allowance} />
+        </PortalWrap>
+      </MainWrap>
       <Wrapper maxWidth="300px" width="100%">
         {tx.status && <Transaction />}
         {claims.length > 0 && <Claim claims={claims} fetchData={(txId) => updatePendingTx(txId)} />}

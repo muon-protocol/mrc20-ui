@@ -9,11 +9,11 @@ const Amount = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2b2b3c;
+  background: #08091A;
   border-radius: 5px;
   padding: 5px 10px;
-  height: 45px;
-  border: ${({ error }) => (error ? '2px solid #DC5151' : '1px solid #ffffff')};
+  height: 32px;
+  border: ${({ error }) => (error ? '2px solid #DC5151' : '1px solid #00FF00')};
 `
 
 const Wrapper = styled.div`
@@ -31,7 +31,7 @@ const Input = styled.input.attrs({
   outline-style: none;
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
+  font-size: 14px;
   color: #ffffff;
   background: transparent;
   border: transparent;
@@ -42,35 +42,37 @@ const Input = styled.input.attrs({
     font-size: 16px;
   }
   ::placeholder {
-    color: #909090;
+    color: #B4B4B4;
     font-size: 12px;
+    
     opacity: 1; /* Firefox */
   }
 
   :-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #909090;
+    color: #B4B4B4;
     font-size: 12px;
   }
 
   ::-ms-input-placeholder {
     /* Microsoft Edge */
-    color: #909090;
+    color: #B4B4B4;
     font-size: 12px;
   }
 `
 const Max = styled.div`
-  background-color: #9c9bf3;
+  /* background-color: #9c9bf3; */
+  /* border: 1px solid #FC0; */
   align-items: center;
   border-radius: 5px;
   text-align: center;
-  padding: 2px 4px;
+  /* width: 20px; */
+  font-size:10px;
+  color: #FC0;
+  padding: 0 6px;
   cursor: pointer;
   &:hover {
-    background-color: #6f6dc5;
-    div {
-      color: #fff;
-    }
+    color: #0F0;
   }
 `
 const AmountBox = (props) => {
@@ -79,24 +81,25 @@ const AmountBox = (props) => {
   return (
     <Wrapper margin={margin}>
       <Flex width="100%" justifyContent="space-between" alignItems="center">
-        <Type.SM color="#313144" fontSize="12.5px" padding="5px 10px">
-          Amount
-        </Type.SM>
+        <Type.MD color="#FFFFFF" fontSize="20px" padding="5px 2px">
+          ENTER AMOUNT
+        </Type.MD>
 
         <Flex justifyContent="flex-end" alignItems="center">
-          <Type.SM color="#919191" fontSize="12.5px" padding="5px 10px">
-            {tokenBalance}
+          <Type.SM color="#919191" fontSize="12.5px">
+            balance:
+          </Type.SM>
+          <Type.SM color="#919191" fontSize="12.5px" ml="4px" mr="0px">
+            {tokenBalance || 0}
           </Type.SM>
           <Max onClick={() => onChange(tokenBalance.split(' ')[0])}>
-            <Type.SM color="#FFFFFF" fontSize="10px" cursor="pointer">
-              Max
-            </Type.SM>
+            ( Max )
           </Max>
         </Flex>
       </Flex>
 
       <Amount error={error && errorType === ErrorType.AMOUNT_INPUT}>
-        <Input value={value} placeholder="Enter Amount" min={`0`} onChange={(e) => onChange(e.target.value)} />
+        <Input value={value} placeholder="0.0" min={`0`} onChange={(e) => onChange(e.target.value)} />
       </Amount>
     </Wrapper>
   )

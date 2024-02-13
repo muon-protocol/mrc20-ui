@@ -14,7 +14,7 @@ import { LinkType, TransactionStatus } from '../../constants/transactionStatus'
 import { useRemoveTransaction, useTx } from '../../state/transactions/hooks'
 
 const Close = styled.span`
-  fontsize: 12.5px;
+  font-size: 12.5px;
   color: #000000;
   cursor: pointer;
 `
@@ -87,8 +87,8 @@ const Transaction = () => {
             tx.status === TransactionStatus.PENDING
               ? '1px solid #d2d2d2'
               : tx.status === TransactionStatus.SUCCESS
-              ? '1px solid #00AA58'
-              : '1px solid rgba(255, 164, 81, 1)'
+                ? '1px solid #00AA58'
+                : '1px solid rgba(255, 164, 81, 1)'
           }
         >
           <Flex justifyContent="space-between" width="100%" padding="0 10px 0 0" alignItems="center">
